@@ -2,7 +2,7 @@
   "development": {
     "username": "plusadmin",
     "password": "Plusadmin@2020",
-    "database": "BookingStudioDb",
+    "database": "bookingstudiotest",
     "host": "35.213.160.139",
     "dialect": "mysql"
   },
