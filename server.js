@@ -3,10 +3,12 @@ const express = require("express");
 const { sequelize } = require("./models");
 const swaggerJsDOc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
-
+const cors = require("cors")
 const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const app = express();
+
+app.use(cors())
 
 app.use(express.json());
 
