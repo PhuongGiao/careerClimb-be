@@ -1,8 +1,5 @@
 const express = require("express");
-const {
-  createStudioPost,
-  getAllStudioPost,
-} = require("../controllers/StudioPost");
+const { getAllStudioPost } = require("../controllers/studioPost");
 
 const router = express.Router();
 
