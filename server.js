@@ -2,14 +2,14 @@ const express = require("express");
 const { sequelize } = require("./models");
 
 const catchError = require("./middlewares/error");
-const districtRouter = require("./routes/districtRoute");
+const {rootRouter} = require("./routes")
 const app = express();
 
 const port = 3003;
 
 app.use(express.json());
 
-app.use("/api/booking-studio/district", districtRouter);
+app.use("/api", rootRouter);
 
 app.use(catchError);
 app.listen(port, async () => {

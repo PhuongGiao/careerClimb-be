@@ -2,11 +2,11 @@ const express = require("express");
 const {
   createDistrict,
   getAllDistrict,
-} = require("../controllers/districtController");
+} = require("../controllers/district");
 
 const router = express.Router();
 
-router.post("/post", createDistrict);
-router.get("/get", getAllDistrict);
+router.post("/", createDistrict);
+router.get("/", getAllDistrict);
 
-module.exports = router;
+module.exports = {router};
