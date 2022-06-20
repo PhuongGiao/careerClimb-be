@@ -1,17 +1,36 @@
 require("dotenv").config();
 const express = require("express");
 const { sequelize } = require("./models");
-const cors = require("cors");
+const swaggerJsDOc = require("swagger-jsdoc");
+const swaggerUI = require("swagger-ui-express");
+const cors = require("cors")
 const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const app = express();
 
+app.use(cors())
 app.use(express.json());
-app.use(cors());
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "Library API",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:5050",
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+};
+
+const swaggerDocs = swaggerJsDOc(swaggerOptions);
+console.log(swaggerDocs);
+
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api", rootRouter);
-app.use("/", (req, res) => {
-  res.send("alooooooooooo");
-});
 
 app.use(catchError);
 app.listen(process.env.PORT || 3000, async () => {
