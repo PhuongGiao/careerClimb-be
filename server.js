@@ -2,10 +2,10 @@ const express = require("express");
 const { sequelize } = require("./models");
 
 const catchError = require("./middlewares/error");
-const {rootRouter} = require("./routes")
+const { rootRouter } = require("./routes");
 const app = express();
 
-const port = 3003;
+const port = 5001;
 
 app.use(express.json());
 
