@@ -1,13 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const { sequelize } = require("./models");
-
+const cors = require("cors");
 const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const app = express();
 
 app.use(express.json());
-
+app.use(cors());
 app.use("/api", rootRouter);
 app.use("/", (req, res) => {
   res.send("alooooooooooo");
