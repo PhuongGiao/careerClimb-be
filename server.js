@@ -10,6 +10,9 @@ const port = 5001;
 app.use(express.json());
 
 app.use("/api", rootRouter);
+app.use("/", (req, res) => {
+  res.send("alooooooooooo");
+});
 
 app.use(catchError);
 app.listen(port, async () => {
