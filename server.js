@@ -9,7 +9,6 @@ const { rootRouter } = require("./routes");
 const app = express();
 
 app.use(cors())
-
 app.use(express.json());
 
 const swaggerOptions = {
@@ -30,8 +29,7 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDOc(swaggerOptions);
 console.log(swaggerDocs);
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api", rootRouter);
 
 app.use(catchError);
