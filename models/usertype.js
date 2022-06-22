@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       IsDeleted: DataTypes.BOOLEAN,
       DeleterUserId: DataTypes.BIGINT,
       DeletionTime: DataTypes.DATE,
+    
     },
     {
       sequelize,

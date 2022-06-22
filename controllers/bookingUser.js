@@ -71,11 +71,48 @@ exports.createBookingUser = catchAsync(async (req, res) => {
     AppleGivenName,
     AppleUserIdentifier,
   });
-  console.log(newStation);
   res.status(201).send(newStation);
 });
 
 exports.getAllBookingUser = catchAsync(async (req, res) => {
   const listStation = await BookingUser.findAll();
   res.status(200).send(listStation);
+});
+
+exports.updateBookingUser = catchAsync(async (req, res) => {
+  const {id }=req.params
+    const {
+      Email,
+      Username,
+      Phone,
+      Fullname,
+      CreatedDate,
+      UpdatedDate,
+      Status,
+      Image,
+      GoogleEmail,
+      FacebookEmail,
+      GoogleName,
+    } = req.body;
+    await BookingUser.update(
+      {
+        Email,
+        Username,
+        Phone,
+        Fullname,
+        CreatedDate,
+        UpdatedDate,
+        Status,
+        Image,
+        GoogleEmail,
+        FacebookEmail,
+        GoogleName,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    res.status(200).send(`Id=${id} update success!`);
 });
