@@ -123,21 +123,47 @@ const getDetailStation = async (req, res) => {
   }
 };
 
-const updateStation = async (req, res) => {
+const updateBookingUser = async (req, res) => {
+  const {id }=req.params
+  console.log(id)
   try {
-    const { id } = req.params;
-    const { name, address, province } = req.body;
-    const stationUpdate = await Station.findOne({
-      where: {
-        id,
+    const {
+      Email,
+      Username,
+      Phone,
+      Fullname,
+      CreatedDate,
+      UpdatedDate,
+      Status,
+      Image,
+      GoogleEmail,
+      FacebookEmail,
+      GoogleName,
+    } = req.body;
+    await BookingUser.update(
+      {
+        Email,
+        Username,
+        Phone,
+        Fullname,
+        CreatedDate,
+        UpdatedDate,
+        Status,
+        Image,
+        GoogleEmail,
+        FacebookEmail,
+        GoogleName,
       },
-    });
-    stationUpdate.name = name;
-    stationUpdate.address = address;
-    stationUpdate.province = province;
-    await stationUpdate.save();
-    res.status(200).send(stationUpdate);
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    res.status(200).send(`Id=${id} update success!`);
   } catch (error) {
+    console.log(error)
     res.status(500).send(error);
   }
 };
@@ -160,6 +186,6 @@ module.exports = {
   createBookingUser,
   getAllBookingUser,
   getDetailStation,
-  updateStation,
+  updateBookingUser,
   deleteStation,
 };
