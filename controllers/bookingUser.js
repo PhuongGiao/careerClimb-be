@@ -1,5 +1,6 @@
 const { BookingUser } = require("../models");
 const catchAsync = require("../middlewares/async");
+const Pagination = require("../utils/pagination");
 exports.createBookingUser = catchAsync(async (req, res) => {
   const {
     TenantId,
@@ -75,13 +76,30 @@ exports.createBookingUser = catchAsync(async (req, res) => {
 });
 
 exports.getAllBookingUser = catchAsync(async (req, res) => {
-  const listStation = await BookingUser.findAll();
-  res.status(200).send(listStation);
+  const { page, limit } = req.query;
+  const data = await Pagination(BookingUser, page, limit);
+  res.status(200).json({
+    ...data,
+  });
 });
 
 exports.updateBookingUser = catchAsync(async (req, res) => {
-  const {id }=req.params
-    const {
+  const { id } = req.params;
+  const {
+    Email,
+    Username,
+    Phone,
+    Fullname,
+    CreatedDate,
+    UpdatedDate,
+    Status,
+    Image,
+    GoogleEmail,
+    FacebookEmail,
+    GoogleName,
+  } = req.body;
+  await BookingUser.update(
+    {
       Email,
       Username,
       Phone,
@@ -93,26 +111,12 @@ exports.updateBookingUser = catchAsync(async (req, res) => {
       GoogleEmail,
       FacebookEmail,
       GoogleName,
-    } = req.body;
-    await BookingUser.update(
-      {
-        Email,
-        Username,
-        Phone,
-        Fullname,
-        CreatedDate,
-        UpdatedDate,
-        Status,
-        Image,
-        GoogleEmail,
-        FacebookEmail,
-        GoogleName,
+    },
+    {
+      where: {
+        id,
       },
-      {
-        where: {
-          id,
-        },
-      }
-    );
-    res.status(200).send(`Id=${id} update success!`);
+    }
+  );
+  res.status(200).send(`Id=${id} update success!`);
 });
