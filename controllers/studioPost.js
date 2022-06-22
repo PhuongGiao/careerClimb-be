@@ -1,9 +1,11 @@
 const { StudioPost } = require("../models");
 const catchAsync = require("../middlewares/async");
+const Pagination = require("../utils/pagination");
 
 exports.getAllStudioPost = catchAsync(async (req, res) => {
-  const listStation = await StudioPost.findAll();
-  res.status(200).send(listStation);
+  const { page, limit } = req.query;
+  const data = await Pagination(StudioPost, page, limit);
+  res.status(200).json({ ...data });
 });
 
 exports.getDetailStation = catchAsync(async (req, res) => {
