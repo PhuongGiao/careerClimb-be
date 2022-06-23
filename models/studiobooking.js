@@ -7,8 +7,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ StudioRoom }) {
-      this.belongsTo(StudioRoom, { foreignKey: "id", as: "StudioRoommId" });
+    static associate({ BookingUser, StudioRoom }) {
+      StudioBooking.belongsTo(BookingUser, {
+        foreignKey: "StudioRoomId",
+        as: "userId",
+      });
+      StudioBooking.belongsTo(StudioRoom, {
+        foreignKey: "StudioRoomId",
+      });
     }
   }
   StudioBooking.init(
@@ -25,7 +31,6 @@ module.exports = (sequelize, DataTypes) => {
       BookingPhone: DataTypes.STRING,
       BookingEmail: DataTypes.STRING,
       StudioRoomId: DataTypes.INTEGER,
-      BookingUserId: DataTypes.INTEGER,
       PromoCodeId: DataTypes.INTEGER,
       CreationTime: DataTypes.DATE,
       CreatorUserId: DataTypes.BIGINT,

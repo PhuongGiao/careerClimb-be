@@ -8,6 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      BookingUserId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "BookingUsers",
+          key: "id",
+        },
+      },
       TenantId: {
         type: Sequelize.STRING,
       },
