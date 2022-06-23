@@ -3,26 +3,15 @@ info:
   title: BOOKINGSTUDIO_BACKEND
   version: 1.0.0
 servers:
-  - url: https://bookingstudio.herokuapp.com
   - url: http://localhost:3003
 tags:
-  - name: District
   - name: Partner
   - name: BookingUser
+  - name: Province
   - name: Studio Post
   - name: Booking
   - name: Room
 paths:
-  /api/district:
-    get:
-      tags:
-        - District
-      summary: Get All District
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
   /api/register-partner:
     get:
       tags:
@@ -123,12 +112,43 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /api/location/province:
+    get:
+      tags:
+        - Province
+      summary: Get All Province
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/location/district:
+    get:
+      tags:
+        - Province
+      summary: Get District By Province ID
+      parameters:
+        - name: ProvinceId
+          in: query
+          schema:
+            type: integer
+          example: '15'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /api/studio-post:
     get:
       tags:
         - Studio Post
-      summary: getDetailById
+      summary: Get All Studio Post
       parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
         - name: limit
           in: query
           schema:
@@ -151,6 +171,15 @@ paths:
               type: object
               example:
                 IsDeleted: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Studio Post
+      summary: getDetailById
       responses:
         '200':
           description: Successful response
