@@ -15,7 +15,7 @@ const Pagination = async (Model, page, limit, where) => {
   const List = await Model.findAll({
     limit: +limit,
     offset: skip,
-    where,
+    ...where,
   });
 
   return {
