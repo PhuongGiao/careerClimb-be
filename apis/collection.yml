@@ -7,57 +7,17 @@ servers:
   - url: http://localhost:3003
 tags:
   - name: District
-  - name: BookingUser
-  - name: Post
   - name: Partner
+  - name: BookingUser
+  - name: Studio Post
+  - name: Booking
+  - name: Room
 paths:
   /api/district:
     get:
       tags:
         - District
-      summary: New Request
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /api/booking-user:
-    get:
-      tags:
-        - BookingUser
-      summary: New Request
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-          example: '0'
-        - name: limit
-          in: query
-          schema:
-            type: integer
-          example: '0'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /api/studio-post:
-    get:
-      tags:
-        - Post
-      summary: New Request
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-          example: '2'
-        - name: limit
-          in: query
-          schema:
-            type: integer
-          example: '0'
+      summary: Get All District
       responses:
         '200':
           description: Successful response
@@ -66,8 +26,8 @@ paths:
   /api/register-partner:
     get:
       tags:
-        - Partner
-      summary: getAll
+        - Room
+      summary: Get All Room
       parameters:
         - name: page
           in: query
@@ -88,7 +48,7 @@ paths:
     get:
       tags:
         - Partner
-      summary: getPartnerById
+      summary: Get Partner By Id
       responses:
         '200':
           description: Successful response
@@ -98,7 +58,7 @@ paths:
     patch:
       tags:
         - Partner
-      summary: New Request
+      summary: Update Partner By Id
       requestBody:
         content:
           application/json:
@@ -116,6 +76,101 @@ paths:
                 BankBranchName: ACB bank - Chi nhánh Hòa Khánh
                 BankAccount: '2412037'
                 BankAccountOwnerName: HOANG DUC THANG
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/booking-user:
+    get:
+      tags:
+        - BookingUser
+      summary: Get All Booking User
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '0'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/booking-user/5:
+    get:
+      tags:
+        - BookingUser
+      summary: Get Booking User By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - BookingUser
+      summary: Update Booking User & Block acount send stutus:false
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/studio-post:
+    get:
+      tags:
+        - Studio Post
+      summary: getDetailById
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Studio Post
+      summary: updateById
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/booking:
+    get:
+      tags:
+        - Booking
+      summary: Get All Booking
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/booking/5:
+    get:
+      tags:
+        - Booking
+      summary: Get Booking By Id
       responses:
         '200':
           description: Successful response
