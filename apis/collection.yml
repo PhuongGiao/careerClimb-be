@@ -26,8 +26,8 @@ paths:
   /api/register-partner:
     get:
       tags:
-        - Room
-      summary: Get All Room
+        - Partner
+      summary: Get All Partner
       parameters:
         - name: page
           in: query
@@ -139,12 +139,18 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /api/studio-post/5:
     put:
       tags:
         - Studio Post
       summary: updateById
       requestBody:
-        content: {}
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                IsDeleted: true
       responses:
         '200':
           description: Successful response
@@ -171,6 +177,16 @@ paths:
       tags:
         - Booking
       summary: Get Booking By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/alaa:
+    get:
+      tags:
+        - Room
+      summary: Get All Room
       responses:
         '200':
           description: Successful response
