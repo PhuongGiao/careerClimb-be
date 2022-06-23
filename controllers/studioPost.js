@@ -7,30 +7,36 @@ const moment = require("moment");
 exports.getAllStudioPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { Name, createDate, updateDate } = req.body;
-  const data = await Pagination(StudioPost, page, limit, {
-    where: {
-      Name: {
-        [Op.like]: `%${Name}%`,
+  if (Name || createDate || updateDate) {
+    const data = await Pagination(StudioPost, page, limit, {
+      where: {
+        Name: {
+          [Op.like]: `%${Name}%`,
+        },
+        CreationTime: {
+          [Op.gte]: createDate?.startDate
+            ? moment(createDate.startDate).format()
+            : 1,
+          [Op.lte]: createDate?.endDate
+            ? moment(createDate.endDate).format()
+            : new Date(),
+        },
+        LastModificationTime: {
+          [Op.gte]: updateDate?.startDate
+            ? moment(updateDate.startDate).format()
+            : 1,
+          [Op.lte]: updateDate?.endDate
+            ? moment(updateDate.endDate).format()
+            : new Date(),
+        },
       },
-      CreationTime: {
-        [Op.gte]: createDate?.startDate
-          ? moment(createDate.startDate).format()
-          : 1,
-        [Op.lte]: createDate?.endDate
-          ? moment(createDate.endDate).format()
-          : new Date(),
-      },
-      LastModificationTime: {
-        [Op.gte]: updateDate?.startDate
-          ? moment(updateDate.startDate).format()
-          : 1,
-        [Op.lte]: updateDate?.endDate
-          ? moment(updateDate.endDate).format()
-          : new Date(),
-      },
-    },
-  });
-  res.status(200).json({ ...data });
+    });
+    res.status(200).json({ ...data });
+  } else {
+    const data = await Pagination(StudioPost, page, limit, {});
+
+    res.status(200).json({ ...data });
+  }
 });
 
 exports.getDetailStudioPost = catchAsync(async (req, res) => {
