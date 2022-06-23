@@ -18,7 +18,7 @@ exports.getAllRegisterPartner = catchAsync(async (req, res) => {
         });
         return {
           id: val.id,
-          IdentifierCode: `P${val.Phone}`,
+          IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
           Phone: val.Phone,
           Email: val.Email,
           NumberOfPost: count,

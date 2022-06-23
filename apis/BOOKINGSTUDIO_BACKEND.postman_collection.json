@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8ab247a5-f945-4670-b80f-d0c1537da4e1",
+		"_postman_id": "e290f807-20b4-43c2-b39f-8cbad24a40c8",
 		"name": "BOOKINGSTUDIO_BACKEND",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18141375"
@@ -10,7 +10,7 @@
 			"name": "District",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "Get All District",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -33,80 +33,10 @@
 			]
 		},
 		{
-			"name": "BookingUser",
-			"item": [
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3003/api/booking-user?page=0&limit=0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3003",
-							"path": [
-								"api",
-								"booking-user"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "limit",
-									"value": "0"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Post",
-			"item": [
-				{
-					"name": "New Request",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3003/api/studio-post?page=2&limit=0",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3003",
-							"path": [
-								"api",
-								"studio-post"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "2"
-								},
-								{
-									"key": "limit",
-									"value": "0"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Partner",
 			"item": [
 				{
-					"name": "getAll",
+					"name": "Get All Partner",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -136,7 +66,7 @@
 					"response": []
 				},
 				{
-					"name": "getPartnerById",
+					"name": "Get Partner By Id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -157,7 +87,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Update Partner By Id",
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -182,6 +112,264 @@
 								"register-partner",
 								"update",
 								"24"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BookingUser",
+			"item": [
+				{
+					"name": "Get All Booking User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/booking-user?page=0&limit=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"booking-user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking User By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/booking-user/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"booking-user",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking User & Block acount send stutus:false",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/booking-user/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"booking-user",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Studio Post",
+			"item": [
+				{
+					"name": "Get All Studio Post",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Name\":\"Studio\",\n    \"CreateDate\":{\n        \"startDate\":\"2021-11-30T17:39:08.081Z\",\n    \"endDate\":\"2022-12-30T17:39:08.081Z\"\n    }\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/studio-post?limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"studio-post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateById",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/studio-post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"studio-post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDetailById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/studio-post?limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"studio-post"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Get All Booking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/booking?limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"booking"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/booking/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"booking",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "Get All Room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/register-partner?page=3&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"register-partner"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},

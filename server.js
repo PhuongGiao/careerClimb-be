@@ -17,6 +17,7 @@ postmanToOpenApi(postmanCollection, outputFile, { defaultTag: "General" })
   .then((result) => {
     console.log(`OpenAPI specs: ${result}`);
   })
+
   .catch((err) => {
     console.log(err);
   });

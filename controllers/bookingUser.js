@@ -1,4 +1,6 @@
 const { BookingUser } = require("../models");
+const { StudioBooking } = require("../models");
+
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
 exports.createBookingUser = catchAsync(async (req, res) => {
@@ -77,7 +79,28 @@ exports.createBookingUser = catchAsync(async (req, res) => {
 
 exports.getAllBookingUser = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const data = await Pagination(BookingUser, page, limit);
+  const bookingUser = await Pagination(BookingUser, page, limit);
+
+  const data = {
+    ...bookingUser,
+    data: await Promise.all(
+      bookingUser.data.map(async (val) => {
+        const count = await StudioBooking.count({
+          where: { BookingUserId: val.id },
+        });
+        return {
+          id: val.id,
+          IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+          Phone: val.Phone,
+          Email: val.Email,
+          NumberOfBooking: count,
+          CreationTime: val.CreationTime,
+          LastModificationTime: val.LastModificationTime,
+          IsDeleted: val.IsDeleted,
+        };
+      })
+    ),
+  };
   res.status(200).json({
     ...data,
   });
@@ -90,8 +113,6 @@ exports.updateBookingUser = catchAsync(async (req, res) => {
     Username,
     Phone,
     Fullname,
-    CreatedDate,
-    UpdatedDate,
     Status,
     Image,
     GoogleEmail,
@@ -104,8 +125,6 @@ exports.updateBookingUser = catchAsync(async (req, res) => {
       Username,
       Phone,
       Fullname,
-      CreatedDate,
-      UpdatedDate,
       Status,
       Image,
       GoogleEmail,
@@ -119,4 +138,29 @@ exports.updateBookingUser = catchAsync(async (req, res) => {
     }
   );
   res.status(200).send(`Id=${id} update success!`);
+});
+
+exports.getBookingUserById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const user = await BookingUser.findByPk(id);
+  if (!user) {
+    throw new ApiError(404, "Partner not found!");
+  }
+  const count = await StudioBooking.count({
+    where: { BookingUserId: id },
+  });
+  const data = {
+    id: user.id,
+    IdentifierCode: `C${user.Phone}`,
+    Phone: user.Phone,
+    Email: user.Email,
+    NumberOfOrder: count,
+    CreationTime: user.CreationTime,
+    LastModificationTime: user.LastModificationTime,
+    IsDeleted: user.IsDeleted,
+    GoogleEmail: user.GoogleEmail,
+    FacebookEmail: user.FacebookEmail,
+    GoogleName: user.GoogleName,
+  };
+  res.status(200).json(data);
 });
