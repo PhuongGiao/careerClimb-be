@@ -6,6 +6,20 @@ const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
 const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
+const postmanToOpenApi = require("postman-to-openapi");
+
+const postmanCollection =
+  "./apis/BOOKINGSTUDIO_BACKEND.postman_collection.json";
+const outputFile = "./apis/collection.yml";
+
+// Promise callback style
+postmanToOpenApi(postmanCollection, outputFile, { defaultTag: "General" })
+  .then((result) => {
+    console.log(`OpenAPI specs: ${result}`);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 const app = express();
 
 app.use(cors());
@@ -23,7 +37,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./routes/*.js"],
+  apis: ["./apis/collection.yml"],
 };
 
 const swaggerDocs = swaggerJsDOc(swaggerOptions);

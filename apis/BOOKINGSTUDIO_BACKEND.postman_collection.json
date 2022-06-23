@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "8ab247a5-f945-4670-b80f-d0c1537da4e1",
+		"name": "BOOKINGSTUDIO_BACKEND",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18141375"
+	},
+	"item": [
+		{
+			"name": "District",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://bookingstudio.herokuapp.com/api/district",
+							"protocol": "https",
+							"host": [
+								"bookingstudio",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"district"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BookingUser",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/booking-user?page=0&limit=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"booking-user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/studio-post?page=2&limit=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"studio-post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Partner",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/register-partner?page=3&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"register-partner"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPartnerById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/register-partner/24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"register-partner",
+								"24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PartnerName\": \"Hang Đôi Studio\",\n    \"RepresentativeName\": \"Hoàng Đức Thắng\",\n    \"Phone\": \"0967445997\",\n    \"OtherPhone\": \"0777445997\",\n    \"Email\": \"hangdoistudio@gmail.com\",\n    \"ReEmail\": \"hangdoistudio@gmail.com\",\n    \"BusinessRegistrationLicenseNumber\": 123,\n    \"Address\": \"522 Nguyễn Hữu Thọ, p.Khuê Trung, q.Cẩm Lệ, Tp. Đà Nẵng\",\n    \"BankBranchName\": \"ACB bank - Chi nhánh Hòa Khánh\",\n    \"BankAccount\": \"2412037\",\n    \"BankAccountOwnerName\": \"HOANG DUC THANG\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/register-partner/update/24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"register-partner",
+								"update",
+								"24"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
