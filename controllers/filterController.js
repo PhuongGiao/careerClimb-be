@@ -4,6 +4,7 @@ const { BookingUser } = require("../models");
 const { Op } = require("sequelize");
 const catchAsync = require("../middlewares/async");
 const moment = require("moment");
+const { downloadExcelTest } = require("./ excel.controller");
 
 exports.filterOption = catchAsync(async (req, res) => {
   const { option } = req.query;
@@ -30,7 +31,7 @@ exports.filterOption = catchAsync(async (req, res) => {
           },
         },
       });
-      return res.json(data1);
+      downloadExcelTest(data1, res);
     case "2":
       //Tai khoan khach hang
       const data2 = await BookingUser.findAll({
@@ -57,7 +58,7 @@ exports.filterOption = catchAsync(async (req, res) => {
           },
         },
       });
-      return res.json(data2);
+      downloadExcelTest(data2, res);
     default:
       break;
   }
