@@ -6,6 +6,11 @@ const moment = require("moment");
 
 exports.getAllStudioPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
+  const data = await Pagination(StudioPost, page, limit, {});
+  res.status(200).json({ ...data });
+});
+exports.filterStudioPost = catchAsync(async (req, res) => {
+  const { page, limit } = req.query;
   const { Name, createDate, updateDate } = req.body;
   if (Name || createDate || updateDate) {
     const data = await Pagination(StudioPost, page, limit, {
