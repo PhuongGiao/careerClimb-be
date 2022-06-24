@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       AppleUserIdentifier: DataTypes.STRING,
       TenantId: DataTypes.INTEGER,
       UserTypeId: DataTypes.INTEGER,
+      ProvinceId: DataTypes.INTEGER,
     },
     {
       sequelize,

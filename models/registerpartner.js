@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       DeletionTime: DataTypes.DATE,
       BusinessType: DataTypes.STRING,
       PersonalIdentity: DataTypes.STRING,
+      ProvinceId: DataTypes.INTEGER,
     },
     {
       sequelize,
