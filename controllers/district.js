@@ -1,18 +1,7 @@
-const { District } = require("../models");
+const { Province } = require("../models");
 const catchAsync = require("../middlewares/async");
-exports.createDistrict = catchAsync(async (req, res) => {
-  const { Name, Prefix, ProvinceId, TenantId } = req.body;
-  const newStation = await District.create({
-    Name,
-    Prefix,
-    ProvinceId,
-    TenantId,
-  });
-  console.log(newStation);
-  res.status(201).send(newStation);
-});
 
-exports.getAllDistrict = catchAsync(async (req, res) => {
-  const listStation = await District.findAll();
+exports.getAllProvince = catchAsync(async (req, res) => {
+  const listStation = await Province.findAll();
   res.status(200).send(listStation);
 });
