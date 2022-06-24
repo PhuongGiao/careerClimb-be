@@ -4,6 +4,6 @@ const { filterOption } = require("../controllers/filterController");
 
 const router = express.Router();
 
-router.get("/", filterOption);
+router.post("/", filterOption);
 
 module.exports = { router };
