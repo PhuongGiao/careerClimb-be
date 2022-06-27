@@ -12,6 +12,6 @@ const router = express.Router();
 router.get("/", getAllStudioPost);
 router.post("/", filterStudioPost);
 router.get("/:id", getDetailStudioPost);
-router.put("/:id", updateStudioPost);
+router.patch("/:id", updateStudioPost);
 
 module.exports = { router };

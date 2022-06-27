@@ -3,6 +3,7 @@ const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
 const moment = require("moment");
 const { Op } = require("sequelize");
+const ApiError = require("../utils/ApiError");
 
 exports.getAllBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
@@ -10,7 +11,7 @@ exports.getAllBooking = catchAsync(async (req, res) => {
     include: [
       {
         model: BookingUser,
-        as: "userId",
+        as: "user",
       },
       {
         model: StudioRoom,
@@ -26,7 +27,7 @@ exports.getBookingById = catchAsync(async (req, res) => {
     include: [
       {
         model: BookingUser,
-        as: "userId",
+        as: "user",
       },
       {
         model: StudioRoom,
@@ -49,6 +50,7 @@ exports.updateBookingById = catchAsync(async (req, res) => {
     BookingUserName,
     BookingPhone,
     BookingEmail,
+    BookingStatus,
     StudioRoomId,
     PromoCodeId,
     CreationTime,
@@ -61,6 +63,18 @@ exports.updateBookingById = catchAsync(async (req, res) => {
     EvidenceImage,
     IsPayDeposit,
   } = req.body;
+  const BookingStatuses = [
+    "Chờ thực hiện",
+    "Hoàn tất",
+    "Đã huỷ",
+    "Vắng mặt",
+  ].map((val) => val.toLowerCase());
+  if (!BookingStatuses.includes(BookingStatus.toLowerCase())) {
+    throw new ApiError(
+      500,
+      "Wrong type of booking status'Chờ thực hiện','Hoàn tất','Đã huỷ','Vắng mặt',]"
+    );
+  }
   const data = await StudioBooking.update(
     {
       OrderByTime,
@@ -73,6 +87,7 @@ exports.updateBookingById = catchAsync(async (req, res) => {
       BookingUserName,
       BookingPhone,
       BookingEmail,
+      BookingStatus,
       StudioRoomId,
       PromoCodeId,
       CreationTime,

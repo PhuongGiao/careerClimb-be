@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ BookingUser, StudioRoom }) {
       StudioBooking.belongsTo(BookingUser, {
         foreignKey: "StudioRoomId",
-        as: "userId",
+        as: "user",
       });
       StudioBooking.belongsTo(StudioRoom, {
         foreignKey: "StudioRoomId",
@@ -41,11 +41,11 @@ module.exports = (sequelize, DataTypes) => {
       DeletionTime: DataTypes.DATE,
       EvidenceImage: DataTypes.STRING,
       IsPayDeposit: DataTypes.BOOLEAN,
+      BookingStatus: DataTypes.STRING,
     },
     {
       sequelize,
       timestamps: false,
-
       modelName: "StudioBooking",
     }
   );
