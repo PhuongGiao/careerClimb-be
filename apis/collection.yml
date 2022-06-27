@@ -11,6 +11,7 @@ tags:
   - name: Studio Post
   - name: Booking
   - name: Room
+  - name: Export Data
 paths:
   /api/register-partner:
     get:
@@ -112,27 +113,11 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/location/province:
+  /api/province:
     get:
       tags:
         - Province
       summary: Get All Province
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /api/location/district:
-    get:
-      tags:
-        - Province
-      summary: Get District By Province ID
-      parameters:
-        - name: ProvinceId
-          in: query
-          schema:
-            type: integer
-          example: '15'
       responses:
         '200':
           description: Successful response
@@ -143,6 +128,39 @@ paths:
       tags:
         - Studio Post
       summary: Get All Studio Post
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Studio Post
+      summary: filterStudioPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                Name: ''
+                CreateDate:
+                  startDate: '2021-11-30T17:39:08.081Z'
+                  endDate: '2022-12-30T17:39:08.081Z'
+                updateDate:
+                  startDate: '2021-11-30 17:40:05.103428'
+                  endDate: '2022-12-30 17:40:05.103428'
       parameters:
         - name: page
           in: query
@@ -201,6 +219,33 @@ paths:
           description: Successful response
           content:
             application/json: {}
+    post:
+      tags:
+        - Booking
+      summary: Filter Booking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                OrderDate:
+                  OrderByDateFrom: '2022-01-12T00:00:00.000Z'
+                  OrderByDateTo: '2022-02-12T00:00:00.000Z'
+                IsPayDeposit: false
+                PaymentType: null
+                IsDeleted: false
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /api/booking/5:
     get:
       tags:
@@ -211,11 +256,80 @@ paths:
           description: Successful response
           content:
             application/json: {}
+    patch:
+      tags:
+        - Booking
+      summary: Update Booking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                OrderByTime: true
+                OrderByTimeFrom: '2022-01-12T00:00:00.000Z'
+                OrderByTimeTo: '2022-01-12T00:00:00.000Z'
+                OrderByDateFrom: '2022-01-12T00:00:00.000Z'
+                OrderByDateTo: '2022-01-12T00:00:00.000Z'
+                PaymentType: null
+                OrderNote: null
+                BookingUserName: Anh Anh Anh Em
+                BookingPhone: '0914481315'
+                BookingEmail: null
+                StudioRoomId: 3
+                PromoCodeId: null
+                CreationTime: '2022-01-10T17:09:24.173Z'
+                CreatorUserId: 1
+                LastModificationTime: '2022-01-10T17:11:38.351Z'
+                LastModifierUserId: null
+                IsDeleted: false
+                DeleterUserId: null
+                DeletionTime: null
+                EvidenceImage: null
+                IsPayDeposit: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /api/alaa:
     get:
       tags:
         - Room
       summary: Get All Room
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/filter:
+    get:
+      tags:
+        - Export Data
+      summary: Filter
+      parameters:
+        - name: option
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: ProvinceId
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: isDelete
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+        - name: CreateDate
+          in: query
+          schema:
+            type: number
+          example: >-
+            {"startDate": "2021-11-30T17:39:08.081Z","endDate":
+            "2022-12-30T17:39:08.081Z"}
       responses:
         '200':
           description: Successful response

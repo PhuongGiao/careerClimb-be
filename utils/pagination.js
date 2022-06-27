@@ -1,5 +1,7 @@
 const Pagination = async (Model, page, limit, where) => {
-  let total = await Model.count();
+  let total = await Model.count({
+    ...where,
+  });
   if (+limit <= 0 || isNaN(+limit) || +limit >= 20) {
     limit = 1;
   }
@@ -17,14 +19,6 @@ const Pagination = async (Model, page, limit, where) => {
     offset: skip,
     ...where,
   });
-  // if (where) {
-  //   total = await Model.count({
-  //     limit: +limit,
-  //     offset: skip,
-  //     ...where,
-  //   });
-  //   totalPages = Math.ceil(total / limit);
-  // }
 
   return {
     success: true,

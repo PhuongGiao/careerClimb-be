@@ -1,6 +1,8 @@
 const { StudioBooking, BookingUser, StudioRoom } = require("../models");
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
+const moment = require("moment");
+const { Op } = require("sequelize");
 
 exports.getAllBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
@@ -97,6 +99,44 @@ exports.updateBookingById = catchAsync(async (req, res) => {
 
 exports.filterBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
+  const { OrderDate, IsPayDeposit, PaymentType, IsDeleted } = req.body;
+  let where;
+  if (!PaymentType) {
+    where = {
+      CreationTime: {
+        [Op.gte]: OrderDate?.OrderByDateFrom
+          ? moment(OrderDate.OrderByDateFrom).format()
+          : 1,
+        [Op.lte]: OrderDate?.OrderByDateTo
+          ? moment(OrderDate.OrderByDateTo).format()
+          : new Date(),
+      },
+      IsPayDeposit:
+        IsPayDeposit !== undefined || null
+          ? IsPayDeposit
+          : {
+              [Op.or]: [true, false],
+            },
+    };
+  } else {
+    where = {
+      CreationTime: {
+        [Op.gte]: CreationTime?.OrderByDateFrom
+          ? moment(CreationTime.OrderByDateFrom).format()
+          : 1,
+        [Op.lte]: CreationTime?.OrderByDateTo
+          ? moment(CreationTime.OrderByDateTo).format()
+          : new Date(),
+      },
+      IsPayDeposit:
+        IsPayDeposit !== undefined || null
+          ? IsPayDeposit
+          : {
+              [Op.or]: [true, false],
+            },
+      PaymentType,
+    };
+  }
   const listBooking = await Pagination(StudioBooking, page, limit, {
     include: [
       {
