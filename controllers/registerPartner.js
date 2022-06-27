@@ -69,6 +69,7 @@ exports.getPartnerById = catchAsync(async (req, res) => {
 exports.updatePartnerById = catchAsync(async (req, res) => {
   const { id } = req.params;
   const {
+    IsDeleted,
     PartnerName,
     RepresentativeName,
     Phone,
@@ -83,6 +84,7 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
   } = req.body;
   const data = await RegisterPartner.update(
     {
+      IsDeleted,
       PartnerName,
       RepresentativeName,
       Phone,
