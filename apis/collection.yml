@@ -178,7 +178,7 @@ paths:
           content:
             application/json: {}
   /api/studio-post/5:
-    put:
+    patch:
       tags:
         - Studio Post
       summary: updateById
@@ -273,8 +273,9 @@ paths:
                 OrderByDateTo: '2022-01-12T00:00:00.000Z'
                 PaymentType: null
                 OrderNote: null
-                BookingUserName: Anh Anh Anh Em
+                BookingUserName: Anh Anh Em Em
                 BookingPhone: '0914481315'
+                BookingStatus: Chờ thực hiện
                 BookingEmail: null
                 StudioRoomId: 3
                 PromoCodeId: null
@@ -292,11 +293,17 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/alaa:
+  /api/room:
     get:
       tags:
         - Room
       summary: Get All Room
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
       responses:
         '200':
           description: Successful response
