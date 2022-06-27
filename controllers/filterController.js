@@ -4,15 +4,24 @@ const { BookingUser } = require("../models");
 const { Op } = require("sequelize");
 const catchAsync = require("../middlewares/async");
 const moment = require("moment");
-const { downloadExcelTest } = require("./ excel.controller");
+const { downloadExcel } = require("./ excel.controller");
 
 exports.filterOption = catchAsync(async (req, res) => {
-  const { option } = req.query;
-  const { IsDeleted, ProvinceId, createDate } = req.body;
+  let { option, IsDeleted, ProvinceId, createDate } = req.query;
+  if (createDate) {
+    createDate = JSON.parse(createDate);
+  }
+  if (IsDeleted) {
+    IsDeleted = IsDeleted == "true";
+  }
+  if (ProvinceId) {
+    ProvinceId = +ProvinceId;
+  }
+  let data;
   switch (option) {
     case "1":
       //Tai khoan doi tac
-      const data1 = await RegisterPartner.findAll({
+      data = await RegisterPartner.findAll({
         where: {
           ProvinceId: ProvinceId ? ProvinceId : !null,
           IsDeleted:
@@ -31,10 +40,10 @@ exports.filterOption = catchAsync(async (req, res) => {
           },
         },
       });
-      downloadExcelTest(data1, res);
+      return downloadExcel(data, res);
     case "2":
       //Tai khoan khach hang
-      const data2 = await BookingUser.findAll({
+      data = await BookingUser.findAll({
         where: {
           ProvinceId:
             ProvinceId !== undefined
@@ -58,7 +67,7 @@ exports.filterOption = catchAsync(async (req, res) => {
           },
         },
       });
-      downloadExcelTest(data2, res);
+      return downloadExcel(data, res);
     default:
       break;
   }

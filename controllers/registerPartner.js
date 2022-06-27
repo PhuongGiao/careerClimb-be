@@ -81,6 +81,7 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
     BankBranchName,
     BankAccount,
     BankAccountOwnerName,
+    LastModificationTime,
   } = req.body;
   const data = await RegisterPartner.update(
     {
@@ -96,6 +97,7 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
       BankBranchName,
       BankAccount,
       BankAccountOwnerName,
+      LastModificationTime,
     },
     {
       where: {
@@ -103,7 +105,6 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
       },
     }
   );
-  console.log(data);
   res.status(200).json({
     success: true,
     message: "Update success",
