@@ -39,7 +39,6 @@ exports.filterStudioPost = catchAsync(async (req, res) => {
     res.status(200).json({ ...data });
   } else {
     const data = await Pagination(StudioPost, page, limit, {});
-
     res.status(200).json({ ...data });
   }
 });

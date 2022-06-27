@@ -137,7 +137,10 @@ exports.updateBookingUser = catchAsync(async (req, res) => {
       },
     }
   );
-  res.status(200).send(`Id=${id} update success!`);
+  res.status(200).json({
+    success: true,
+    message: "Update success",
+  });
 });
 
 exports.getBookingUserById = catchAsync(async (req, res) => {

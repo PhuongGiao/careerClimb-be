@@ -4,6 +4,8 @@ const { StudioPost } = require("../models");
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
 const ApiError = require("../utils/ApiError");
+const { Op } = require("sequelize");
+const moment = require("moment");
 
 exports.getAllRegisterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
@@ -61,9 +63,7 @@ exports.getPartnerById = catchAsync(async (req, res) => {
     BankAccount: partner.BankAccount,
     BankAccountOwnerName: partner.BankAccountOwnerName,
   };
-  res.status(200).json({
-    ...data,
-  });
+  res.status(200).json(partner);
 });
 
 exports.updatePartnerById = catchAsync(async (req, res) => {
@@ -105,8 +105,38 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
       },
     }
   );
+
   res.status(200).json({
     success: true,
     message: "Update success",
   });
+});
+
+exports.filterPartner = catchAsync(async (req, res) => {
+  const { page, limit } = req.query;
+  const { createDate, updateDate, IsDeleted, PartnerName } = req.body;
+  const list = await Pagination(RegisterPartner, page, limit, {
+    where: {
+      PartnerName: {
+        [Op.like]: `%${PartnerName}%`,
+      },
+      CreationTime: {
+        [Op.gte]: createDate?.startDate
+          ? moment(createDate.startDate).format()
+          : 1,
+        [Op.lte]: createDate?.endDate
+          ? moment(createDate.endDate).format()
+          : new Date(),
+      },
+      // LastModificationTime: {
+      //   [Op.gte]: updateDate?.startDate
+      //     ? moment(updateDate.startDate).format()
+      //     : 1,
+      //   [Op.lte]: updateDate?.endDate
+      //     ? moment(updateDate.endDate).format()
+      //     : new Date(),
+      // },
+    },
+  });
+  res.status(200).send(list);
 });

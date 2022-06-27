@@ -4,7 +4,7 @@ const { BookingUser } = require("../models");
 const { Op } = require("sequelize");
 const catchAsync = require("../middlewares/async");
 const moment = require("moment");
-const { downloadExcel } = require("./ excel.controller");
+const { downloadExcel } = require("../utils/excel");
 
 exports.filterOption = catchAsync(async (req, res) => {
   let { option, IsDeleted, ProvinceId, createDate } = req.query;

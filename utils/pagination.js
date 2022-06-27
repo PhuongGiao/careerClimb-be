@@ -1,4 +1,4 @@
-const Pagination = async (Model, page, limit, where) => {
+const Pagination = async (Model, page, limit, where = {}) => {
   let total = await Model.count({
     ...where,
   });
