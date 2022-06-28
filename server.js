@@ -8,6 +8,10 @@ const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const postmanToOpenApi = require("postman-to-openapi");
 
+const { AppBinaryObject } = require("./models");
+const catchAsync = require("./middlewares/async");
+const ApiError = require("./utils/ApiError");
+
 const postmanCollection =
   "./apis/BOOKINGSTUDIO_BACKEND.postman_collection.json";
 const outputFile = "./apis/collection.yml";
@@ -46,6 +50,17 @@ console.log(swaggerDocs);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api", rootRouter);
+
+app.get(
+  "/image/:id",
+  catchAsync(async (req, res) => {
+    const data = await AppBinaryObject.findByPk(req.params.id);
+    if (!data) {
+      throw new ApiError(404, "Image not found");
+    }
+    res.send(Buffer.from(data.dataValues.Bytes));
+  })
+);
 
 app.use(catchError);
 app.listen(process.env.PORT || 3000, async () => {

@@ -4,7 +4,6 @@ const upload = require("../middlewares/upload");
 
 const router = express.Router();
 
-router.post("/", upload.single("avata"), postPost);
-router.get("/", getPost);
+router.post("/", upload.array("avata"), postPost);
 
 module.exports = { router };

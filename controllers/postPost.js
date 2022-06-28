@@ -10,12 +10,3 @@ exports.postPost = catchAsync(async (req, res) => {
     ...data,
   });
 });
-
-exports.getPost = catchAsync(async (req, res) => {
-  const data = await AppBinaryObject.findByPk(
-    "22bc696a-710c-4b02-9f21-80698c650595"
-  );
-  res.status(200).json({
-    ...data,
-  });
-});
