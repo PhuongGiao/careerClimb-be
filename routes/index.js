@@ -6,6 +6,7 @@ const { router: registerPartnerRouter } = require("./registerPartnerRoute");
 const { router: bookingRouter } = require("./bookingRoute");
 const { router: filterRouter } = require("./filterRoute");
 const { router: room } = require("./roomRoute");
+const { router: postPostRoute } = require("./postRoute");
 
 const rootRouter = express.Router();
 
@@ -16,6 +17,7 @@ rootRouter.use("/register-partner", registerPartnerRouter);
 rootRouter.use("/booking", bookingRouter);
 rootRouter.use("/filter", filterRouter);
 rootRouter.use("/room", room);
+rootRouter.use("/post-post", postPostRoute);
 
 module.exports = {
   rootRouter,
