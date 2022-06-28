@@ -12,6 +12,7 @@ tags:
   - name: Booking
   - name: Room
   - name: Export Data
+  - name: Post(Dạo)
 paths:
   /api/register-partner:
     get:
@@ -66,6 +67,29 @@ paths:
                 BankBranchName: ACB bank - Chi nhánh Hòa Khánh
                 BankAccount: '2412037'
                 BankAccountOwnerName: HOANG DUC THANG
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/register-partner/filter:
+    post:
+      tags:
+        - Partner
+      summary: Filter Partner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                PartnerName: studio
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
       responses:
         '200':
           description: Successful response
@@ -337,6 +361,83 @@ paths:
           example: >-
             {"startDate": "2021-11-30T17:39:08.081Z","endDate":
             "2022-12-30T17:39:08.081Z"}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/post-post/:
+    post:
+      tags:
+        - Post(Dạo)
+      summary: Upload post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                Tags:
+                  type: string
+                  example: studio,nhiepanh,trangphuc
+                Description:
+                  type: string
+                  example: >-
+                    Mình muốn tìm mẫu ảnh cao 2m để quảng cáo áo dài cho cửa
+                    hàng
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/post-post:
+    get:
+      tags:
+        - Post(Dạo)
+      summary: Get post
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '6'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /image/13f3e841-60b0-4e61-bced-209a1bffb500:
+    get:
+      tags:
+        - Post(Dạo)
+      summary: URL Image link
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/post-post/5:
+    get:
+      tags:
+        - Post(Dạo)
+      summary: Get Post By Id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Post(Dạo)
+      summary: DeletPost
       responses:
         '200':
           description: Successful response

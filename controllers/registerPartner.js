@@ -63,7 +63,7 @@ exports.getPartnerById = catchAsync(async (req, res) => {
     BankAccount: partner.BankAccount,
     BankAccountOwnerName: partner.BankAccountOwnerName,
   };
-  res.status(200).json(partner);
+  res.status(200).json(data);
 });
 
 exports.updatePartnerById = catchAsync(async (req, res) => {
@@ -83,7 +83,7 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
     BankAccountOwnerName,
     LastModificationTime,
   } = req.body;
-  const data = await RegisterPartner.update(
+  await RegisterPartner.update(
     {
       IsDeleted,
       PartnerName,

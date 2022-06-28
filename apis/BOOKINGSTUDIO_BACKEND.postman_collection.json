@@ -90,6 +90,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Filter Partner",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PartnerName\":\"studio\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/register-partner/filter?limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"register-partner",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -493,7 +529,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"ProvinceId\":1,\n    \"isDeleted\": true,\n    \"CreateDate\": {\n        \"startDate\": \"2021-11-30T17:39:08.081Z\",\n        \"endDate\": \"2022-12-30T17:39:08.081Z\"\n    }\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -528,6 +564,147 @@
 									"key": "CreateDate",
 									"value": "{\"startDate\": \"2021-11-30T17:39:08.081Z\",\"endDate\": \"2022-12-30T17:39:08.081Z\"}"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post(Dạo)",
+			"item": [
+				{
+					"name": "Upload post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": [
+										"/Users/voduy/Downloads/pexels-burst-545032 2.png",
+										"/Users/voduy/Downloads/phong-cach-noi-that-vintage-2.jpg"
+									]
+								},
+								{
+									"key": "Tags",
+									"value": "studio,nhiepanh,trangphuc",
+									"type": "text"
+								},
+								{
+									"key": "Description",
+									"value": "Mình muốn tìm mẫu ảnh cao 2m để quảng cáo áo dài cho cửa hàng",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/post-post/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"post-post",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/post-post?page=1&limit=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"post-post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "URL Image link",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/image/13f3e841-60b0-4e61-bced-209a1bffb500",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"image",
+								"13f3e841-60b0-4e61-bced-209a1bffb500"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/post-post/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"post-post",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletPost",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/post-post/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"post-post",
+								"5"
 							]
 						}
 					},

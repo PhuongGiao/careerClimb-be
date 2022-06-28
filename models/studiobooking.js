@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       DeletionTime: DataTypes.DATE,
       EvidenceImage: DataTypes.STRING,
       IsPayDeposit: DataTypes.BOOLEAN,
-      BookingStatus: DataTypes.STRING,
+      BookingStatus: DataTypes.INTEGER,
     },
     {
       sequelize,
