@@ -63,17 +63,9 @@ exports.updateBookingById = catchAsync(async (req, res) => {
     EvidenceImage,
     IsPayDeposit,
   } = req.body;
-  const BookingStatuses = [
-    "Chờ thực hiện",
-    "Hoàn tất",
-    "Đã huỷ",
-    "Vắng mặt",
-  ].map((val) => val.toLowerCase());
-  if (!BookingStatuses.includes(BookingStatus.toLowerCase())) {
-    throw new ApiError(
-      500,
-      "Wrong type of booking status'Chờ thực hiện','Hoàn tất','Đã huỷ','Vắng mặt',]"
-    );
+  const BookingStatuses = [0, 1, 2, 3];
+  if (!BookingStatuses.includes(BookingStatus)) {
+    throw new ApiError(500, "Wrong type of booking status 0,1,2,3]");
   }
   const data = await StudioBooking.update(
     {
