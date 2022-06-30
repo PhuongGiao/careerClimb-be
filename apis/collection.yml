@@ -13,6 +13,7 @@ tags:
   - name: Room
   - name: Export Data
   - name: Post(Dạo)
+  - name: Rating And Report
 paths:
   /api/register-partner:
     get:
@@ -299,7 +300,7 @@ paths:
                 OrderNote: null
                 BookingUserName: Anh Anh Em Em
                 BookingPhone: '0914481315'
-                BookingStatus: Chờ thực hiện
+                BookingStatus: 1
                 BookingEmail: null
                 StudioRoomId: 3
                 PromoCodeId: null
@@ -382,12 +383,21 @@ paths:
                   format: binary
                 Tags:
                   type: string
-                  example: studio,nhiepanh,trangphuc
+                  example: studio,nguoimau
                 Description:
                   type: string
-                  example: >-
-                    Mình muốn tìm mẫu ảnh cao 2m để quảng cáo áo dài cho cửa
-                    hàng
+                  example: >+
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum.
+
       responses:
         '200':
           description: Successful response
@@ -408,13 +418,18 @@ paths:
           in: query
           schema:
             type: integer
-          example: '6'
+          example: '10'
+        - name: tags
+          in: query
+          schema:
+            type: string
+          example: studio,makeup,nguoimau
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
-  /image/13f3e841-60b0-4e61-bced-209a1bffb500:
+  /image/f5f8027b-7ae8-4351-a3a2-966e2724e2fb:
     get:
       tags:
         - Post(Dạo)
@@ -438,6 +453,22 @@ paths:
       tags:
         - Post(Dạo)
       summary: DeletPost
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/rating&report:
+    get:
+      tags:
+        - Rating And Report
+      summary: Get All
+      parameters:
+        - name: rating
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
       responses:
         '200':
           description: Successful response

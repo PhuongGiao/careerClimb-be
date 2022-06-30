@@ -425,7 +425,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"OrderByTime\": true,\n    \"OrderByTimeFrom\": \"2022-01-12T00:00:00.000Z\",\n    \"OrderByTimeTo\": \"2022-01-12T00:00:00.000Z\",\n    \"OrderByDateFrom\": \"2022-01-12T00:00:00.000Z\",\n    \"OrderByDateTo\": \"2022-01-12T00:00:00.000Z\",\n    \"PaymentType\": null,\n    \"OrderNote\": null,\n    \"BookingUserName\": \"Anh Anh Em Em\",\n    \"BookingPhone\": \"0914481315\",\n    \"BookingStatus\": \"Chờ thực hiện\",\n    \"BookingEmail\": null,\n    \"StudioRoomId\": 3,\n    \"PromoCodeId\": null,\n    \"CreationTime\": \"2022-01-10T17:09:24.173Z\",\n    \"CreatorUserId\": 1,\n    \"LastModificationTime\": \"2022-01-10T17:11:38.351Z\",\n    \"LastModifierUserId\": null,\n    \"IsDeleted\": false,\n    \"DeleterUserId\": null,\n    \"DeletionTime\": null,\n    \"EvidenceImage\": null,\n    \"IsPayDeposit\": true\n}",
+							"raw": "{\n    \"OrderByTime\": true,\n    \"OrderByTimeFrom\": \"2022-01-12T00:00:00.000Z\",\n    \"OrderByTimeTo\": \"2022-01-12T00:00:00.000Z\",\n    \"OrderByDateFrom\": \"2022-01-12T00:00:00.000Z\",\n    \"OrderByDateTo\": \"2022-01-12T00:00:00.000Z\",\n    \"PaymentType\": null,\n    \"OrderNote\": null,\n    \"BookingUserName\": \"Anh Anh Em Em\",\n    \"BookingPhone\": \"0914481315\",\n    \"BookingStatus\": 1,\n    \"BookingEmail\": null,\n    \"StudioRoomId\": 3,\n    \"PromoCodeId\": null,\n    \"CreationTime\": \"2022-01-10T17:09:24.173Z\",\n    \"CreatorUserId\": 1,\n    \"LastModificationTime\": \"2022-01-10T17:11:38.351Z\",\n    \"LastModifierUserId\": null,\n    \"IsDeleted\": false,\n    \"DeleterUserId\": null,\n    \"DeletionTime\": null,\n    \"EvidenceImage\": null,\n    \"IsPayDeposit\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -585,19 +585,16 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": [
-										"/Users/voduy/Downloads/pexels-burst-545032 2.png",
-										"/Users/voduy/Downloads/phong-cach-noi-that-vintage-2.jpg"
-									]
+									"src": "/Users/voduy/Downloads/model2.jpeg"
 								},
 								{
 									"key": "Tags",
-									"value": "studio,nhiepanh,trangphuc",
+									"value": "studio,nguoimau",
 									"type": "text"
 								},
 								{
 									"key": "Description",
-									"value": "Mình muốn tìm mẫu ảnh cao 2m để quảng cáo áo dài cho cửa hàng",
+									"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n\n",
 									"type": "text"
 								}
 							]
@@ -624,7 +621,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/post-post?page=1&limit=6",
+							"raw": "http://localhost:3003/api/post-post?page=1&limit=10&tags=studio,makeup,nguoimau",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -641,7 +638,11 @@
 								},
 								{
 									"key": "limit",
-									"value": "6"
+									"value": "10"
+								},
+								{
+									"key": "tags",
+									"value": "studio,makeup,nguoimau"
 								}
 							]
 						}
@@ -654,7 +655,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/image/13f3e841-60b0-4e61-bced-209a1bffb500",
+							"raw": "http://localhost:3003/image/f5f8027b-7ae8-4351-a3a2-966e2724e2fb",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -662,7 +663,7 @@
 							"port": "3003",
 							"path": [
 								"image",
-								"13f3e841-60b0-4e61-bced-209a1bffb500"
+								"f5f8027b-7ae8-4351-a3a2-966e2724e2fb"
 							]
 						}
 					},
@@ -705,6 +706,37 @@
 								"api",
 								"post-post",
 								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rating And Report",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/rating&report?rating=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"rating&report"
+							],
+							"query": [
+								{
+									"key": "rating",
+									"value": "true"
+								}
 							]
 						}
 					},
