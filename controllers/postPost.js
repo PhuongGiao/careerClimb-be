@@ -14,11 +14,14 @@ const constant = [
 ];
 exports.postPost = catchAsync(async (req, res) => {
   let { Tags, Description } = req.body;
-  Tags = Tags.split(",")
+  rawOptions = Tags.split(",");
+
+  newOptions = rawOptions
     .filter((option) => constant.indexOf(option) !== -1) //filter by constant
-    .filter((option, idx) => Tags.indexOf(option) === idx) //make unique
+    .filter((option, idx) => rawOptions.indexOf(option) === idx) //make unique
     .sort()
     .join(",");
+  console.log(newOptions);
 
   if (!Tags) {
     throw new ApiError(500, "Please check the tag again");

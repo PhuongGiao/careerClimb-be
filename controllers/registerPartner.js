@@ -1,5 +1,4 @@
-const { RegisterPartner } = require("../models");
-const { StudioPost } = require("../models");
+const { RegisterPartner, StudioPost } = require("../models");
 
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
