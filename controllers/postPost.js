@@ -1,12 +1,32 @@
-const { AppBinaryObject } = require("../models");
+const { AppBinaryObject, sequelize } = require("../models");
 const { Post } = require("../models");
 
 const catchAsync = require("../middlewares/async");
-const Pagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
+const constant = [
+  "studio",
+  "makeup",
+  "nguoimau",
+  "nhiepanh",
+  "thietbi",
+  "trangphuc",
+];
 
 exports.postPost = catchAsync(async (req, res) => {
-  const { Tags, Description } = req.body;
+  let { Tags, Description } = req.body;
+  rawOptions = Tags.split(",");
+
+  newOptions = rawOptions
+    .filter((option) => constant.indexOf(option) !== -1) //filter by constant
+    .filter((option, idx) => rawOptions.indexOf(option) === idx) //make unique
+    .sort()
+    .join(",");
+  console.log(newOptions);
+
+  if (!Tags) {
+    throw new ApiError(500, "Please check the tag again");
+  }
   let listImage = [];
   await Promise.all(
     req.files.map(async (val) => {
@@ -22,7 +42,7 @@ exports.postPost = catchAsync(async (req, res) => {
     return { ...acc, [name]: val };
   }, {});
   const data = await Post.create({
-    BookingUserId: 1,
+    BookingUserId: 5,
     Tags,
     CreationTime: new Date(),
     Description,
@@ -32,18 +52,76 @@ exports.postPost = catchAsync(async (req, res) => {
 });
 
 exports.getAllPost = catchAsync(async (req, res) => {
-  const { page, limit } = req.query;
-  const list = await Pagination(Post, page, limit);
-  res.status(200).send(list);
+  let { page, limit, tags } = req.query;
+  console.log(tags);
+  let where;
+  let rightOption;
+  if (tags !== undefined) {
+    const rawOptions = tags.split(",");
+    rightOption = rawOptions
+      .filter((option) => constant.indexOf(option) !== -1) //filter by constant
+      .filter((option, idx) => rawOptions.indexOf(option) === idx) //make unique
+      .sort()
+      .join(",");
+  } else {
+    rightOption = "";
+  }
+  where = {
+    Tags: {
+      [Op.like]: `%${rightOption}%`,
+    },
+  };
+  let total = await Post.count({ where });
+  if (+limit <= 0 || isNaN(+limit) || +limit >= 20) {
+    limit = 1;
+  }
+  if (+page <= 0 || isNaN(+page)) {
+    page = 1;
+  }
+  let totalPages = Math.ceil(total / limit);
+  let skip = (+page - 1) * +limit;
+  if (totalPages < +page) {
+    page = 1;
+  }
+  const newList = await sequelize.query(
+    "SELECT Posts.Id as Id,Posts.Tags,Posts.Description,Posts.Image1,Posts.Image2,Posts.Image3,Posts.Image4,Posts.Image5,Posts.Image6,Posts.TotalLikes,Posts.TotalComments,Posts.CreationTime,BookingUsers.Username,BookingUsers.Image as Avatar FROM Posts INNER JOIN BookingUsers ON  BookingUsers.Id = Posts.BookingUserId WHERE Posts.Tags LIKE :string ORDER BY Posts.Id DESC LIMIT :limit OFFSET :offset",
+    {
+      replacements: {
+        string: "%" + rightOption + "%",
+        offset: +skip,
+        limit: +limit,
+      },
+      type: "SELECT",
+    }
+  );
+  res.status(200).json({
+    success: true,
+    pagination: {
+      totalPages,
+      limit: +limit,
+      total,
+      currentPage: +page,
+      hasNextPage: page <= totalPages - 1,
+    },
+    data: newList,
+  });
 });
 
 exports.getPostById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const post = await Post.findByPk(id);
-  if (!post) {
+  const newList = await sequelize.query(
+    "SELECT Posts.Id as Id,Posts.Tags,Posts.Description,Posts.Image1,Posts.Image2,Posts.Image3,Posts.Image4,Posts.Image5,Posts.Image6,Posts.TotalLikes,Posts.TotalComments,Posts.CreationTime,BookingUsers.Username,BookingUsers.Image as Avatar FROM Posts INNER JOIN BookingUsers ON  BookingUsers.Id = Posts.BookingUserId WHERE Posts.Id = :id",
+    {
+      replacements: {
+        id,
+      },
+      type: "SELECT",
+    }
+  );
+  if (!newList[0]) {
     throw new ApiError(404, "Post not found");
   }
-  res.status(200).json(post);
+  res.status(200).json(newList[0]);
 });
 
 exports.deletePost = catchAsync(async (req, res) => {

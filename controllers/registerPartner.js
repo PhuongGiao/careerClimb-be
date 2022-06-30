@@ -1,5 +1,4 @@
-const { RegisterPartner } = require("../models");
-const { StudioPost } = require("../models");
+const { RegisterPartner, StudioPost } = require("../models");
 
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
@@ -10,7 +9,6 @@ const moment = require("moment");
 exports.getAllRegisterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const partner = await Pagination(RegisterPartner, page, limit);
-
   const data = {
     ...partner,
     data: await Promise.all(
@@ -114,12 +112,18 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
 
 exports.filterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { createDate, updateDate, IsDeleted, PartnerName } = req.body;
+  const { createDate, updateDate, IsDeleted, keyString } = req.body;
   const list = await Pagination(RegisterPartner, page, limit, {
     where: {
-      PartnerName: {
-        [Op.like]: `%${PartnerName}%`,
+      [Op.or]: {
+        Email: {
+          [Op.like]: `%${keyString}%`,
+        },
+        Phone: {
+          [Op.like]: `%${keyString}%`,
+        },
       },
+
       CreationTime: {
         [Op.gte]: createDate?.startDate
           ? moment(createDate.startDate).format()
