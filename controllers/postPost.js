@@ -46,7 +46,7 @@ exports.getAllPost = catchAsync(async (req, res) => {
     page = 1;
   }
   const newList = await sequelize.query(
-    "SELECT Posts.Id as Id,Posts.Tags,Posts.Description,Posts.Image1,Posts.Image2,Posts.Image3,Posts.Image4,Posts.Image5,Posts.Image6,Posts.TotalLikes,Posts.TotalComments,Posts.CreationTime,BookingUsers.Username,BookingUsers.Image as Avatar FROM Posts INNER JOIN BookingUsers ON  BookingUsers.Id = Posts.BookingUserId LIMIT :limit OFFSET :offset",
+    "SELECT Posts.Id as Id,Posts.Tags,Posts.Description,Posts.Image1,Posts.Image2,Posts.Image3,Posts.Image4,Posts.Image5,Posts.Image6,Posts.TotalLikes,Posts.TotalComments,Posts.CreationTime,BookingUsers.Username,BookingUsers.Image as Avatar FROM Posts INNER JOIN BookingUsers ON  BookingUsers.Id = Posts.BookingUserId ORDER BY Posts.Id DESC LIMIT :limit OFFSET :offset",
     {
       replacements: {
         offset: +skip,
@@ -70,11 +70,19 @@ exports.getAllPost = catchAsync(async (req, res) => {
 
 exports.getPostById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const post = await Post.findByPk(id);
-  if (!post) {
+  const newList = await sequelize.query(
+    "SELECT Posts.Id as Id,Posts.Tags,Posts.Description,Posts.Image1,Posts.Image2,Posts.Image3,Posts.Image4,Posts.Image5,Posts.Image6,Posts.TotalLikes,Posts.TotalComments,Posts.CreationTime,BookingUsers.Username,BookingUsers.Image as Avatar FROM Posts INNER JOIN BookingUsers ON  BookingUsers.Id = Posts.BookingUserId WHERE Posts.Id = :id",
+    {
+      replacements: {
+        id,
+      },
+      type: "SELECT",
+    }
+  );
+  if (!newList[0]) {
     throw new ApiError(404, "Post not found");
   }
-  res.status(200).json(post);
+  res.status(200).json(newList[0]);
 });
 
 exports.deletePost = catchAsync(async (req, res) => {
