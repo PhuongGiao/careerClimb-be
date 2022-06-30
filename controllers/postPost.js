@@ -4,10 +4,25 @@ const { Post } = require("../models");
 const catchAsync = require("../middlewares/async");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
-
+const constant = [
+  "studio",
+  "makeup",
+  "nguoimau",
+  "nhiepanh",
+  "thietbi",
+  "trangphuc",
+];
 exports.postPost = catchAsync(async (req, res) => {
   let { Tags, Description } = req.body;
-  Tags = Tags.split(",").sort().join(",");
+  Tags = Tags.split(",")
+    .filter((option) => constant.indexOf(option) !== -1) //filter by constant
+    .filter((option, idx) => Tags.indexOf(option) === idx) //make unique
+    .sort()
+    .join(",");
+
+  if (!Tags) {
+    throw new ApiError(500, "Please check the tag again");
+  }
   let listImage = [];
   await Promise.all(
     req.files.map(async (val) => {
@@ -35,21 +50,13 @@ exports.postPost = catchAsync(async (req, res) => {
 exports.getAllPost = catchAsync(async (req, res) => {
   let { page, limit, tags } = req.query;
   console.log(tags);
-  const constant = [
-    "studio",
-    "makeup",
-    "nguoimau",
-    "nhiepanh",
-    "thietbi",
-    "trangphuc",
-  ];
   let where;
   let rightOption;
   if (tags !== undefined) {
     const rawOptions = tags.split(",");
     rightOption = rawOptions
-      .filter((option) => constant.indexOf(option) !== -1)
-      .filter((option, idx) => rawOptions.indexOf(option) === idx)
+      .filter((option) => constant.indexOf(option) !== -1) //filter by constant
+      .filter((option, idx) => rawOptions.indexOf(option) === idx) //make unique
       .sort()
       .join(",");
   } else {
