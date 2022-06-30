@@ -12,6 +12,7 @@ const constant = [
   "thietbi",
   "trangphuc",
 ];
+
 exports.postPost = catchAsync(async (req, res) => {
   let { Tags, Description } = req.body;
   rawOptions = Tags.split(",");
@@ -70,9 +71,7 @@ exports.getAllPost = catchAsync(async (req, res) => {
       [Op.like]: `%${rightOption}%`,
     },
   };
-  console.log(where);
   let total = await Post.count({ where });
-  console.log(total);
   if (+limit <= 0 || isNaN(+limit) || +limit >= 20) {
     limit = 1;
   }
