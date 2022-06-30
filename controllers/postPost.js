@@ -34,6 +34,7 @@ exports.postPost = catchAsync(async (req, res) => {
 
 exports.getAllPost = catchAsync(async (req, res) => {
   let { page, limit, tags } = req.query;
+  console.log(tags);
   const constant = [
     "studio",
     "makeup",
@@ -44,19 +45,21 @@ exports.getAllPost = catchAsync(async (req, res) => {
   ];
   let where;
   let rightOption;
-  if (tags) {
+  if (tags !== undefined) {
     const rawOptions = tags.split(",");
     rightOption = rawOptions
       .filter((option) => constant.indexOf(option) !== -1)
       .filter((option, idx) => rawOptions.indexOf(option) === idx)
       .sort()
       .join(",");
-    where = {
-      Tags: {
-        [Op.like]: `%${rightOption}%`,
-      },
-    };
+  } else {
+    rightOption = "";
   }
+  where = {
+    Tags: {
+      [Op.like]: `%${rightOption}%`,
+    },
+  };
   console.log(where);
   let total = await Post.count({ where });
   console.log(total);
