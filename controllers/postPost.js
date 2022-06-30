@@ -1,4 +1,4 @@
-const { AppBinaryObject } = require("../models");
+const { AppBinaryObject, sequelize } = require("../models");
 const { Post } = require("../models");
 
 const catchAsync = require("../middlewares/async");
@@ -22,7 +22,7 @@ exports.postPost = catchAsync(async (req, res) => {
     return { ...acc, [name]: val };
   }, {});
   const data = await Post.create({
-    BookingUserId: 1,
+    BookingUserId: 5,
     Tags,
     CreationTime: new Date(),
     Description,
@@ -33,8 +33,39 @@ exports.postPost = catchAsync(async (req, res) => {
 
 exports.getAllPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const list = await Pagination(Post, page, limit);
-  res.status(200).send(list);
+  let total = await Post.count({});
+  if (+limit <= 0 || isNaN(+limit) || +limit >= 20) {
+    limit = 1;
+  }
+  if (+page <= 0 || isNaN(+page)) {
+    page = 1;
+  }
+  let totalPages = Math.ceil(total / limit);
+  let skip = (+page - 1) * +limit;
+  if (totalPages < +page) {
+    page = 1;
+  }
+  const newList = await sequelize.query(
+    "SELECT Posts.Id as Id,Posts.Tags,Posts.Description,Posts.Image1,Posts.Image2,Posts.Image3,Posts.Image4,Posts.Image5,Posts.Image6,Posts.TotalLikes,Posts.TotalComments,Posts.CreationTime,BookingUsers.Username,BookingUsers.Image as Avatar FROM Posts INNER JOIN BookingUsers ON  BookingUsers.Id = Posts.BookingUserId LIMIT :limit OFFSET :offset",
+    {
+      replacements: {
+        offset: +skip,
+        limit: +limit,
+      },
+      type: "SELECT",
+    }
+  );
+  res.status(200).json({
+    success: true,
+    pagination: {
+      totalPages,
+      limit: +limit,
+      total,
+      currentPage: +page,
+      hasNextPage: page <= totalPages - 1,
+    },
+    data: newList,
+  });
 });
 
 exports.getPostById = catchAsync(async (req, res) => {
