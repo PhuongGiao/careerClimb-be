@@ -1,8 +1,9 @@
 const { BookingUser } = require("../models");
 const { StudioBooking } = require("../models");
-
+const moment = require("moment");
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
+const { Op } = require("sequelize");
 exports.createBookingUser = catchAsync(async (req, res) => {
   const {
     TenantId,
@@ -166,4 +167,45 @@ exports.getBookingUserById = catchAsync(async (req, res) => {
     GoogleName: user.GoogleName,
   };
   res.status(200).json(data);
+});
+
+exports.filterBookingUser = catchAsync(async (req, res) => {
+  const { page, limit } = req.query;
+  const { CreateDate, updateDate, keyString } = req.body;
+  console.log(CreateDate);
+  console.log(req.body);
+  if (keyString || CreateDate || updateDate) {
+    const data = await Pagination(BookingUser, page, limit, {
+      where: {
+        [Op.or]: {
+          Email: {
+            [Op.like]: `%${keyString}%`,
+          },
+          Phone: {
+            [Op.like]: `%${keyString}%`,
+          },
+        },
+        CreationTime: {
+          [Op.gte]: CreateDate?.startDate
+            ? moment(CreateDate.startDate).format()
+            : 1,
+          [Op.lte]: CreateDate?.endDate
+            ? moment(CreateDate.endDate).format()
+            : new Date(),
+        },
+        LastModificationTime: {
+          [Op.gte]: updateDate?.startDate
+            ? moment(updateDate.startDate).format()
+            : 1,
+          [Op.lte]: updateDate?.endDate
+            ? moment(updateDate.endDate).format()
+            : new Date(),
+        },
+      },
+    });
+    res.status(200).json({ ...data });
+  } else {
+    const data = await Pagination(StudioPost, page, limit, {});
+    res.status(200).json({ ...data });
+  }
 });
