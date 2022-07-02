@@ -1,4 +1,5 @@
 const { RegisterPartner, StudioPost } = require("../models");
+const { IdentifyImage } = require("../models");
 
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
@@ -36,7 +37,14 @@ exports.getAllRegisterPartner = catchAsync(async (req, res) => {
 
 exports.getPartnerById = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const partner = await RegisterPartner.findByPk(id);
+  const partner = await RegisterPartner.findByPk(id, {
+    include: [
+      {
+        model: IdentifyImage,
+        as: "IdentifyLicenses",
+      },
+    ],
+  });
   if (!partner) {
     throw new ApiError(404, "Partner not found!");
   }
@@ -60,12 +68,20 @@ exports.getPartnerById = catchAsync(async (req, res) => {
     BankBranchName: partner.BankBranchName,
     BankAccount: partner.BankAccount,
     BankAccountOwnerName: partner.BankAccountOwnerName,
+    IdentifyLicenses: partner.IdentifyLicenses.map((val) => ({
+      Image: val.Id,
+      Type: val.Type,
+      Site: val.Site,
+    })),
   };
   res.status(200).json(data);
 });
 
 exports.updatePartnerById = catchAsync(async (req, res) => {
   const { id } = req.params;
+  let { files } = req;
+  files = [...files, null, null, null, null].slice(0, 4);
+  console.log(files);
   const {
     IsDeleted,
     PartnerName,
@@ -103,7 +119,41 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
       },
     }
   );
+  const data = await IdentifyImage.findAll({
+    where: { PartnerId: id },
+  });
+  const dataId = [...data.map((val) => val.dataValues.Id)];
 
+  if (dataId.length !== 0) {
+    await Promise.all(
+      files.map(async (file, idx) => {
+        await IdentifyImage.update(
+          {
+            Bytes: file ? file.buffer : null,
+            Type: idx < 2 ? 0 : 1,
+            Site: idx % 2 === 0 ? 0 : 1,
+            PartnerId: id,
+          },
+          {
+            where: {
+              id: dataId[idx],
+            },
+          }
+        );
+      })
+    );
+  } else {
+    await Promise.all(
+      files.map(async (file, idx) => {
+        await IdentifyImage.create({
+          Bytes: file ? file.buffer : null,
+          Type: idx < 2 ? 0 : 1,
+          Site: idx % 2 === 0 ? 0 : 1,
+          PartnerId: id,
+        });
+      })
+    );
+  }
   res.status(200).json({
     success: true,
     message: "Update success",
@@ -148,3 +198,4 @@ exports.filterPartner = catchAsync(async (req, res) => {
     res.status(200).json({ ...data });
   }
 });
+
