@@ -22,7 +22,6 @@ postmanToOpenApi(postmanCollection, outputFile, { defaultTag: "General" })
   .then((result) => {
     console.log(`OpenAPI specs: ${result}`);
   })
-
   .catch((err) => {
     console.log(err);
   });
@@ -39,7 +38,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:5050",
+        url: "http://localhost:3003",
       },
     ],
   },
@@ -47,7 +46,6 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsDOc(swaggerOptions);
-console.log(swaggerDocs);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api", rootRouter);

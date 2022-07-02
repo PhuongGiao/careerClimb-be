@@ -4,6 +4,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:3003
+  - url: https://bookingstudio.herokuapp.com
 tags:
   - name: Partner
   - name: BookingUser
@@ -14,6 +15,7 @@ tags:
   - name: Export Data
   - name: Post(Dạo)
   - name: Rating And Report
+  - name: Identify Image (CMND & GPKD)
 paths:
   /api/register-partner:
     get:
@@ -36,7 +38,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/register-partner/24:
+  /api/register-partner/5:
     get:
       tags:
         - Partner
@@ -46,28 +48,53 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/register-partner/update/24:
+  /api/register-partner/update/5:
     patch:
       tags:
         - Partner
       summary: Update Partner By Id
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
-              example:
-                PartnerName: Hang Đôi Studio
-                RepresentativeName: Hoàng Đức Thắng
-                Phone: '0967445997'
-                OtherPhone: '0777445997'
-                Email: hangdoistudio@gmail.com
-                ReEmail: hangdoistudio@gmail.com
-                BusinessRegistrationLicenseNumber: 123
-                Address: 522 Nguyễn Hữu Thọ, p.Khuê Trung, q.Cẩm Lệ, Tp. Đà Nẵng
-                BankBranchName: ACB bank - Chi nhánh Hòa Khánh
-                BankAccount: '2412037'
-                BankAccountOwnerName: HOANG DUC THANG
+              properties:
+                PartnerName:
+                  type: string
+                  example: Hang Đôi Studio
+                RepresentativeName:
+                  type: string
+                  example: Hoàng Đức Thắng
+                Phone:
+                  type: integer
+                  example: '0967445997'
+                OtherPhone:
+                  type: integer
+                  example: '0777445997'
+                Email:
+                  type: string
+                  example: hangdoistudio@gmail.com
+                ReEmail:
+                  type: string
+                  example: hangdoistudio@gmail.com
+                BusinessRegistrationLicenseNumber:
+                  type: integer
+                  example: '123'
+                Address:
+                  type: string
+                  example: 522 Nguyễn Hữu Thọ, p.Khuê Trung, q.Cẩm Lệ, Tp. Đà Nẵng
+                BankBranchName:
+                  type: string
+                  example: ACB bank - Chi nhánh Hòa Khánh
+                BankAccount:
+                  type: integer
+                  example: '2412037'
+                BankAccountOwnerName:
+                  type: string
+                  example: HOANG DUC THANG
+                IdentifyLicenses:
+                  type: string
+                  format: binary
       responses:
         '200':
           description: Successful response
@@ -84,7 +111,13 @@ paths:
             schema:
               type: object
               example:
-                PartnerName: studio
+                keyString: ''
+                CreateDate:
+                  startDate: '2021-01-30T17:39:08.081Z'
+                  endDate: '2022-01-30T17:39:08.081Z'
+                updateDate:
+                  startDate: '2022-01-29T03:29:36.115Z'
+                  endDate: '2022-07-02T03:29:36.115Z'
       parameters:
         - name: limit
           in: query
@@ -138,6 +171,40 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /api/booking-user/:
+    post:
+      tags:
+        - BookingUser
+      summary: fillter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                keyString: ''
+                CreateDate:
+                  startDate: '2020-01-30T17:39:08.081Z'
+                  endDate: '2022-01-30T17:39:08.081Z'
+                updateDate:
+                  startDate: '2022-03-30T17:39:08.081Z'
+                  endDate: '2023-01-30T17:39:08.081Z'
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /api/province:
     get:
       tags:
@@ -182,10 +249,10 @@ paths:
                 Name: ''
                 CreateDate:
                   startDate: '2021-11-30T17:39:08.081Z'
-                  endDate: '2022-12-30T17:39:08.081Z'
+                  endDate: '2021-1-30T17:39:08.081Z'
                 updateDate:
-                  startDate: '2021-11-30 17:40:05.103428'
-                  endDate: '2022-12-30 17:40:05.103428'
+                  startDate: '2021-06-02T03:29:36.115Z'
+                  endDate: '2022-07-02T03:29:36.115Z'
       parameters:
         - name: page
           in: query
@@ -383,7 +450,7 @@ paths:
                   format: binary
                 Tags:
                   type: string
-                  example: studio,nguoimau
+                  example: nhiepanh,thietbi,nguoimau
                 Description:
                   type: string
                   example: >+
@@ -419,11 +486,6 @@ paths:
           schema:
             type: integer
           example: '10'
-        - name: tags
-          in: query
-          schema:
-            type: string
-          example: studio,makeup,nguoimau
       responses:
         '200':
           description: Successful response
@@ -449,6 +511,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /api/post-post/6:
     delete:
       tags:
         - Post(Dạo)
@@ -467,8 +530,48 @@ paths:
         - name: rating
           in: query
           schema:
-            type: boolean
-          example: 'true'
+            type: integer
+          example: '1'
+        - name: rank
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: image
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/rating&report/3:
+    get:
+      tags:
+        - Rating And Report
+      summary: getDetailById
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/rating&report/rating/9:
+    get:
+      tags:
+        - Rating And Report
+      summary: getRatingByPostId
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /image-license/46aa6299-342a-434a-add6-9f928ef7cf09:
+    get:
+      tags:
+        - Identify Image (CMND & GPKD)
+      summary: get identify image
       responses:
         '200':
           description: Successful response

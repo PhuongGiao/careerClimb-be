@@ -45,7 +45,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/register-partner/24",
+							"raw": "http://localhost:3003/api/register-partner/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -54,7 +54,7 @@
 							"path": [
 								"api",
 								"register-partner",
-								"24"
+								"5"
 							]
 						}
 					},
@@ -66,16 +66,83 @@
 						"method": "PATCH",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"PartnerName\": \"Hang Đôi Studio\",\n    \"RepresentativeName\": \"Hoàng Đức Thắng\",\n    \"Phone\": \"0967445997\",\n    \"OtherPhone\": \"0777445997\",\n    \"Email\": \"hangdoistudio@gmail.com\",\n    \"ReEmail\": \"hangdoistudio@gmail.com\",\n    \"BusinessRegistrationLicenseNumber\": 123,\n    \"Address\": \"522 Nguyễn Hữu Thọ, p.Khuê Trung, q.Cẩm Lệ, Tp. Đà Nẵng\",\n    \"BankBranchName\": \"ACB bank - Chi nhánh Hòa Khánh\",\n    \"BankAccount\": \"2412037\",\n    \"BankAccountOwnerName\": \"HOANG DUC THANG\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "PartnerName",
+									"value": "Hang Đôi Studio",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "RepresentativeName",
+									"value": "Hoàng Đức Thắng",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "Phone",
+									"value": "0967445997",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "OtherPhone",
+									"value": "0777445997",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "Email",
+									"value": "hangdoistudio@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ReEmail",
+									"value": "hangdoistudio@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "BusinessRegistrationLicenseNumber",
+									"value": "123",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "Address",
+									"value": "522 Nguyễn Hữu Thọ, p.Khuê Trung, q.Cẩm Lệ, Tp. Đà Nẵng",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "BankBranchName",
+									"value": "ACB bank - Chi nhánh Hòa Khánh",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "BankAccount",
+									"value": "2412037",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "BankAccountOwnerName",
+									"value": "HOANG DUC THANG",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "IdentifyLicenses",
+									"type": "file",
+									"src": []
 								}
-							}
+							]
 						},
 						"url": {
-							"raw": "http://localhost:3003/api/register-partner/update/24",
+							"raw": "http://localhost:3003/api/register-partner/update/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -85,7 +152,7 @@
 								"api",
 								"register-partner",
 								"update",
-								"24"
+								"5"
 							]
 						}
 					},
@@ -98,7 +165,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"PartnerName\":\"studio\"\n}",
+							"raw": "{\n    \"keyString\": \"\",\n    \"CreateDate\": {\n        \"startDate\": \"2021-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2022-01-29T03:29:36.115Z\",\n        \"endDate\": \"2022-07-02T03:29:36.115Z\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -199,6 +266,47 @@
 								"api",
 								"booking-user",
 								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fillter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"keyString\": \"\",\n    \"CreateDate\": {\n        \"startDate\": \"2020-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2022-03-30T17:39:08.081Z\",\n        \"endDate\": \"2023-01-30T17:39:08.081Z\"\n    }\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bookingstudio.herokuapp.com/api/booking-user/?page=1&limit=10",
+							"protocol": "https",
+							"host": [
+								"bookingstudio",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"booking-user",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
 							]
 						}
 					},
@@ -334,7 +442,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"Name\": \"\",\n    \"CreateDate\": {\n        \"startDate\": \"2021-11-30T17:39:08.081Z\",\n        \"endDate\": \"2022-12-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2021-11-30 17:40:05.103428\",\n        \"endDate\": \"2022-12-30 17:40:05.103428\"\n    }\n}",
+							"raw": "{\n    \"Name\": \"\",\n    \"CreateDate\": {\n        \"startDate\": \"2021-11-30T17:39:08.081Z\",\n        \"endDate\": \"2021-1-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2021-06-02T03:29:36.115Z\",\n        \"endDate\": \"2022-07-02T03:29:36.115Z\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -585,11 +693,11 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/Users/voduy/Downloads/model2.jpeg"
+									"src": []
 								},
 								{
 									"key": "Tags",
-									"value": "studio,nguoimau",
+									"value": "nhiepanh,thietbi,nguoimau",
 									"type": "text"
 								},
 								{
@@ -621,7 +729,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/post-post?page=1&limit=10&tags=studio,makeup,nguoimau",
+							"raw": "http://localhost:3003/api/post-post?page=1&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -639,10 +747,6 @@
 								{
 									"key": "limit",
 									"value": "10"
-								},
-								{
-									"key": "tags",
-									"value": "studio,makeup,nguoimau"
 								}
 							]
 						}
@@ -696,7 +800,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/post-post/5",
+							"raw": "http://localhost:3003/api/post-post/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -705,7 +809,7 @@
 							"path": [
 								"api",
 								"post-post",
-								"5"
+								"6"
 							]
 						}
 					},
@@ -722,7 +826,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/rating&report?rating=true",
+							"raw": "http://localhost:3003/api/rating&report?rating=1&rank=0&image=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -735,8 +839,101 @@
 							"query": [
 								{
 									"key": "rating",
-									"value": "true"
+									"value": "1"
+								},
+								{
+									"key": "rank",
+									"value": "0"
+								},
+								{
+									"key": "image",
+									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDetailById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/rating&report/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"rating&report",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRatingByPostId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/rating&report/rating/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"rating&report",
+								"rating",
+								"9"
+							],
+							"query": [
+								{
+									"key": "rate",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "des",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Identify Image (CMND & GPKD)",
+			"item": [
+				{
+					"name": "get identify image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/image-license/46aa6299-342a-434a-add6-9f928ef7cf09",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"image-license",
+								"46aa6299-342a-434a-add6-9f928ef7cf09"
 							]
 						}
 					},
