@@ -1,4 +1,4 @@
-const { StudioPost } = require("../models");
+const { StudioPost, sequelize } = require("../models");
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
 const { Op } = require("sequelize");
@@ -11,19 +11,20 @@ exports.getAllStudioPost = catchAsync(async (req, res) => {
 });
 exports.filterStudioPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { Name, createDate, updateDate } = req.body;
-  if (Name || createDate || updateDate) {
+  const { Name, CreateDate, updateDate } = req.body;
+ 
+  if (Name || CreateDate || updateDate) {
     const data = await Pagination(StudioPost, page, limit, {
       where: {
         Name: {
           [Op.like]: `%${Name}%`,
         },
         CreationTime: {
-          [Op.gte]: createDate?.startDate
-            ? moment(createDate.startDate).format()
+          [Op.gte]: CreateDate?.startDate
+            ? moment(CreateDate.startDate).format()
             : 1,
-          [Op.lte]: createDate?.endDate
-            ? moment(createDate.endDate).format()
+          [Op.lte]: CreateDate?.endDate
+            ? moment(CreateDate.endDate).format()
             : new Date(),
         },
         LastModificationTime: {

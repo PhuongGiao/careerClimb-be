@@ -109,38 +109,42 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
     message: "Update success",
   });
 });
-
 exports.filterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { createDate, updateDate, IsDeleted, keyString } = req.body;
-  const list = await Pagination(RegisterPartner, page, limit, {
-    where: {
-      [Op.or]: {
-        Email: {
-          [Op.like]: `%${keyString}%`,
-        },
-        Phone: {
-          [Op.like]: `%${keyString}%`,
-        },
-      },
+  const { Name, CreateDate, updateDate,keyString } = req.body;
 
-      CreationTime: {
-        [Op.gte]: createDate?.startDate
-          ? moment(createDate.startDate).format()
-          : 1,
-        [Op.lte]: createDate?.endDate
-          ? moment(createDate.endDate).format()
-          : new Date(),
+  if (Name || CreateDate || updateDate) {
+    const data = await Pagination(RegisterPartner, page, limit, {
+      where: {
+        [Op.or]: {
+          Email: {
+            [Op.like]: `%${keyString}%`,
+          },
+          Phone: {
+            [Op.like]: `%${keyString}%`,
+          },
+        },
+        CreationTime: {
+          [Op.gte]: CreateDate?.startDate
+            ? moment(CreateDate.startDate).format()
+            : 1,
+          [Op.lte]: CreateDate?.endDate
+            ? moment(CreateDate.endDate).format()
+            : new Date(),
+        },
+        LastModificationTime: {
+          [Op.gte]: updateDate?.startDate
+            ? moment(updateDate.startDate).format()
+            : 1,
+          [Op.lte]: updateDate?.endDate
+            ? moment(updateDate.endDate).format()
+            : new Date(),
+        },
       },
-      // LastModificationTime: {
-      //   [Op.gte]: updateDate?.startDate
-      //     ? moment(updateDate.startDate).format()
-      //     : 1,
-      //   [Op.lte]: updateDate?.endDate
-      //     ? moment(updateDate.endDate).format()
-      //     : new Date(),
-      // },
-    },
-  });
-  res.status(200).send(list);
+    });
+    res.status(200).json({ ...data });
+  } else {
+    const data = await Pagination(StudioPost, page, limit, {});
+    res.status(200).json({ ...data });
+  }
 });
