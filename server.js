@@ -8,9 +8,10 @@ const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const postmanToOpenApi = require("postman-to-openapi");
 
-const { AppBinaryObject } = require("./models");
+const { AppBinaryObject, IdentifyImage } = require("./models");
 const catchAsync = require("./middlewares/async");
 const ApiError = require("./utils/ApiError");
+const fs = require("fs");
 
 const postmanCollection =
   "./apis/BOOKINGSTUDIO_BACKEND.postman_collection.json";
@@ -57,6 +58,21 @@ app.get(
     const data = await AppBinaryObject.findByPk(req.params.id);
     if (!data) {
       throw new ApiError(404, "Image not found");
+    }
+    res.send(Buffer.from(data.dataValues.Bytes));
+  })
+);
+
+app.get(
+  "/image-license/:id",
+  catchAsync(async (req, res) => {
+    const data = await IdentifyImage.findByPk(req.params.id);
+    if (!data) {
+      throw new ApiError(404, "Image not found");
+    }
+    if (data.dataValues.Bytes === null) {
+      const defaut = fs.readFileSync("./default/default.png");
+      return res.send(Buffer.from(defaut));
     }
     res.send(Buffer.from(data.dataValues.Bytes));
   })

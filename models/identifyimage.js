@@ -2,7 +2,11 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class IdentifyImage extends Model {
-    static associate(models) {}
+    static associate({ RegisterPartner }) {
+      IdentifyImage.belongsTo(RegisterPartner, {
+        foreignKey: "PartnerId",
+      });
+    }
   }
   IdentifyImage.init(
     {
@@ -11,10 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      Bytes: DataTypes.BLOB,
+      Bytes: DataTypes.BLOB("long"),
       Type: DataTypes.BOOLEAN,
       Site: DataTypes.BOOLEAN,
-      PartnerId: DataTypes.INTEGER,
     },
     {
       sequelize,
