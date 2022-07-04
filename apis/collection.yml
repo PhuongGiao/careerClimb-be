@@ -16,6 +16,8 @@ tags:
   - name: Post(Dạo)
   - name: Rating And Report
   - name: Identify Image (CMND & GPKD)
+  - name: Notification
+  - name: Comment
 paths:
   /api/register-partner:
     get:
@@ -537,11 +539,16 @@ paths:
           schema:
             type: integer
           example: '0'
-        - name: image
+        - name: page
           in: query
           schema:
             type: integer
           example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '5'
       responses:
         '200':
           description: Successful response
@@ -572,6 +579,137 @@ paths:
       tags:
         - Identify Image (CMND & GPKD)
       summary: get identify image
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notification:
+    get:
+      tags:
+        - Notification
+      summary: Get All Notification
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: option
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notification/:
+    post:
+      tags:
+        - Notification
+      summary: Create Notification
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                Title:
+                  type: string
+                  example: Lorem Ipsum
+                Content:
+                  type: string
+                  example: >-
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Praesent vel cursus purus, a euismod massa. Aenean
+                    scelerisque nisi sed libero placerat, sed feugiat nunc
+                    rutrum. Cras at risus id arcu rhoncus condimentum ac ut
+                    nunc. Curabitur mattis, ipsum non tincidunt molestie, lacus
+                    orci semper nisl, id vehicula erat lacus nec orci. Integer
+                    consectetur dictum mi. Phasellus eu elit ornare, vulputate
+                    libero at, blandit felis. Curabitur dignissim, purus et
+                    convallis tincidunt, nunc ipsum eleifend odio, id
+                    consectetur lectus ex ut lacus. Donec gravida est nec tellus
+                    fermentum convallis. Maecenas maximus lobortis lacus luctus
+                    efficitur.
+                Type:
+                  type: integer
+                  example: '2'
+                SendingTime:
+                  type: number
+                  example: '2021-01-30T17:39:08.081Z'
+                Exception:
+                  type: string
+                  example: 1,2,3,4,5,6,7:1
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notification/8:
+    patch:
+      tags:
+        - Notification
+      summary: Cancel Notification By Id
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Notification
+      summary: Get Notification By ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/comment/:
+    post:
+      tags:
+        - Comment
+      summary: Create Comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                Content: >-
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book. It has survived not only five centuries, but
+                  also the leap into electronic typesetting, remaining
+                  essentially unchanged. It was popularised in the 1960s with
+                  the release of Letraset sheets containing Lorem Ipsum
+                  passages, and more recently with desktop publishing software
+                  like Aldus PageMaker including versions of Lorem Ipsum.
+                PostId: 38
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/comment/38:
+    get:
+      tags:
+        - Comment
+      summary: Get Comment By Post Id
       responses:
         '200':
           description: Successful response

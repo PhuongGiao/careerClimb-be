@@ -4,43 +4,8 @@ const { StudioRating, sequelize, StudioPost } = require("../models");
 const ApiError = require("../utils/ApiError");
 
 exports.getALL = catchAsync(async (req, res) => {
-  const { rank, rating, report } = req.query;
+  const { rank, rating, page, limit } = req.query;
   let list = undefined;
-
-  //   if (Boolean(+rank)) {
-  //     list = await StudioRating.findAll({
-  //       include: {
-  //         model: StudioPost,
-  //       },
-  //     });
-  //     list = await Promise.all(
-  //       list.map(async (val) => {
-  //         const count = await StudioRating.count({
-  //           where: { StudioPostId: val.StudioPostId },
-  //         });
-  //         return { ...val.dataValues, numberRate: count };
-  //       })
-  //     );
-  //   }
-  //   if (true) {
-  //     list = await StudioRating.findAll({
-  //       include: {
-  //         model: StudioPost,
-  //       },
-  //     });
-  //     list = await Promise.all(
-  //       list.map(async (val) => {
-  //         console.log(val);
-  //         const count = await StudioRating.count({
-  //           where: { StudioPostId: val.StudioPostId },
-  //           order: Boolean(+rank)
-  //             ? [["StudioPostId", "ASC"]]
-  //             : [["StudioPostId", "DESC"]],
-  //         });
-  //         return { ...val.dataValues, numberRate: count };
-  //       })
-  //     );
-  //   }
   list = await StudioRating.findAll({
     include: {
       model: StudioPost,
@@ -54,48 +19,69 @@ exports.getALL = catchAsync(async (req, res) => {
       return { ...val.dataValues, numberRate: count };
     })
   );
-  {
-    Boolean(+rank)
-      ? (list = list.sort((a, b) => {
-          if (a.numberRate > b.numberRate) {
-            return 1;
-          }
-          return -1;
-        }))
-      : (list = list.sort((a, b) => {
-          if (a.numberRate < b.numberRate) {
-            return 1;
-          }
-          return -1;
-        }));
+
+  Boolean(+rank)
+    ? (list = list.sort((a, b) => {
+        if (a.numberRate > b.numberRate) {
+          return 1;
+        }
+        return -1;
+      }))
+    : (list = list.sort((a, b) => {
+        if (a.numberRate < b.numberRate) {
+          return 1;
+        }
+        return -1;
+      }));
+
+  Boolean(+rating)
+    ? (list = list.sort((a, b) => {
+        if (a.Rate > b.Rate) {
+          return 1;
+        }
+        return -1;
+      }))
+    : (list = list.sort((a, b) => {
+        if (a.Rate < b.Rate) {
+          return 1;
+        }
+        return -1;
+      }));
+
+  //pagination
+  const total = list.length;
+  if (+limit <= 0 || isNaN(+limit) || +limit >= 20) {
+    limit = 1;
   }
-  {
-    Boolean(+rating)
-      ? (list = list.sort((a, b) => {
-          if (a.Rate > b.Rate) {
-            return 1;
-          }
-          return -1;
-        }))
-      : (list = list.sort((a, b) => {
-          if (a.Rate < b.Rate) {
-            return 1;
-          }
-          return -1;
-        }));
+  if (+page <= 0 || isNaN(+page)) {
+    page = 1;
+  }
+  let totalPages = Math.ceil(total / limit);
+  let skip = (+page - 1) * +limit;
+  if (totalPages < +page) {
+    page = 1;
   }
 
-  res.status(200).send(list);
+  const newList = list.slice(skip, limit);
+
+  res.status(200).json({
+    success: true,
+    pagination: {
+      totalPages,
+      limit: +limit,
+      total,
+      currentPage: +page,
+      hasNextPage: page <= totalPages - 1,
+    },
+    data: newList,
+  });
 });
+
 exports.getDetailById = catchAsync(async (req, res) => {
-  console.log(req.params.id);
-  console.log(Boolean(+req.query.des));
   const detail = await StudioPost.findOne({
     where: { Id: req.params.id },
-
     include: { model: StudioRating, as: "ratings" },
   });
-
   res.status(200).send(detail);
 });
 

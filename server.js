@@ -13,11 +13,10 @@ const catchAsync = require("./middlewares/async");
 const ApiError = require("./utils/ApiError");
 const fs = require("fs");
 
+// postman
 const postmanCollection =
   "./apis/BOOKINGSTUDIO_BACKEND.postman_collection.json";
 const outputFile = "./apis/collection.yml";
-
-// Promise callback style
 postmanToOpenApi(postmanCollection, outputFile, { defaultTag: "General" })
   .then((result) => {
     console.log(`OpenAPI specs: ${result}`);

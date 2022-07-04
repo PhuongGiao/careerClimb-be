@@ -1,5 +1,6 @@
 const { AppBinaryObject, sequelize } = require("../models");
 const { Post } = require("../models");
+const { Comment } = require("../models");
 
 const catchAsync = require("../middlewares/async");
 const { Op } = require("sequelize");
@@ -53,7 +54,6 @@ exports.postPost = catchAsync(async (req, res) => {
 
 exports.getAllPost = catchAsync(async (req, res) => {
   let { page, limit, tags } = req.query;
-  console.log(tags);
   let where;
   let rightOption;
   if (tags !== undefined) {
@@ -91,6 +91,13 @@ exports.getAllPost = catchAsync(async (req, res) => {
         offset: +skip,
         limit: +limit,
       },
+      nest: true,
+      include: [
+        {
+          model: Comment,
+          as: "CommentId",
+        },
+      ],
       type: "SELECT",
     }
   );

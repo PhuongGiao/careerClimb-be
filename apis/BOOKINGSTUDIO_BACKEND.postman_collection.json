@@ -826,7 +826,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/rating&report?rating=1&rank=0&image=1",
+							"raw": "http://localhost:3003/api/rating&report?rating=1&rank=0&page=1&limit=5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -846,8 +846,12 @@
 									"value": "0"
 								},
 								{
-									"key": "image",
+									"key": "page",
 									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "5"
 								}
 							]
 						}
@@ -934,6 +938,199 @@
 							"path": [
 								"image-license",
 								"46aa6299-342a-434a-add6-9f928ef7cf09"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "Get All Notification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/notification?page=1&limit=10&option=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"notification"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "option",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Title",
+									"value": "Lorem Ipsum",
+									"type": "text"
+								},
+								{
+									"key": "Content",
+									"value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel cursus purus, a euismod massa. Aenean scelerisque nisi sed libero placerat, sed feugiat nunc rutrum. Cras at risus id arcu rhoncus condimentum ac ut nunc. Curabitur mattis, ipsum non tincidunt molestie, lacus orci semper nisl, id vehicula erat lacus nec orci. Integer consectetur dictum mi. Phasellus eu elit ornare, vulputate libero at, blandit felis. Curabitur dignissim, purus et convallis tincidunt, nunc ipsum eleifend odio, id consectetur lectus ex ut lacus. Donec gravida est nec tellus fermentum convallis. Maecenas maximus lobortis lacus luctus efficitur.",
+									"type": "text"
+								},
+								{
+									"key": "Type",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "SendingTime",
+									"value": "2021-01-30T17:39:08.081Z",
+									"type": "text"
+								},
+								{
+									"key": "Exception",
+									"value": "1,2,3,4,5,6,7:1",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/voduy/Desktop/Ảnh chụp Màn hình 2022-06-30 lúc 16.20.06.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/notification/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"notification",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Notification By Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/notification/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"notification",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/notification/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"notification",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Content\":\"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\",\n    \"PostId\":38\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/comment/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"comment",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment By Post Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/comment/38",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"comment",
+								"38"
 							]
 						}
 					},

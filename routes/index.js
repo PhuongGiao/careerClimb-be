@@ -8,6 +8,8 @@ const { router: filterRouter } = require("./filterRoute");
 const { router: room } = require("./roomRoute");
 const { router: postPostRoute } = require("./postRoute");
 const { router: ratingReportRoute } = require("./RatingReportRoute");
+const { router: adminNotificationRoute } = require("./adminNotificationRoute");
+const { router: commentRoute } = require("./commentRoute");
 
 const rootRouter = express.Router();
 
@@ -20,6 +22,8 @@ rootRouter.use("/filter", filterRouter);
 rootRouter.use("/room", room);
 rootRouter.use("/post-post", postPostRoute);
 rootRouter.use("/rating&report", ratingReportRoute);
+rootRouter.use("/notification", adminNotificationRoute);
+rootRouter.use("/comment", commentRoute);
 
 module.exports = {
   rootRouter,
