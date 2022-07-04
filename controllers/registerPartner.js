@@ -161,9 +161,9 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
 });
 exports.filterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { Name, CreateDate, updateDate,keyString } = req.body;
-
-  if (Name || CreateDate || updateDate) {
+  const { CreateDate, updateDate, keyString } = req.body;
+  console.log(CreateDate, updateDate, keyString);
+  if (keyString || CreateDate || updateDate) {
     const data = await Pagination(RegisterPartner, page, limit, {
       where: {
         [Op.or]: {
@@ -194,8 +194,29 @@ exports.filterPartner = catchAsync(async (req, res) => {
     });
     res.status(200).json({ ...data });
   } else {
-    const data = await Pagination(StudioPost, page, limit, {});
-    res.status(200).json({ ...data });
+    const partner = await Pagination(RegisterPartner, page, limit);
+    const data = {
+      ...partner,
+      data: await Promise.all(
+        partner.data.map(async (val) => {
+          const count = await StudioPost.count({
+            where: { CreatorUserId: val.id },
+          });
+          return {
+            id: val.id,
+            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+            Phone: val.Phone,
+            Email: val.Email,
+            NumberOfPost: count,
+            CreationTime: val.CreationTime,
+            LastModificationTime: val.LastModificationTime,
+            IsDeleted: val.IsDeleted,
+          };
+        })
+      ),
+    };
+    res.status(200).json({
+      ...data,
+    });
   }
 });
-
