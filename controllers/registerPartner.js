@@ -164,8 +164,13 @@ exports.filterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { CreateDate, updateDate, keyString } = req.body;
   console.log(req.body);
-  if (keyString || CreateDate.startDate ||CreateDate.endDate 
-     || updateDate.startDate|| updateDate.endDate) {
+  if (
+    keyString ||
+    CreateDate.startDate ||
+    CreateDate.endDate ||
+    updateDate.startDate ||
+    updateDate.endDate
+  ) {
     const data = await Pagination(RegisterPartner, page, limit, {
       where: {
         [Op.or]: {
@@ -185,15 +190,17 @@ exports.filterPartner = catchAsync(async (req, res) => {
             : new Date(),
         },
         LastModificationTime: {
-          [Op.or]: {
-            [Op.gte]: updateDate?.startDate
-              ? moment(updateDate.startDate).format()
-              : 1,
-            [Op.lte]: updateDate?.endDate
-              ? moment(updateDate.endDate).format()
-              : new Date(),
-          },
-          [Op.eq]: null,
+          [Op.or]: [
+            {
+              [Op.gte]: updateDate?.startDate
+                ? moment(updateDate.startDate).format()
+                : 1,
+              [Op.lte]: updateDate?.endDate
+                ? moment(updateDate.endDate).format()
+                : new Date(),
+            },
+            { [Op.eq]: null },
+          ],
         },
       },
     });
