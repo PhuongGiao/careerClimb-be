@@ -148,7 +148,7 @@ exports.filterBooking = catchAsync(async (req, res) => {
     include: [
       {
         model: BookingUser,
-        as: "userId",
+        as: "user",
       },
       {
         model: StudioRoom,
