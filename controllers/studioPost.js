@@ -12,12 +12,13 @@ exports.getAllStudioPost = catchAsync(async (req, res) => {
 exports.filterStudioPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { Name, CreateDate, updateDate } = req.body;
- 
+  console.log(req.body);
+
   if (Name || CreateDate || updateDate) {
     const data = await Pagination(StudioPost, page, limit, {
       where: {
         Name: {
-          [Op.like]: `%${Name}%`,
+          [Op.like]: Name? `%${Name}%` : "%",
         },
         CreationTime: {
           [Op.gte]: CreateDate?.startDate

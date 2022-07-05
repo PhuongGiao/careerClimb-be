@@ -172,14 +172,13 @@ exports.getBookingUserById = catchAsync(async (req, res) => {
 exports.filterBookingUser = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { CreateDate, updateDate, keyString } = req.body;
-  console.log(CreateDate);
-  console.log(req.body);
+  console.log(keyString);
   if (keyString || CreateDate || updateDate) {
     const data = await Pagination(BookingUser, page, limit, {
       where: {
         [Op.or]: {
           Email: {
-            [Op.like]: `%${keyString}%`,
+            [Op.like]: keyString? `%${keyString}%` : "%",
           },
           Phone: {
             [Op.like]: `%${keyString}%`,
@@ -205,7 +204,11 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
     });
     res.status(200).json({ ...data });
   } else {
-    const data = await Pagination(StudioPost, page, limit, {});
+    const data = await Pagination(BookingUser, page, limit);
     res.status(200).json({ ...data });
   }
+  // else {
+  //   const data = await Pagination(StudioPost, page, limit, {});
+  //   res.status(200).json({ ...data });
+  // }
 });

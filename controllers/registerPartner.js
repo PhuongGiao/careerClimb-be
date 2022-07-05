@@ -167,8 +167,8 @@ exports.filterPartner = catchAsync(async (req, res) => {
     const data = await Pagination(RegisterPartner, page, limit, {
       where: {
         [Op.or]: {
-          Email: {
-            [Op.like]: `%${keyString}%`,
+          PartnerName: {
+            [Op.like]: keyString? `%${keyString}%`:"%",
           },
           Phone: {
             [Op.like]: `%${keyString}%`,
