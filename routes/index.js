@@ -10,6 +10,7 @@ const { router: postPostRoute } = require("./postRoute");
 const { router: ratingReportRoute } = require("./RatingReportRoute");
 const { router: adminNotificationRoute } = require("./adminNotificationRoute");
 const { router: commentRoute } = require("./commentRoute");
+const { router: likeRoute } = require("./likeRoute");
 
 const rootRouter = express.Router();
 
@@ -24,6 +25,7 @@ rootRouter.use("/post-post", postPostRoute);
 rootRouter.use("/rating&report", ratingReportRoute);
 rootRouter.use("/notification", adminNotificationRoute);
 rootRouter.use("/comment", commentRoute);
+rootRouter.use("/like", likeRoute);
 
 module.exports = {
   rootRouter,

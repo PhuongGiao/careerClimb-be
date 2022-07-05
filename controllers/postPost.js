@@ -92,10 +92,16 @@ exports.getAllPost = catchAsync(async (req, res) => {
         limit: +limit,
       },
       nest: true,
+      // include: [
+      //   {
+      //     model: Comment,
+      //     as: "CommentId",
+      //   },
+      // ],
       include: [
         {
           model: Comment,
-          as: "CommentId",
+          as: "comments",
         },
       ],
       type: "SELECT",

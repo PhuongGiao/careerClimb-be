@@ -4,13 +4,27 @@ const { StudioRating, sequelize, StudioPost } = require("../models");
 const ApiError = require("../utils/ApiError");
 
 exports.getALL = catchAsync(async (req, res) => {
-  const { rank, rating, page, limit } = req.query;
+  const { rank, rating, page, limit, keyString } = req.query;
   let list = undefined;
-  list = await StudioRating.findAll({
-    include: {
-      model: StudioPost,
-    },
-  });
+  if (keyString) {
+    list = await StudioRating.findAll({
+      include: {
+        model: StudioPost,
+        where: {
+          Name: {
+            [Op.like]: keyString ? `%${keyString}%` : "%",
+          },
+        },
+      },
+    });
+  } else {
+    list = await StudioRating.findAll({
+      include: {
+        model: StudioPost,
+      },
+    });
+  }
+
   list = await Promise.all(
     list.map(async (val) => {
       const count = await StudioRating.count({
