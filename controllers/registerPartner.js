@@ -159,16 +159,18 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
     message: "Update success",
   });
 });
+
 exports.filterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { CreateDate, updateDate, keyString } = req.body;
-  console.log(CreateDate, updateDate, keyString);
+  console.log(req.body);
   if (keyString || CreateDate || updateDate) {
+    console.log("d=sa=dsa=dsa=d=sa=dsa=f=sa=dsa=d=sa=dsa");
     const data = await Pagination(RegisterPartner, page, limit, {
       where: {
         [Op.or]: {
-          PartnerName: {
-            [Op.like]: keyString? `%${keyString}%`:"%",
+          Email: {
+            [Op.like]: keyString ? `%${keyString}%` : "%",
           },
           Phone: {
             [Op.like]: `%${keyString}%`,
@@ -194,27 +196,31 @@ exports.filterPartner = catchAsync(async (req, res) => {
     });
     res.status(200).json({ ...data });
   } else {
-    const partner = await Pagination(RegisterPartner, page, limit);
-    const data = {
-      ...partner,
-      data: await Promise.all(
-        partner.data.map(async (val) => {
-          const count = await StudioPost.count({
-            where: { CreatorUserId: val.id },
-          });
-          return {
-            id: val.id,
-            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
-            Phone: val.Phone,
-            Email: val.Email,
-            NumberOfPost: count,
-            CreationTime: val.CreationTime,
-            LastModificationTime: val.LastModificationTime,
-            IsDeleted: val.IsDeleted,
-          };
-        })
-      ),
-    };
+    // const partner = await Pagination(RegisterPartner, page, limit);
+    // const data = {
+    //   ...partner,
+    //   data: await Promise.all(
+    //     partner.data.map(async (val) => {
+    //       const count = await StudioPost.count({
+    //         where: { CreatorUserId: val.id },
+    //       });
+    //       return {
+    //         id: val.id,
+    //         IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+    //         Phone: val.Phone,
+    //         Email: val.Email,
+    //         NumberOfPost: count,
+    //         CreationTime: val.CreationTime,
+    //         LastModificationTime: val.LastModificationTime,
+    //         IsDeleted: val.IsDeleted,
+    //       };
+    //     })
+    //   ),
+    // };
+    // res.status(200).json({
+    //   ...data,
+    // });
+    const data = await Pagination(RegisterPartner, page, limit, {});
     res.status(200).json({
       ...data,
     });

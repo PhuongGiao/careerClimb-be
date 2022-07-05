@@ -5,6 +5,7 @@ const { Comment } = require("../models");
 const catchAsync = require("../middlewares/async");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
+const Pagination = require("../utils/pagination");
 const constant = [
   "studio",
   "makeup",
@@ -107,6 +108,11 @@ exports.getAllPost = catchAsync(async (req, res) => {
       type: "SELECT",
     }
   );
+  // const newList = await Post.findAll({
+  //   include: [{ model: Comment, as: "comments" }],
+  // });
+  
+  // res.status(200).json(newList);
   res.status(200).json({
     success: true,
     pagination: {
@@ -156,3 +162,30 @@ exports.deletePost = catchAsync(async (req, res) => {
     message: "Delete success",
   });
 });
+
+
+
+// class Email {
+//   public email : string;
+//   constructor(email : string){
+//       if(this.validateEmail(email)) {
+//         this.email = email;
+//       }
+//       else {
+//           throw new Error("Invalid email!");
+//       }        
+//   }
+//   validateEmail(email : string) {
+//       var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+//       return re.test(email);
+//   }
+// }
+// class Person {
+//   public email : Email;
+//   constructor(email : Email){
+//       this.email = email;
+//   }
+//   greet() {
+//       alert("Hi!");
+//   }
+// }
