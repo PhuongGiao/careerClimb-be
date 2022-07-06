@@ -45,7 +45,6 @@ exports.filterStudioPost = catchAsync(async (req, res) => {
                 ? moment(updateDate.endDate).format()
                 : new Date(),
             },
-            { [Op.eq]: null },
           ],
         },
       },
@@ -73,6 +72,7 @@ exports.filterStudioPost = catchAsync(async (req, res) => {
                 ? moment(CreateDate.endDate).format()
                 : new Date(),
             },
+            { [Op.eq]: null },
           ],
         },
         LastModificationTime: {

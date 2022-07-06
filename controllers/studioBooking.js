@@ -106,14 +106,35 @@ exports.updateBookingById = catchAsync(async (req, res) => {
 
 exports.filterBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { OrderByDateFrom, IsPayDeposit, PaymentType, IsDeleted } = req.body;
-  let where;
+  const { OrderDate, IsPayDeposit, PaymentType } = req.body;
   if (
-    !OrderByDateFrom?.OrderByDateFrom &&
-    !OrderByDateFrom?.OrderByDateTo &&
-    !IsPayDeposit &&
-    !PaymentType
+    OrderDate?.startDate ||
+    OrderDate?.endDate ||
+    typeof IsPayDeposit == "boolean" ||
+    PaymentType
   ) {
+    const listBooking = await Pagination(StudioBooking, page, limit, {
+      where: {
+        OrderByDateFrom: {
+          [Op.gte]: OrderDate?.startDate
+            ? moment(OrderDate.startDate).format()
+            : 1,
+          [Op.lte]: OrderDate?.endDate
+            ? moment(OrderDate.endDate).format()
+            : new Date(),
+        },
+        IsPayDeposit:
+          typeof IsPayDeposit == "boolean"
+            ? { [Op.in]: [IsPayDeposit] }
+            : { [Op.in]: [true, false] },
+
+        PaymentType: PaymentType
+          ? { [Op.in]: [PaymentType] }
+          : { [Op.notIn]: "" },
+      },
+    });
+    return res.status(200).send(listBooking);
+  } else {
     const listBooking = await Pagination(StudioBooking, page, limit, {
       include: [
         {
@@ -127,63 +148,4 @@ exports.filterBooking = catchAsync(async (req, res) => {
     });
     return res.status(200).send(listBooking);
   }
-  if (!PaymentType) {
-    where = {
-      OrderByDateFrom: {
-        [Op.or]: [
-          {
-            [Op.gte]: OrderByDateFrom?.OrderByDateFrom
-              ? moment(OrderByDateFrom.OrderByDateFrom).format()
-              : 1,
-            [Op.lte]: OrderByDateFrom?.OrderByDateTo
-              ? moment(OrderByDateFrom.OrderByDateTo).format()
-              : new Date(),
-          },
-          { [Op.eq]: null },
-        ],
-      },
-      IsPayDeposit:
-        IsPayDeposit !== undefined || null
-          ? IsPayDeposit
-          : {
-              [Op.or]: [true, false],
-            },
-    };
-  } else {
-    where = {
-      OrderByDateFrom: {
-        [Op.or]: [
-          {
-            [Op.gte]: OrderByDateFrom?.OrderByDateFrom
-              ? moment(OrderByDateFrom.OrderByDateFrom).format()
-              : 1,
-            [Op.lte]: OrderByDateFrom?.OrderByDateTo
-              ? moment(OrderByDateFrom.OrderByDateTo).format()
-              : new Date(),
-          },
-          { [Op.eq]: null },
-        ],
-      },
-      IsPayDeposit:
-        IsPayDeposit !== undefined || null
-          ? IsPayDeposit
-          : {
-              [Op.or]: [true, false],
-            },
-      PaymentType,
-    };
-  }
-  const listBooking = await Pagination(StudioBooking, page, limit, {
-    include: [
-      {
-        model: BookingUser,
-        as: "user",
-      },
-      {
-        model: StudioRoom,
-      },
-    ],
-    where,
-  });
-  res.status(200).send(listBooking);
 });
