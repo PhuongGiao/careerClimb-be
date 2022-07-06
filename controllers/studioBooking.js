@@ -109,8 +109,8 @@ exports.filterBooking = catchAsync(async (req, res) => {
   const { OrderByDateFrom, IsPayDeposit, PaymentType, IsDeleted } = req.body;
   let where;
   if (
-    !OrderByDateFrom.OrderByDateFrom &&
-    !OrderByDateFrom.OrderByDateTo &&
+    !OrderByDateFrom?.OrderByDateFrom &&
+    !OrderByDateFrom?.OrderByDateTo &&
     !IsPayDeposit &&
     !PaymentType
   ) {

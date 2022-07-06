@@ -5,6 +5,7 @@ const catchAsync = require("../middlewares/async");
 const ApiError = require("../utils/ApiError");
 const Pagination = require("../utils/pagination");
 const { Op } = require("sequelize");
+const moment = require("moment");
 const { sendAndroid, sendIOS } = require("../utils/pushMessage");
 
 exports.getAllNotification = catchAsync(async (req, res) => {
@@ -149,17 +150,24 @@ exports.getNotificationById = catchAsync(async (req, res) => {
   });
 });
 
-
 exports.filterNotification = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { createdAt, SendingTime, Status, Type } = req.body;
-  if (Status || createdAt || true) {
+  console.log(req.body);
+  if (
+    Status ||
+    createdAt.startDate ||
+    createdAt.endDate ||
+    SendingTime.startDate ||
+    SendingTime.endDate || Type
+  ) {
     const data = await Pagination(AdminNotification, page, limit, {
       where: {
         Exception: {
-          [Op.like]: "%:1%",
+          [Op.like]: "%:0%",
         },
-        Status: Status ? { [Op.in]: [Status] } : {[Op.notIn]: [Status],    },
+        Status: Status ? { [Op.in]: [Status] } : { [Op.notIn]: "" },
+        Type: Type ? { [Op.in]: [Type] } : { [Op.notIn]: "" },
         createdAt: {
           [Op.gte]: createdAt?.startDate
             ? moment(createdAt.startDate).format()
@@ -169,16 +177,21 @@ exports.filterNotification = catchAsync(async (req, res) => {
             : new Date(),
         },
         SendingTime: {
-          [Op.or]: [
-            {
-              [Op.gte]: SendingTime?.startDate
-                ? moment(SendingTime.startDate).format()
-                : 1,
-              [Op.lte]: SendingTime?.endDate
-                ? moment(SendingTime.endDate).format()
-                : new Date(),
-            },
-          ],
+          [Op.gte]: SendingTime?.startDate
+            ? moment(SendingTime.startDate).format()
+            : 1,
+          [Op.lte]: SendingTime?.endDate
+            ? moment(SendingTime.endDate).format()
+            : new Date(),
+        },
+      },
+    });
+    res.status(200).json({ ...data });
+  } else {
+    const data = await Pagination(AdminNotification, page, limit, {
+      where: {
+        Exception: {
+          [Op.like]: "%:1%",
         },
       },
     });
