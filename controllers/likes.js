@@ -11,17 +11,15 @@ exports.createLove = catchAsync(async (req, res) => {
     where: {
       PostId,
       UserId,
-    }
+    },
   });
-  
-  if (exits){
-      console.log(exits)
-    await Love.destroy({
-        where:{
-            id:exits.id
-        }
 
-    })
+  if (exits) {
+    await Love.destroy({
+      where: {
+        id: exits.id,
+      },
+    });
     return res.status(200).send("unlike");
   }
   if (!PostId) {
@@ -33,7 +31,6 @@ exports.createLove = catchAsync(async (req, res) => {
     PostType,
   });
   const countLove = await Love.count({ where: { PostId: PostId } });
-  console.log(countLove);
   await Post.update({ TotalLikes: countLove }, { where: { id: PostId } });
   res.status(200).send(love);
 });
