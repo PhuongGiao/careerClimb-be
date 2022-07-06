@@ -178,7 +178,7 @@ exports.filterPartner = catchAsync(async (req, res) => {
             [Op.like]: keyString ? `%${keyString}%` : "%",
           },
           Phone: {
-            [Op.like]: `%${keyString}%`,
+            [Op.like]:  keyString ? `%${keyString}%` : "%",
           },
         },
         CreationTime: {
