@@ -1,12 +1,8 @@
 const { Op } = require("sequelize");
 const catchAsync = require("../middlewares/async");
-const {
-  StudioRating,
-  sequelize,
-  StudioPost,
-  BookingUser,
-} = require("../models");
+const { StudioRating, StudioPost, BookingUser } = require("../models");
 const ApiError = require("../utils/ApiError");
+const { ImageListDestructure } = require("../utils/ListWithImageDestructure");
 
 exports.getALL = catchAsync(async (req, res) => {
   const { rank, rating, page, limit, keyString } = req.query;
@@ -21,19 +17,18 @@ exports.getALL = catchAsync(async (req, res) => {
               [Op.like]: keyString ? `%${keyString}%` : "%",
             },
           },
-        }
+        },
       ],
     });
-  }
-  else {
+  } else {
     list = await StudioRating.findAll({
       include: [
         {
           model: StudioPost,
         },
-        // {
-        //   model: BookingUser,
-        // },
+        {
+          model: BookingUser,
+        },
       ],
     });
   }
@@ -100,7 +95,7 @@ exports.getALL = catchAsync(async (req, res) => {
       currentPage: +page,
       hasNextPage: page <= totalPages - 1,
     },
-    data: newList,
+    data: ImageListDestructure(newList),
   });
 });
 
