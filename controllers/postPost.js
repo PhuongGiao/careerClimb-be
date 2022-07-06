@@ -6,6 +6,7 @@ const catchAsync = require("../middlewares/async");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
 const Pagination = require("../utils/pagination");
+const { ImageListDestructure } = require("../utils/ListWithImageDestructure");
 const constant = [
   "studio",
   "makeup",
@@ -93,12 +94,6 @@ exports.getAllPost = catchAsync(async (req, res) => {
         limit: +limit,
       },
       nest: true,
-      // include: [
-      //   {
-      //     model: Comment,
-      //     as: "CommentId",
-      //   },
-      // ],
       include: [
         {
           model: Comment,
@@ -108,11 +103,6 @@ exports.getAllPost = catchAsync(async (req, res) => {
       type: "SELECT",
     }
   );
-  // const newList = await Post.findAll({
-  //   include: [{ model: Comment, as: "comments" }],
-  // });
-  
-  // res.status(200).json(newList);
   res.status(200).json({
     success: true,
     pagination: {
@@ -122,7 +112,7 @@ exports.getAllPost = catchAsync(async (req, res) => {
       currentPage: +page,
       hasNextPage: page <= totalPages - 1,
     },
-    data: newList,
+    data: ImageListDestructure(newList),
   });
 });
 
@@ -162,4 +152,3 @@ exports.deletePost = catchAsync(async (req, res) => {
     message: "Delete success",
   });
 });
-
