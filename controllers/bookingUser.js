@@ -174,6 +174,47 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
   const { CreateDate, updateDate, keyString } = req.body;
   console.log(keyString);
   if (
+    (!CreateDate?.endDate || !CreateDate?.startDate) &&
+    (updateDate?.endDate || updateDate?.startDate)
+  ) {
+    const data = await Pagination(BookingUser, page, limit, {
+      where: {
+        [Op.or]: {
+          Email: {
+            [Op.like]: keyString ? `%${keyString}%` : "%",
+          },
+          Phone: {
+            [Op.like]: `%${keyString}%`,
+          },
+        },
+        CreationTime: {
+          [Op.or]: [
+            {
+              [Op.gte]: CreateDate?.startDate
+                ? moment(CreateDate.startDate).format()
+                : 1,
+              [Op.lte]: CreateDate?.endDate
+                ? moment(CreateDate.endDate).format()
+                : new Date(),
+            },
+          ],
+        },
+        LastModificationTime: {
+          [Op.or]: [
+            {
+              [Op.gte]: updateDate?.startDate
+                ? moment(updateDate.startDate).format()
+                : 1,
+              [Op.lte]: updateDate?.endDate
+                ? moment(updateDate.endDate).format()
+                : new Date(),
+            },
+          ],
+        },
+      },
+    });
+    return res.status(200).json({ ...data });
+  } else if (
     keyString ||
     CreateDate?.startDate ||
     CreateDate?.endDate ||

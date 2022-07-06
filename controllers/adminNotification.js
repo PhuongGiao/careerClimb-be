@@ -88,68 +88,38 @@ exports.getNotificationById = catchAsync(async (req, res) => {
   });
 });
 
-
-
-
-
 exports.filterNotification = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { CreateDate, updateDate, keyString } = req.body;
-  console.log(CreateDate, updateDate, keyString);
-  if (keyString || CreateDate || updateDate) {
-    const data = await Pagination(RegisterPartner, page, limit, {
+  const { createdAt, SendingTime, Status, Type } = req.body;
+  if (Status || createdAt || true) {
+    const data = await Pagination(AdminNotification, page, limit, {
       where: {
-        [Op.or]: {
-          PartnerName: {
-            [Op.like]: keyString? `%${keyString}%`:"%",
-          },
-          Phone: {
-            [Op.like]: `%${keyString}%`,
-          },
+        Exception: {
+          [Op.like]: "%:1%",
         },
-        CreationTime: {
-          [Op.gte]: CreateDate?.startDate
-            ? moment(CreateDate.startDate).format()
+        Status: Status ? { [Op.in]: [Status] } : {[Op.notIn]: [Status],    },
+        createdAt: {
+          [Op.gte]: createdAt?.startDate
+            ? moment(createdAt.startDate).format()
             : 1,
-          [Op.lte]: CreateDate?.endDate
-            ? moment(CreateDate.endDate).format()
+          [Op.lte]: createdAt?.endDate
+            ? moment(createdAt.endDate).format()
             : new Date(),
         },
-        LastModificationTime: {
-          [Op.gte]: updateDate?.startDate
-            ? moment(updateDate.startDate).format()
-            : 1,
-          [Op.lte]: updateDate?.endDate
-            ? moment(updateDate.endDate).format()
-            : new Date(),
+        SendingTime: {
+          [Op.or]: [
+            {
+              [Op.gte]: SendingTime?.startDate
+                ? moment(SendingTime.startDate).format()
+                : 1,
+              [Op.lte]: SendingTime?.endDate
+                ? moment(SendingTime.endDate).format()
+                : new Date(),
+            },
+          ],
         },
       },
     });
     res.status(200).json({ ...data });
-  } else {
-    const partner = await Pagination(RegisterPartner, page, limit);
-    const data = {
-      ...partner,
-      data: await Promise.all(
-        partner.data.map(async (val) => {
-          const count = await StudioPost.count({
-            where: { CreatorUserId: val.id },
-          });
-          return {
-            id: val.id,
-            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
-            Phone: val.Phone,
-            Email: val.Email,
-            NumberOfPost: count,
-            CreationTime: val.CreationTime,
-            LastModificationTime: val.LastModificationTime,
-            IsDeleted: val.IsDeleted,
-          };
-        })
-      ),
-    };
-    res.status(200).json({
-      ...data,
-    });
   }
 });
