@@ -193,14 +193,13 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
         CreationTime: {
           [Op.or]: [
             {
-              [Op.gte]: updateDate?.startDate
-                ? moment(updateDate.startDate).format()
+              [Op.gte]: CreateDate?.startDate
+                ? moment(CreateDate.startDate).format()
                 : 1,
-              [Op.lte]: updateDate?.endDate
-                ? moment(updateDate.endDate).format()
+              [Op.lte]: CreateDate?.endDate
+                ? moment(CreateDate.endDate).format()
                 : new Date(),
             },
-            { [Op.eq]: null },
           ],
         },
         LastModificationTime: {

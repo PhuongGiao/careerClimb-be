@@ -114,7 +114,6 @@ exports.filterBooking = catchAsync(async (req, res) => {
     !IsPayDeposit &&
     !PaymentType
   ) {
-    console.log("ds=a=dsa=d=sa=ds=ad=s=dsa=");
     const listBooking = await Pagination(StudioBooking, page, limit, {
       include: [
         {
