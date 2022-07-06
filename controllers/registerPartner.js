@@ -164,11 +164,8 @@ exports.filterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { CreateDate, updateDate, keyString } = req.body;
   if (
-    keyString ||
-    CreateDate.startDate ||
-    CreateDate.endDate ||
-    updateDate.startDate ||
-    updateDate.endDate
+    (!CreateDate?.endDate || !CreateDate?.startDate) &&
+    (updateDate?.endDate || updateDate?.startDate)
   ) {
     const partner = await Pagination(RegisterPartner, page, limit, {
       where: {
@@ -177,7 +174,69 @@ exports.filterPartner = catchAsync(async (req, res) => {
             [Op.like]: keyString ? `%${keyString}%` : "%",
           },
           Phone: {
-            [Op.like]: `%${keyString}%`,
+            [Op.like]: keyString ? `%${keyString}%` : "%",
+          },
+        },
+        CreationTime: {
+          [Op.gte]: CreateDate?.startDate
+            ? moment(CreateDate.startDate).format()
+            : 1,
+          [Op.lte]: CreateDate?.endDate
+            ? moment(CreateDate.endDate).format()
+            : new Date(),
+        },
+        LastModificationTime: {
+          [Op.or]: [
+            {
+              [Op.gte]: updateDate?.startDate
+                ? moment(updateDate.startDate).format()
+                : 1,
+              [Op.lte]: updateDate?.endDate
+                ? moment(updateDate.endDate).format()
+                : new Date(),
+            },
+          ],
+        },
+      },
+    });
+    const data = {
+      ...partner,
+      data: await Promise.all(
+        partner.data.map(async (val) => {
+          const count = await StudioPost.count({
+            where: { CreatorUserId: val.id },
+          });
+          return {
+            id: val.id,
+            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+            Phone: val.Phone,
+            Email: val.Email,
+            NumberOfPost: count,
+            CreationTime: val.CreationTime,
+            LastModificationTime: val.LastModificationTime,
+            IsDeleted: val.IsDeleted,
+          };
+        })
+      ),
+    };
+    return res.status(200).json({
+      ...data,
+    });
+  } else if (
+    keyString ||
+    CreateDate?.startDate ||
+    CreateDate?.endDate ||
+    updateDate?.startDate ||
+    updateDate?.endDate
+  ) {
+    const partner = await Pagination(RegisterPartner, page, limit, {
+      where: {
+        [Op.or]: {
+          Email: {
+            [Op.like]: keyString ? `%${keyString}%` : "%",
+          },
+          Phone: {
+            [Op.like]: keyString ? `%${keyString}%` : "%",
           },
         },
         CreationTime: {

@@ -106,17 +106,41 @@ exports.updateBookingById = catchAsync(async (req, res) => {
 
 exports.filterBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { OrderDate, IsPayDeposit, PaymentType, IsDeleted } = req.body;
+  const { OrderByDateFrom, IsPayDeposit, PaymentType, IsDeleted } = req.body;
   let where;
+  if (
+    !OrderByDateFrom.OrderByDateFrom &&
+    !OrderByDateFrom.OrderByDateTo &&
+    !IsPayDeposit &&
+    !PaymentType
+  ) {
+    const listBooking = await Pagination(StudioBooking, page, limit, {
+      include: [
+        {
+          model: BookingUser,
+          as: "user",
+        },
+        {
+          model: StudioRoom,
+        },
+      ],
+    });
+    return res.status(200).send(listBooking);
+  }
   if (!PaymentType) {
     where = {
-      CreationTime: {
-        [Op.gte]: OrderDate?.OrderByDateFrom
-          ? moment(OrderDate.OrderByDateFrom).format()
-          : 1,
-        [Op.lte]: OrderDate?.OrderByDateTo
-          ? moment(OrderDate.OrderByDateTo).format()
-          : new Date(),
+      OrderByDateFrom: {
+        [Op.or]: [
+          {
+            [Op.gte]: OrderByDateFrom?.OrderByDateFrom
+              ? moment(OrderByDateFrom.OrderByDateFrom).format()
+              : 1,
+            [Op.lte]: OrderByDateFrom?.OrderByDateTo
+              ? moment(OrderByDateFrom.OrderByDateTo).format()
+              : new Date(),
+          },
+          { [Op.eq]: null },
+        ],
       },
       IsPayDeposit:
         IsPayDeposit !== undefined || null
@@ -127,13 +151,18 @@ exports.filterBooking = catchAsync(async (req, res) => {
     };
   } else {
     where = {
-      CreationTime: {
-        [Op.gte]: CreationTime?.OrderByDateFrom
-          ? moment(CreationTime.OrderByDateFrom).format()
-          : 1,
-        [Op.lte]: CreationTime?.OrderByDateTo
-          ? moment(CreationTime.OrderByDateTo).format()
-          : new Date(),
+      OrderByDateFrom: {
+        [Op.or]: [
+          {
+            [Op.gte]: OrderByDateFrom?.OrderByDateFrom
+              ? moment(OrderByDateFrom.OrderByDateFrom).format()
+              : 1,
+            [Op.lte]: OrderByDateFrom?.OrderByDateTo
+              ? moment(OrderByDateFrom.OrderByDateTo).format()
+              : new Date(),
+          },
+          { [Op.eq]: null },
+        ],
       },
       IsPayDeposit:
         IsPayDeposit !== undefined || null
