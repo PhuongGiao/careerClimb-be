@@ -1,32 +1,45 @@
 const { Op } = require("sequelize");
 const catchAsync = require("../middlewares/async");
-const { StudioRating, sequelize, StudioPost } = require("../models");
+const {
+  StudioRating,
+  sequelize,
+  StudioPost,
+  BookingUser,
+} = require("../models");
 const ApiError = require("../utils/ApiError");
 
 exports.getALL = catchAsync(async (req, res) => {
   const { rank, rating, page, limit, keyString } = req.query;
-  let list = undefined;
+  let list = [];
   if (keyString) {
     list = await StudioRating.findAll({
-      include: {
-        model: StudioPost,
-        where: {
-          Name: {
-            [Op.like]: keyString ? `%${keyString}%` : "%",
+      include: [
+        {
+          model: StudioPost,
+          where: {
+            Name: {
+              [Op.like]: keyString ? `%${keyString}%` : "%",
+            },
           },
-        },
-      },
+        }
+      ],
     });
-  } else {
+  }
+  else {
     list = await StudioRating.findAll({
-      include: {
-        model: StudioPost,
-      },
+      include: [
+        {
+          model: StudioPost,
+        },
+        // {
+        //   model: BookingUser,
+        // },
+      ],
     });
   }
 
   list = await Promise.all(
-    list.map(async (val) => {
+    list?.map(async (val) => {
       const count = await StudioRating.count({
         where: { StudioPostId: val.StudioPostId },
       });
@@ -50,13 +63,13 @@ exports.getALL = catchAsync(async (req, res) => {
 
   Boolean(+rating)
     ? (list = list.sort((a, b) => {
-        if (a.Rate > b.Rate) {
+        if (a.numberRate > b.numberRate) {
           return 1;
         }
         return -1;
       }))
     : (list = list.sort((a, b) => {
-        if (a.Rate < b.Rate) {
+        if (a.numberRate < b.numberRate) {
           return 1;
         }
         return -1;
@@ -94,7 +107,15 @@ exports.getALL = catchAsync(async (req, res) => {
 exports.getDetailById = catchAsync(async (req, res) => {
   const detail = await StudioPost.findOne({
     where: { Id: req.params.id },
-    include: { model: StudioRating, as: "ratings" },
+    include: [
+      {
+        model: StudioRating,
+        as: "ratings",
+        include: {
+          model: BookingUser,
+        },
+      },
+    ],
   });
   res.status(200).send(detail);
 });
@@ -104,13 +125,18 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
     let rate = await StudioPost.findOne({
       where: { Id: req.params.id },
       attributes: [],
-      include: {
-        model: StudioRating,
-        as: "ratings",
-        where: {
-          Rate: req.query.rate,
+      include: [
+        {
+          model: StudioRating,
+          as: "ratings",
+          where: {
+            Rate: req.query.rate,
+          },
+          include: {
+            model: BookingUser,
+          },
         },
-      },
+      ],
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
     res.status(200).send(rate?.ratings);
@@ -126,6 +152,9 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
             [Op.regexp]: "[a-zA-Z0-9]",
           },
         },
+        include: {
+          model: BookingUser,
+        },
       },
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
@@ -137,6 +166,9 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
       include: {
         model: StudioRating,
         as: "ratings",
+        include: {
+          model: BookingUser,
+        },
       },
     });
     let list = [];
@@ -157,6 +189,9 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
       include: {
         model: StudioRating,
         as: "ratings",
+        include: {
+          model: BookingUser,
+        },
       },
     });
     res.status(200).send(rate.ratings);

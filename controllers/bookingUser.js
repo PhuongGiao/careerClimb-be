@@ -173,39 +173,80 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { CreateDate, updateDate, keyString } = req.body;
   console.log(keyString);
-  if (keyString || CreateDate || updateDate) {
+  if (
+    keyString ||
+    CreateDate?.startDate ||
+    CreateDate?.endDate ||
+    updateDate?.startDate ||
+    updateDate?.endDate
+  ) {
     const data = await Pagination(BookingUser, page, limit, {
       where: {
         [Op.or]: {
           Email: {
-            [Op.like]: keyString? `%${keyString}%` : "%",
+            [Op.like]: keyString ? `%${keyString}%` : "%",
           },
           Phone: {
             [Op.like]: `%${keyString}%`,
           },
         },
         CreationTime: {
-          [Op.gte]: CreateDate?.startDate
-            ? moment(CreateDate.startDate).format()
-            : 1,
-          [Op.lte]: CreateDate?.endDate
-            ? moment(CreateDate.endDate).format()
-            : new Date(),
+          [Op.or]: [
+            {
+              [Op.gte]: updateDate?.startDate
+                ? moment(updateDate.startDate).format()
+                : 1,
+              [Op.lte]: updateDate?.endDate
+                ? moment(updateDate.endDate).format()
+                : new Date(),
+            },
+            { [Op.eq]: null },
+          ],
         },
         LastModificationTime: {
-          [Op.gte]: updateDate?.startDate
-            ? moment(updateDate.startDate).format()
-            : 1,
-          [Op.lte]: updateDate?.endDate
-            ? moment(updateDate.endDate).format()
-            : new Date(),
+          [Op.or]: [
+            {
+              [Op.gte]: updateDate?.startDate
+                ? moment(updateDate.startDate).format()
+                : 1,
+              [Op.lte]: updateDate?.endDate
+                ? moment(updateDate.endDate).format()
+                : new Date(),
+            },
+            { [Op.eq]: null },
+          ],
         },
       },
     });
     res.status(200).json({ ...data });
   } else {
-    const data = await Pagination(BookingUser, page, limit);
-    res.status(200).json({ ...data });
+    // const data = await Pagination(BookingUser, page, limit);
+    // res.status(200).json({ ...data });
+    const bookingUser = await Pagination(BookingUser, page, limit);
+
+    const data = {
+      ...bookingUser,
+      data: await Promise.all(
+        bookingUser.data.map(async (val) => {
+          const count = await StudioBooking.count({
+            where: { BookingUserId: val.id },
+          });
+          return {
+            id: val.id,
+            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+            Phone: val.Phone,
+            Email: val.Email,
+            NumberOfBooking: count,
+            CreationTime: val.CreationTime,
+            LastModificationTime: val.LastModificationTime,
+            IsDeleted: val.IsDeleted,
+          };
+        })
+      ),
+    };
+    res.status(200).json({
+      ...data,
+    });
   }
   // else {
   //   const data = await Pagination(StudioPost, page, limit, {});

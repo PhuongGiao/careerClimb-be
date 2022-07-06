@@ -165,10 +165,10 @@ exports.filterPartner = catchAsync(async (req, res) => {
   const { CreateDate, updateDate, keyString } = req.body;
   if (
     keyString ||
-    CreateDate.startDate ||
-    CreateDate.endDate ||
-    updateDate.startDate ||
-    updateDate.endDate
+    CreateDate?.startDate ||
+    CreateDate?.endDate ||
+    updateDate?.startDate ||
+    updateDate?.endDate
   ) {
     const partner = await Pagination(RegisterPartner, page, limit, {
       where: {

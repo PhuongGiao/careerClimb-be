@@ -14,27 +14,43 @@ exports.filterStudioPost = catchAsync(async (req, res) => {
   const { Name, CreateDate, updateDate } = req.body;
   console.log(req.body);
 
-  if (Name || CreateDate || updateDate) {
+  if (
+    Name ||
+    CreateDate?.startDate ||
+    CreateDate?.endDate ||
+    updateDate?.startDate ||
+    updateDate?.endDate
+  ) {
     const data = await Pagination(StudioPost, page, limit, {
       where: {
         Name: {
-          [Op.like]: Name? `%${Name}%` : "%",
+          [Op.like]: Name ? `%${Name}%` : "%",
         },
         CreationTime: {
-          [Op.gte]: CreateDate?.startDate
-            ? moment(CreateDate.startDate).format()
-            : 1,
-          [Op.lte]: CreateDate?.endDate
-            ? moment(CreateDate.endDate).format()
-            : new Date(),
+          [Op.or]: [
+            {
+              [Op.gte]: CreateDate?.startDate
+                ? moment(CreateDate.startDate).format()
+                : 1,
+              [Op.lte]: CreateDate?.endDate
+                ? moment(CreateDate.endDate).format()
+                : new Date(),
+            },
+            { [Op.eq]: null },
+          ],
         },
         LastModificationTime: {
-          [Op.gte]: updateDate?.startDate
-            ? moment(updateDate.startDate).format()
-            : 1,
-          [Op.lte]: updateDate?.endDate
-            ? moment(updateDate.endDate).format()
-            : new Date(),
+          [Op.or]: [
+            {
+              [Op.gte]: updateDate?.startDate
+                ? moment(updateDate.startDate).format()
+                : 1,
+              [Op.lte]: updateDate?.endDate
+                ? moment(updateDate.endDate).format()
+                : new Date(),
+            },
+            { [Op.eq]: null },
+          ],
         },
       },
     });
