@@ -18,6 +18,7 @@ tags:
   - name: Notification
   - name: Comment
   - name: Like
+  - name: Schedule
 paths:
   /api/register-partner:
     get:
@@ -762,6 +763,66 @@ paths:
               example:
                 UserId: 5
                 PostId: 38
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/schedule:
+    get:
+      tags:
+        - Schedule
+      summary: Get Schedule By Room Id & MonthYear
+      parameters:
+        - name: roomId
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: monthAndYear
+          in: query
+          schema:
+            type: string
+          example: 7-2022
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Schedule
+      summary: Update Schedule Daily By Room Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                PriceByDate: 700000
+                PriceByHour: 60000
+                DepositByDate: 30
+                DepositByHour: 50
+                PaymentByDate: true
+                PaymentByHour: true
+                CancelPriceByDate: 100
+                CancelPriceByHour: 100
+                AbsentPriceByDate: 100
+                AbsentPriceByHour: 100
+                FreeCancelByDate: Trước 5 ngày
+                FreeCancelByHour: Trước 3 ngày
+                Open: true
+      parameters:
+        - name: roomId
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: date
+          in: query
+          schema:
+            type: string
+          example: 1-7-2022
       responses:
         '200':
           description: Successful response
