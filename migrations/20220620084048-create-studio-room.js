@@ -23,10 +23,10 @@ module.exports = {
       Description: {
         type: Sequelize.STRING,
       },
-      Price: {
+      PriceByDate: {
         type: Sequelize.DOUBLE,
       },
-      Sales: {
+      PriceByHour: {
         type: Sequelize.DOUBLE,
       },
       PriceNote: {
