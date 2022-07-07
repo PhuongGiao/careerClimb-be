@@ -1244,45 +1244,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Update Schedule Daily By Room Id",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"PriceByDate\": 700000,\n    \"PriceByHour\": 60000,\n    \"DepositByDate\": 30,\n    \"DepositByHour\": 50,\n    \"PaymentByDate\": true,\n    \"PaymentByHour\": true,\n    \"CancelPriceByDate\": 100,\n    \"CancelPriceByHour\": 100,\n    \"AbsentPriceByDate\": 100,\n    \"AbsentPriceByHour\": 100,\n    \"FreeCancelByDate\": \"Trước 5 ngày\",\n    \"FreeCancelByHour\": \"Trước 3 ngày\",\n    \"Open\": true\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3003/api/schedule?roomId=1&date=1-7-2022",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3003",
-							"path": [
-								"api",
-								"schedule"
-							],
-							"query": [
-								{
-									"key": "roomId",
-									"value": "1"
-								},
-								{
-									"key": "date",
-									"value": "1-7-2022"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		}
