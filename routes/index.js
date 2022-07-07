@@ -13,6 +13,7 @@ const { router: commentRoute } = require("./commentRoute");
 const { router: likeRoute } = require("./likeRoute");
 const { router: scheduleRoute } = require("./scheduleRoute");
 const { router: authRoute } = require("./authRoute");
+const { router: adminNotificationKey } = require("./adminNotificationKey");
 
 const rootRouter = express.Router();
 
@@ -30,6 +31,7 @@ rootRouter.use("/comment", commentRoute);
 rootRouter.use("/like", likeRoute);
 rootRouter.use("/schedule", scheduleRoute);
 rootRouter.use("/auth", authRoute);
+rootRouter.use("/notification-key", adminNotificationKey);
 
 module.exports = {
   rootRouter,

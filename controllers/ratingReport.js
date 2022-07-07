@@ -112,10 +112,13 @@ exports.getDetailById = catchAsync(async (req, res) => {
       },
     ],
   });
-  res.status(200).send(detail);
+  const trueData = [detail.dataValues];
+  console.log(trueData);
+  res.status(200).json(ImageListDestructure(trueData)[0]);
 });
 
 exports.getRatingByPostId = catchAsync(async (req, res) => {
+  console.log(Boolean(req.query.des));
   if (req.query.rate) {
     let rate = await StudioPost.findOne({
       where: { Id: req.params.id },
@@ -134,7 +137,10 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
       ],
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
-    res.status(200).send(rate?.ratings);
+    const trueData = rate?.ratings.map((val) => val.dataValues);
+    res
+      .status(200)
+      .json({ success: true, data: ImageListDestructure(trueData) });
   } else if (Boolean(req.query.des)) {
     let rate = await StudioPost.findOne({
       where: { Id: req.params.id },
@@ -153,8 +159,11 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
       },
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
-    res.status(200).send(rate?.ratings);
-  } else if (Boolean(req.query.des)) {
+    const trueData = rate?.ratings.map((val) => val.dataValues);
+    res
+      .status(200)
+      .json({ success: true, data: ImageListDestructure(trueData) });
+  } else if (Boolean(req.query.image)) {
     let rate = await StudioPost.findOne({
       where: { Id: req.params.id },
       attributes: [],
@@ -170,13 +179,15 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
     rate?.ratings.map((item, idx) => {
       const image = `Image${idx + 1}`;
       const video = `Video${idx + 1}`;
-      console.log(item[image]);
       {
         item[image] || item[video] ? (list = [...list, item]) : "";
       }
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
-    res.status(200).send(list);
+    const trueData = list.map((val) => val.dataValues);
+    res
+      .status(200)
+      .json({ success: true, data: ImageListDestructure(trueData) });
   } else {
     let rate = await StudioPost.findOne({
       where: { Id: req.params.id },
@@ -189,6 +200,9 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
         },
       },
     });
-    res.status(200).send(rate.ratings);
+    const trueData = rate.ratings.map((val) => val.dataValues);
+    res
+      .status(200)
+      .json({ success: true, data: ImageListDestructure(trueData) });
   }
 });
