@@ -7,6 +7,7 @@ const cors = require("cors");
 const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const postmanToOpenApi = require("postman-to-openapi");
+const cookieParser = require("cookie-parser");
 
 const { AppBinaryObject, IdentifyImage } = require("./models");
 const catchAsync = require("./middlewares/async");
@@ -28,6 +29,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 const swaggerOptions = {
   swaggerDefinition: {
