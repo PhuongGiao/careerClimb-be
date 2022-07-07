@@ -1,123 +1,115 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('AbpUsers', {
+    await queryInterface.createTable("AbpUsers", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       AccessFailedCount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       AuthenticationSource: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       ConcurrencyStamp: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       CreationTime: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       CreatorUserId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       DeleterUserId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       DeletionTime: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       EmailAddress: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       EmailConfirmationCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       IsActive: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       IsDeleted: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       IsEmailConfirmed: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       IsLockoutEnabled: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       IsPhoneNumberConfirmed: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       IsTwoFactorEnabled: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       LastModificationTime: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       LastModifierUserId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       LockoutEndDateUtc: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       Name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       NormalizedEmailAddress: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       NormalizedUserName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       Password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       PasswordResetCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       PhoneNumber: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       ProfilePictureId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       SecurityStamp: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       ShouldChangePasswordOnNextLogin: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       Surname: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       TenantId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       UserName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       SignInToken: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       SignInTokenExpireTimeUtc: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       GoogleAuthenticatorKey: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('AbpUsers');
-  }
+    await queryInterface.dropTable("AbpUsers");
+  },
 };

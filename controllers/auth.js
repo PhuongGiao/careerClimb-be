@@ -7,24 +7,25 @@ exports.login = async (req, res) => {
   try {
     const user = await AbpUser.findOne({
       where: {
-        email: req.body.email,
+        EmailAddress: req.body.email,
       },
     });
     if (!user) {
-      throw new ApiError("404", "NOT FOUND !!");
+      throw new ApiError(404, "NOT FOUND !!");
     }
+    console.log(user.dataValues.Password);
     const isPasswordCorrect = await identity.verify(
       req.body.password,
-      user.Password
+      user.dataValues.Password
     );
 
     if (!isPasswordCorrect) {
-      throw new ApiError("400", "Wrong password or username");
+      throw new ApiError(400, "Wrong password or username");
     }
-
     const token = jwt.sign(
       { id: user.id, Name: user.Name },
-      process.env.SECRET
+      process.env.SECRET,
+      { expiresIn: 86164 }
     );
 
     const {
@@ -43,6 +44,6 @@ exports.login = async (req, res) => {
       .status(200)
       .send({ ...otherDetails });
   } catch (error) {
-    throw new ApiError("400", error);
+    throw new ApiError(400, error);
   }
 };
