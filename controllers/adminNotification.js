@@ -153,13 +153,13 @@ exports.getNotificationById = catchAsync(async (req, res) => {
 exports.filterNotification = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { createdAt, SendingTime, Status, Type } = req.body;
-  console.log(req.body);
   if (
     Status ||
     createdAt.startDate ||
     createdAt.endDate ||
     SendingTime.startDate ||
-    SendingTime.endDate || Type
+    SendingTime.endDate ||
+    Type
   ) {
     const data = await Pagination(AdminNotification, page, limit, {
       where: {
