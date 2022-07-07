@@ -172,12 +172,12 @@ exports.getBookingUserById = catchAsync(async (req, res) => {
 exports.filterBookingUser = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { CreateDate, updateDate, keyString } = req.body;
-  console.log(keyString);
+  console.log(req.body);
   if (
     (!CreateDate?.endDate || !CreateDate?.startDate) &&
     (updateDate?.endDate || updateDate?.startDate)
   ) {
-    const data = await Pagination(BookingUser, page, limit, {
+    const bookingUser = await Pagination(BookingUser, page, limit, {
       where: {
         [Op.or]: {
           Email: {
@@ -213,7 +213,29 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
         },
       },
     });
-    return res.status(200).json({ ...data });
+    const data = {
+      ...bookingUser,
+      data: await Promise.all(
+        bookingUser.data.map(async (val) => {
+          const count = await StudioBooking.count({
+            where: { BookingUserId: val.id },
+          });
+          return {
+            id: val.id,
+            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+            Phone: val.Phone,
+            Email: val.Email,
+            NumberOfBooking: count,
+            CreationTime: val.CreationTime,
+            LastModificationTime: val.LastModificationTime,
+            IsDeleted: val.IsDeleted,
+          };
+        })
+      ),
+    };
+    return res.status(200).json({
+      ...data,
+    });
   } else if (
     keyString ||
     CreateDate?.startDate ||
@@ -221,7 +243,7 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
     updateDate?.startDate ||
     updateDate?.endDate
   ) {
-    const data = await Pagination(BookingUser, page, limit, {
+    const bookingUser = await Pagination(BookingUser, page, limit, {
       where: {
         [Op.or]: {
           Email: {
@@ -258,10 +280,30 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
         },
       },
     });
-    res.status(200).json({ ...data });
+    const data = {
+      ...bookingUser,
+      data: await Promise.all(
+        bookingUser.data.map(async (val) => {
+          const count = await StudioBooking.count({
+            where: { BookingUserId: val.id },
+          });
+          return {
+            id: val.id,
+            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+            Phone: val.Phone,
+            Email: val.Email,
+            NumberOfBooking: count,
+            CreationTime: val.CreationTime,
+            LastModificationTime: val.LastModificationTime,
+            IsDeleted: val.IsDeleted,
+          };
+        })
+      ),
+    };
+    res.status(200).json({
+      ...data,
+    });
   } else {
-    // const data = await Pagination(BookingUser, page, limit);
-    // res.status(200).json({ ...data });
     const bookingUser = await Pagination(BookingUser, page, limit);
 
     const data = {

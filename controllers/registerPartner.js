@@ -262,6 +262,7 @@ exports.filterPartner = catchAsync(async (req, res) => {
         },
       },
     });
+
     const data = {
       ...partner,
       data: await Promise.all(
@@ -286,8 +287,28 @@ exports.filterPartner = catchAsync(async (req, res) => {
       ...data,
     });
   } else {
-    const data = await Pagination(RegisterPartner, page, limit);
-    res.status(200).json({
+    const partner = await Pagination(RegisterPartner, page, limit);
+    const data = {
+      ...partner,
+      data: await Promise.all(
+        partner.data.map(async (val) => {
+          const count = await StudioPost.count({
+            where: { CreatorUserId: val.id },
+          });
+          return {
+            id: val.id,
+            IdentifierCode: val.Phone ? `P${val.Phone}` : `P0000000000`,
+            Phone: val.Phone,
+            Email: val.Email,
+            NumberOfPost: count,
+            CreationTime: val.CreationTime,
+            LastModificationTime: val.LastModificationTime,
+            IsDeleted: val.IsDeleted,
+          };
+        })
+      ),
+    };
+    return res.status(200).json({
       ...data,
     });
   }

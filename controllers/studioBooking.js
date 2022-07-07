@@ -74,7 +74,7 @@ exports.updateBookingById = catchAsync(async (req, res) => {
       OrderByTimeTo,
       OrderByDateFrom,
       OrderByDateTo,
-      PaymentType,
+      BookingStatus,
       OrderNote,
       BookingUserName,
       BookingPhone,
@@ -106,12 +106,16 @@ exports.updateBookingById = catchAsync(async (req, res) => {
 
 exports.filterBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { OrderDate, IsPayDeposit, PaymentType } = req.body;
+  const { OrderDate, IsPayDeposit, BookingStatus } = req.body;
+  // console.log("first")
+  // const statusBooking = BookingStatus?.toString() == "0";
+  // console.log(statusBooking)
+
   if (
     OrderDate?.startDate ||
     OrderDate?.endDate ||
     typeof IsPayDeposit == "boolean" ||
-    PaymentType
+    BookingStatus
   ) {
     const listBooking = await Pagination(StudioBooking, page, limit, {
       where: {
@@ -126,10 +130,10 @@ exports.filterBooking = catchAsync(async (req, res) => {
         IsPayDeposit:
           typeof IsPayDeposit == "boolean"
             ? { [Op.in]: [IsPayDeposit] }
-            : { [Op.in]: [true, false] },
+            : { [Op.notIn]: "" },
 
-        PaymentType: PaymentType
-          ? { [Op.in]: [PaymentType] }
+        BookingStatus: BookingStatus
+          ? { [Op.eq]: [BookingStatus] }
           : { [Op.notIn]: "" },
       },
     });
