@@ -152,19 +152,24 @@ exports.getNotificationById = catchAsync(async (req, res) => {
 
 exports.filterNotification = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { createdAt, SendingTime, Status, Type } = req.body;
+  const { createdAt, SendingTime, Status, Type, userType } = req.body;
   console.log(req.body);
+
+  if (!userType) {
+    throw new ApiError("404", "userType is require!");
+  }
   if (
     Status ||
     createdAt.startDate ||
     createdAt.endDate ||
     SendingTime.startDate ||
-    SendingTime.endDate || Type
+    SendingTime.endDate ||
+    Type
   ) {
     const data = await Pagination(AdminNotification, page, limit, {
       where: {
         Exception: {
-          [Op.like]: "%:0%",
+          [Op.like]: `%:${userType}%`,
         },
         Status: Status ? { [Op.in]: [Status] } : { [Op.notIn]: "" },
         Type: Type ? { [Op.in]: [Type] } : { [Op.notIn]: "" },
@@ -191,7 +196,7 @@ exports.filterNotification = catchAsync(async (req, res) => {
     const data = await Pagination(AdminNotification, page, limit, {
       where: {
         Exception: {
-          [Op.like]: "%:1%",
+          [Op.like]: `%:${userType}%`,
         },
       },
     });
