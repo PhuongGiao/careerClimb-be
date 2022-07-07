@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/register-partner?page=3&limit=10",
+							"raw": "http://localhost:3003/api/register-partner?page=1&limit=100",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -28,11 +28,11 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "3"
+									"value": "1"
 								},
 								{
 									"key": "limit",
-									"value": "10"
+									"value": "100"
 								}
 							]
 						}
@@ -165,7 +165,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"keyString\": \"\",\n    \"CreateDate\": {\n        \"startDate\": \"2021-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2022-01-29T03:29:36.115Z\",\n        \"endDate\": \"2022-07-02T03:29:36.115Z\"\n    }\n}",
+							"raw": "{\n    \"keyString\": \"Studio\",\n    \"CreateDate\": {\n        \"startDate\": \"2021-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2022-01-29T03:29:36.115Z\",\n        \"endDate\": \"2022-07-02T03:29:36.115Z\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -205,7 +205,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/booking-user?page=0&limit=0",
+							"raw": "http://localhost:3003/api/booking-user?page=1&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -218,11 +218,11 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "1"
 								},
 								{
 									"key": "limit",
-									"value": "0"
+									"value": "10"
 								}
 							]
 						}
@@ -278,7 +278,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"keyString\": \"\",\n    \"CreateDate\": {\n        \"startDate\": \"2020-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2022-03-30T17:39:08.081Z\",\n        \"endDate\": \"2023-01-30T17:39:08.081Z\"\n    }\n    \n}",
+							"raw": "{\n    \"keyString\": \"t\",\n    \"CreateDate\": {\n        \"startDate\": \"2020-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2021-03-30T17:39:08.081Z\",\n        \"endDate\": \"2023-01-30T17:39:08.081Z\"\n    }\n    \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -286,13 +286,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://bookingstudio.herokuapp.com/api/booking-user/?page=1&limit=10",
-							"protocol": "https",
+							"raw": "http://localhost:3003/api/booking-user/?page=1&limit=10",
+							"protocol": "http",
 							"host": [
-								"bookingstudio",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "3003",
 							"path": [
 								"api",
 								"booking-user",
@@ -442,7 +441,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"Name\": \"\",\n    \"CreateDate\": {\n        \"startDate\": \"2021-11-30T17:39:08.081Z\",\n        \"endDate\": \"2021-1-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2021-06-02T03:29:36.115Z\",\n        \"endDate\": \"2022-07-02T03:29:36.115Z\"\n    }\n}",
+							"raw": "{\n    \"Name\":\"\",\n    \"CreateDate\": {\n        \"startDate\": \"2020-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n         \"startDate\": \"2021-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -563,7 +562,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"OrderDate\": {\n        \"OrderByDateFrom\": \"2022-01-12T00:00:00.000Z\",\n        \"OrderByDateTo\": \"2022-02-12T00:00:00.000Z\"\n    },\n    \"IsPayDeposit\": false,\n    \"PaymentType\": null,\n    \"IsDeleted\": false\n}",
+							"raw": "{\n    \"OrderDate\": {\n        \"startDate\": \"2022-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-05-07T17:16:23.528Z\"\n       \n    },\n    \"IsPayDeposit\": false,\n    \"PaymentType\": null\n    \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -864,7 +863,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/rating&report/3",
+							"raw": "http://localhost:3003/api/rating&report/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -873,7 +872,7 @@
 							"path": [
 								"api",
 								"rating&report",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -1007,18 +1006,18 @@
 								},
 								{
 									"key": "SendingTime",
-									"value": "2021-01-30T17:39:08.081Z",
+									"value": "2022-07-06T07:22:03.962Z",
 									"type": "text"
 								},
 								{
 									"key": "Exception",
-									"value": "1,2,3,4,5,6,7:1",
+									"value": "83,84,85:1",
 									"type": "text"
 								},
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/Users/voduy/Desktop/Ảnh chụp Màn hình 2022-06-30 lúc 16.20.06.png"
+									"src": "/Users/hiephanguyen01/Desktop/Ảnh chụp Màn hình 2022-07-01 lúc 20.38.56.png"
 								}
 							]
 						},
@@ -1079,6 +1078,46 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "fillterNotification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"createdAt\": {\n       \"startDate\": \"\",\n        \"endDate\": \"\"\n    },\n    \"Type\":\"2\",\n    \"Status\":\"\",\n    \"SendingTime\": {\n       \"startDate\": \"\",\n        \"endDate\": \"\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/notification/fillter?limit=10&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"notification",
+								"fillter"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1131,6 +1170,41 @@
 								"api",
 								"comment",
 								"38"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Like",
+			"item": [
+				{
+					"name": "createLike",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"UserId\": 5,\n    \"PostId\": 38\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/like/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"like",
+								""
 							]
 						}
 					},
