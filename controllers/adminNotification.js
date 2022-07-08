@@ -153,9 +153,7 @@ exports.getNotificationById = catchAsync(async (req, res) => {
 exports.filterNotification = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { createdAt, SendingTime, Status, Type, userType } = req.body;
-  console.log(req.body);
-
-  if (!userType) {
+  if (userType === null || userType === undefined || userType === "") {
     throw new ApiError("404", "userType is require!");
   }
   if (
