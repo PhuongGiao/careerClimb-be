@@ -1,6 +1,9 @@
 const { AdminNotification } = require("../models");
 const { AppBinaryObject } = require("../models");
 const { NotificationToken } = require("../models");
+const { RegisterPartner } = require("../models");
+const { BookingUser } = require("../models");
+
 const catchAsync = require("../middlewares/async");
 const ApiError = require("../utils/ApiError");
 const Pagination = require("../utils/pagination");
@@ -101,7 +104,10 @@ exports.createNotification = catchAsync(async (req, res) => {
       const time =
         new Date(notificationCreation.dataValues.SendingTime) - new Date();
       setTimeout(async () => {
-        if (android.length) {
+        const checkingStatus = await AdminNotification.findByPk(
+          notificationCreation.dataValues.id
+        );
+        if (android.length && checkingStatus.dataValues.Status !== 2) {
           await sendAndroid(
             [
               "fFTWmQN3TICS86ih9HEWzT:APA91bFa8ZPuSeTROgmGlmjpH4GHkJRBKaCT60Ij66D2hp4X8p6Wi96XjCWnrYUhEyxxuMnVw2V9gEbq7CUp8kq6zqclPlhxsPDKxNYhk_NDCE08wQ0oyTpmnO6J2WEhFpy11QSyn7Gv",
@@ -109,7 +115,7 @@ exports.createNotification = catchAsync(async (req, res) => {
             notificationCreation.dataValues.Title
           );
         }
-        if (ios.length) {
+        if (ios.length && checkingStatus.dataValues.Status !== 2) {
           await sendIOS(
             [
               "34578769a4cf52e93ebee7d207604462f345d88f039bccb3ba10010231c43e3d",
@@ -133,6 +139,9 @@ exports.cancelNotification = catchAsync(async (req, res) => {
     {
       where: {
         id,
+        Status: {
+          [Op.not]: 0,
+        },
       },
     }
   );
@@ -200,4 +209,29 @@ exports.filterNotification = catchAsync(async (req, res) => {
     });
     res.status(200).json({ ...data });
   }
+});
+
+exports.getAllUser = catchAsync(async (req, res) => {
+  const { option } = req.query;
+  let data;
+  if (option === "0") {
+    const list = await RegisterPartner.findAll();
+    data = list.map((val) => ({
+      id: val.dataValues.id,
+      Phone: val.dataValues.Phone,
+      Email: val.dataValues.Email,
+      IsDeleted: val.dataValues.IsDeleted,
+    }));
+  } else if (option === "1") {
+    const list = await BookingUser.findAll();
+    data = list.map((val) => ({
+      id: val.dataValues.id,
+      Phone: val.dataValues.Phone,
+      Email: val.dataValues.Email,
+      IsDeleted: val.dataValues.IsDeleted,
+    }));
+  } else {
+    throw new ApiError(500, "Invalid option");
+  }
+  res.status(200).json(data);
 });
