@@ -3,7 +3,7 @@ const catchAsync = require("../middlewares/async");
 
 exports.updateAdminNotificationKey = catchAsync(async (req, res) => {
   const { GoogleApiFCM, AuthKey, P12Password, P12BundleId } = req.body;
-  const reponse = await AdminNotificationKey.update(
+  await AdminNotificationKey.update(
     {
       GoogleApiFCM,
       AuthKey,
