@@ -2,7 +2,8 @@ const jwt = require("jsonwebtoken");
 const ApiError = require("../utils/ApiError");
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.cookies.access_token;
+  const token = req.header("access_token");
+  // const token = req.cookies.access_token;
   if (!token) {
     throw new ApiError(401, "You are not authenticated!");
   }

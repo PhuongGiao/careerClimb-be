@@ -19,9 +19,9 @@ const { verifyToken } = require("../middlewares/verifyToken");
 const rootRouter = express.Router();
 
 rootRouter.use("/province", districtRouter);
-rootRouter.use("/booking-user", bookingUserRouter);
+rootRouter.use("/booking-user", verifyToken,bookingUserRouter);
 rootRouter.use("/studio-post", studioPostRouter);
-rootRouter.use("/register-partner", registerPartnerRouter);
+rootRouter.use("/register-partner", verifyToken,registerPartnerRouter);
 rootRouter.use("/booking", bookingRouter);
 rootRouter.use("/filter", filterRouter);
 rootRouter.use("/room", room);
