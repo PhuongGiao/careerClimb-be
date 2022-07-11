@@ -19,6 +19,9 @@ tags:
   - name: Comment
   - name: Like
   - name: Schedule
+  - name: Auth
+  - name: Notification Key
+  - name: Conversation
 paths:
   /api/register-partner:
     get:
@@ -564,11 +567,17 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/rating&report/rating/9:
+  /api/rating&report/rating/6:
     get:
       tags:
         - Rating And Report
       summary: getRatingByPostId
+      parameters:
+        - name: rate
+          in: query
+          schema:
+            type: integer
+          example: '4'
       responses:
         '200':
           description: Successful response
@@ -584,7 +593,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/notification:
+  /api/notification/noti:
     get:
       tags:
         - Notification
@@ -644,7 +653,7 @@ paths:
                   example: '2'
                 SendingTime:
                   type: number
-                  example: '2022-07-06T07:22:03.962Z'
+                  example: '2022-07-10T06:54:05.582Z'
                 Exception:
                   type: string
                   example: 83,84,85:1
@@ -656,7 +665,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /api/notification/8:
+  /api/notification/92:
     patch:
       tags:
         - Notification
@@ -668,6 +677,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /api/notification/noti/8:
     get:
       tags:
         - Notification
@@ -689,13 +699,14 @@ paths:
               type: object
               example:
                 createdAt:
-                  startDate: ''
-                  endDate: ''
-                Type: '2'
-                Status: ''
+                  startDate: '2020-01-30T17:39:08.081Z'
+                  endDate: '2022-07-30T17:39:08.081Z'
+                Type: ''
+                Status: '0'
                 SendingTime:
                   startDate: ''
                   endDate: ''
+                userType: '0'
       parameters:
         - name: limit
           in: query
@@ -707,6 +718,22 @@ paths:
           schema:
             type: integer
           example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notification/user:
+    get:
+      tags:
+        - Notification
+      summary: Get all user
+      parameters:
+        - name: option
+          in: query
+          schema:
+            type: integer
+          example: '0'
       responses:
         '200':
           description: Successful response
@@ -784,6 +811,143 @@ paths:
           schema:
             type: string
           example: 7-2022
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: superadmin@admin.com
+                password: BookingStudio1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notification-key:
+    patch:
+      tags:
+        - Notification Key
+      summary: Update Notification Key
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                GoogleApiFCM:
+                  type: string
+                  example: https://fcm.googleapis.com/fcm/send
+                AuthKey:
+                  type: string
+                  example: >-
+                    AAAAnpSURn4:APA91bGz8UBFIaROytrBmM2zVWNMG34Bo3fpXVPtmps-LxMk5u0ZXRsVadkaV2koxfnvP1gIid9sx2IAkFycy6LdRFa--WbTvK8yvYEQMuaG1XnvKTxGy1VGZQjGGZ4zP_xE8q1EEMmX
+                P12Certificate:
+                  type: string
+                  format: binary
+                P12Password:
+                  type: string
+                  example: Vnplus@2023
+                P12BundleId:
+                  type: string
+                  example: com.vnplus.bookingstudio
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/chat/conversation:
+    post:
+      tags:
+        - Conversation
+      summary: create conversation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                withPartner: true
+                Chatter: 10
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Conversation
+      summary: get all conversation
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: option
+          in: query
+          schema:
+            type: integer
+          example: '0'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/chat/message:
+    post:
+      tags:
+        - Conversation
+      summary: create message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                ConversationId: 1
+                Content: Thì ra, mùa xuân hoa nở, là vì em
+                Admin: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Conversation
+      summary: get all message by conversation id
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: ConversationId
+          in: query
+          schema:
+            type: integer
+          example: '1'
       responses:
         '200':
           description: Successful response
