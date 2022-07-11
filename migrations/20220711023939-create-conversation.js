@@ -8,8 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Participants: {
-        type: Sequelize.STRING
+      withPartner: {
+        type: Sequelize.BOOLEAN
+      },
+      Chatter: {
+        type: Sequelize.BIGINT
       },
       createdAt: {
         allowNull: false,
