@@ -4,6 +4,7 @@ const ApiError = require("../utils/ApiError");
 const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
+  console.log("dang nhap -dsa-ds-a-dsa-d-sa-dsa-s-da");
   try {
     const user = await AbpUser.findOne({
       where: {
@@ -37,12 +38,7 @@ exports.login = async (req, res) => {
       ConcurrencyStamp,
       ...otherDetails
     } = user.dataValues;
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .send({ ...otherDetails });
+    res.status(200).send({ ...otherDetails, token });
   } catch (error) {
     throw new ApiError(400, error);
   }

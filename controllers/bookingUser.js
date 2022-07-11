@@ -171,8 +171,9 @@ exports.getBookingUserById = catchAsync(async (req, res) => {
 
 exports.filterBookingUser = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { CreateDate, updateDate, keyString } = req.body;
+  const { CreateDate, updateDate, keyString, status } = req.body;
   console.log(req.body);
+  let statusNoti = status.toString() == "0" ? true : status;
   if (
     (!CreateDate?.endDate || !CreateDate?.startDate) &&
     (updateDate?.endDate || updateDate?.startDate)
@@ -187,6 +188,8 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
             [Op.like]: `%${keyString}%`,
           },
         },
+        Status: statusNoti ? { [Op.in]: [Status] } : { [Op.notIn]: "" },
+
         CreationTime: {
           [Op.or]: [
             {
@@ -241,7 +244,7 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
     CreateDate?.startDate ||
     CreateDate?.endDate ||
     updateDate?.startDate ||
-    updateDate?.endDate
+    updateDate?.endDate|| statusNoti
   ) {
     const bookingUser = await Pagination(BookingUser, page, limit, {
       where: {
@@ -253,6 +256,7 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
             [Op.like]: `%${keyString}%`,
           },
         },
+        Status: statusNoti ? { [Op.in]: [status] } : { [Op.notIn]: "" },
         CreationTime: {
           [Op.or]: [
             {

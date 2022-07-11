@@ -162,7 +162,8 @@ exports.updatePartnerById = catchAsync(async (req, res) => {
 
 exports.filterPartner = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { CreateDate, updateDate, keyString } = req.body;
+  const { CreateDate, updateDate, keyString, IsDeleted } = req.body;
+  let IsDeletedNoti = IsDeleted.toString() == "0" ? true : IsDeleted;
   if (
     (!CreateDate?.endDate || !CreateDate?.startDate) &&
     (updateDate?.endDate || updateDate?.startDate)
@@ -177,6 +178,9 @@ exports.filterPartner = catchAsync(async (req, res) => {
             [Op.like]: keyString ? `%${keyString}%` : "%",
           },
         },
+        IsDeleted: IsDeletedNoti
+          ? { [Op.in]: [IsDeleted] }
+          : { [Op.notIn]: "" },
         CreationTime: {
           [Op.gte]: CreateDate?.startDate
             ? moment(CreateDate.startDate).format()
@@ -227,7 +231,8 @@ exports.filterPartner = catchAsync(async (req, res) => {
     CreateDate?.startDate ||
     CreateDate?.endDate ||
     updateDate?.startDate ||
-    updateDate?.endDate
+    updateDate?.endDate ||
+    IsDeletedNoti
   ) {
     const partner = await Pagination(RegisterPartner, page, limit, {
       where: {
@@ -239,6 +244,9 @@ exports.filterPartner = catchAsync(async (req, res) => {
             [Op.like]: keyString ? `%${keyString}%` : "%",
           },
         },
+        IsDeleted: IsDeletedNoti
+          ? { [Op.in]: [IsDeleted] }
+          : { [Op.notIn]: "" },
         CreationTime: {
           [Op.gte]: CreateDate?.startDate
             ? moment(CreateDate.startDate).format()

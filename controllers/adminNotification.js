@@ -165,8 +165,10 @@ exports.filterNotification = catchAsync(async (req, res) => {
   if (userType === null || userType === undefined || userType === "") {
     throw new ApiError("404", "userType is require!");
   }
+  let statusNoti = Status.toString() == "0" ? true : Status;
+
   if (
-    Status ||
+    statusNoti ||
     createdAt.startDate ||
     createdAt.endDate ||
     SendingTime.startDate ||
@@ -178,7 +180,7 @@ exports.filterNotification = catchAsync(async (req, res) => {
         Exception: {
           [Op.like]: `%:${userType}%`,
         },
-        Status: Status ? { [Op.in]: [Status] } : { [Op.notIn]: "" },
+        Status: statusNoti ? { [Op.in]: [Status] } : { [Op.notIn]: "" },
         Type: Type ? { [Op.in]: [Type] } : { [Op.notIn]: "" },
         createdAt: {
           [Op.gte]: createdAt?.startDate
