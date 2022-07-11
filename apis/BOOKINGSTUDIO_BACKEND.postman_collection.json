@@ -884,7 +884,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/rating&report/rating/9",
+							"raw": "http://localhost:3003/api/rating&report/rating/6?rate=4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -894,22 +894,21 @@
 								"api",
 								"rating&report",
 								"rating",
-								"9"
+								"6"
 							],
 							"query": [
 								{
 									"key": "rate",
-									"value": "5",
-									"disabled": true
+									"value": "4"
 								},
 								{
 									"key": "des",
-									"value": "false",
+									"value": "true",
 									"disabled": true
 								},
 								{
 									"key": "image",
-									"value": null,
+									"value": "true",
 									"disabled": true
 								}
 							]
@@ -953,7 +952,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/notification?page=1&limit=10&option=1",
+							"raw": "http://localhost:3003/api/notification/noti?page=1&limit=10&option=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -961,7 +960,8 @@
 							"port": "3003",
 							"path": [
 								"api",
-								"notification"
+								"notification",
+								"noti"
 							],
 							"query": [
 								{
@@ -1006,7 +1006,7 @@
 								},
 								{
 									"key": "SendingTime",
-									"value": "2022-07-06T07:22:03.962Z",
+									"value": "2022-07-10T06:54:05.582Z",
 									"type": "text"
 								},
 								{
@@ -1017,7 +1017,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/Users/hiephanguyen01/Desktop/Ảnh chụp Màn hình 2022-07-01 lúc 20.38.56.png"
+									"src": "/Users/voduy/Downloads/Mask Group 30.png"
 								}
 							]
 						},
@@ -1043,7 +1043,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/notification/8",
+							"raw": "http://localhost:3003/api/notification/92",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1052,7 +1052,7 @@
 							"path": [
 								"api",
 								"notification",
-								"8"
+								"92"
 							]
 						}
 					},
@@ -1064,7 +1064,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/notification/8",
+							"raw": "http://localhost:3003/api/notification/noti/8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1073,6 +1073,7 @@
 							"path": [
 								"api",
 								"notification",
+								"noti",
 								"8"
 							]
 						}
@@ -1086,7 +1087,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"createdAt\": {\n       \"startDate\": \"\",\n        \"endDate\": \"\"\n    },\n    \"Type\":\"2\",\n    \"Status\":\"\",\n    \"SendingTime\": {\n       \"startDate\": \"\",\n        \"endDate\": \"\"\n    }\n}",
+							"raw": "{\n    \"createdAt\": {\n        \"startDate\": \"2020-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-07-30T17:39:08.081Z\"\n    },\n    \"Type\": \"\",\n    \"Status\": \"0\",\n    \"SendingTime\": {\n        \"startDate\": \"\",\n        \"endDate\": \"\"\n    },\n    \"userType\": \"0\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1113,6 +1114,33 @@
 								{
 									"key": "page",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/notification/user?option=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"notification",
+								"user"
+							],
+							"query": [
+								{
+									"key": "option",
+									"value": "0"
 								}
 							]
 						}
@@ -1239,6 +1267,231 @@
 								{
 									"key": "monthAndYear",
 									"value": "7-2022"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"superadmin@admin.com\",\n    \"password\":\"BookingStudio1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification Key",
+			"item": [
+				{
+					"name": "Update Notification Key",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "GoogleApiFCM",
+									"value": "https://fcm.googleapis.com/fcm/send",
+									"type": "text"
+								},
+								{
+									"key": "AuthKey",
+									"value": "AAAAnpSURn4:APA91bGz8UBFIaROytrBmM2zVWNMG34Bo3fpXVPtmps-LxMk5u0ZXRsVadkaV2koxfnvP1gIid9sx2IAkFycy6LdRFa--WbTvK8yvYEQMuaG1XnvKTxGy1VGZQjGGZ4zP_xE8q1EEMmX",
+									"type": "text"
+								},
+								{
+									"key": "P12Certificate",
+									"type": "file",
+									"src": "/Users/voduy/Downloads/CertificatesBookingStudio2023.p12"
+								},
+								{
+									"key": "P12Password",
+									"value": "Vnplus@2023",
+									"type": "text"
+								},
+								{
+									"key": "P12BundleId",
+									"value": "com.vnplus.bookingstudio",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/notification-key",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"notification-key"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conversation",
+			"item": [
+				{
+					"name": "create conversation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"withPartner\":true,\n    \"Chatter\":10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/chat/conversation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"chat",
+								"conversation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ConversationId\":1,\n    \"Content\":\"Thì ra, mùa xuân hoa nở, là vì em\",\n    \"Admin\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/chat/message",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"chat",
+								"message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all conversation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/chat/conversation?page=1&limit=10&option=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"chat",
+								"conversation"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "option",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all message by conversation id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/chat/message?page=1&limit=10&ConversationId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"chat",
+								"message"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "ConversationId",
+									"value": "1"
 								}
 							]
 						}
