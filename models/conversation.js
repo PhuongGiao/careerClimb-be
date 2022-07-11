@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Conversation.init({
-    Participants: DataTypes.STRING
+    withPartner: DataTypes.BOOLEAN,
+    Chatter: DataTypes.BIGINT
   }, {
     sequelize,
     modelName: 'Conversation',

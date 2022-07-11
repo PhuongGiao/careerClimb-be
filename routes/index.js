@@ -14,6 +14,8 @@ const { router: likeRoute } = require("./likeRoute");
 const { router: scheduleRoute } = require("./scheduleRoute");
 const { router: authRoute } = require("./authRoute");
 const { router: adminNotificationKey } = require("./adminNotificationKey");
+const { router: chatRoute } = require("./chatRoute");
+
 const { verifyToken } = require("../middlewares/verifyToken");
 
 const rootRouter = express.Router();
@@ -33,6 +35,7 @@ rootRouter.use("/like", likeRoute);
 rootRouter.use("/schedule", scheduleRoute);
 rootRouter.use("/notification-key", adminNotificationKey);
 rootRouter.use("/auth", authRoute);
+rootRouter.use("/chat", chatRoute);
 
 module.exports = {
   rootRouter,
