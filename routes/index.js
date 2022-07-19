@@ -15,12 +15,12 @@ const { router: scheduleRoute } = require("./scheduleRoute");
 const { router: authRoute } = require("./authRoute");
 const { router: adminNotificationKey } = require("./adminNotificationKey");
 const { router: chatRoute } = require("./chatRoute");
-
+const {router: provincesRouter} = require("./provincesRoute")
 const { verifyToken } = require("../middlewares/verifyToken");
 
 const rootRouter = express.Router();
 
-rootRouter.use("/province", districtRouter);
+
 rootRouter.use("/booking-user",bookingUserRouter);
 rootRouter.use("/studio-post", studioPostRouter);
 rootRouter.use("/register-partner",registerPartnerRouter);
@@ -36,7 +36,8 @@ rootRouter.use("/schedule", scheduleRoute);
 rootRouter.use("/notification-key", adminNotificationKey);
 rootRouter.use("/auth", authRoute);
 rootRouter.use("/chat", chatRoute);
-
+rootRouter.use("/provinces",provincesRouter);
+rootRouter.use("/districts",districtRouter)
 module.exports = {
   rootRouter,
 };
