@@ -16,6 +16,7 @@ const { router: authRoute } = require("./authRoute");
 const { router: adminNotificationKey } = require("./adminNotificationKey");
 const { router: chatRoute } = require("./chatRoute");
 const {router: provincesRouter} = require("./provincesRoute")
+const {router:wardsRouter} = require("./wardRoute")
 const { verifyToken } = require("../middlewares/verifyToken");
 
 const rootRouter = express.Router();
@@ -38,6 +39,7 @@ rootRouter.use("/auth", authRoute);
 rootRouter.use("/chat", chatRoute);
 rootRouter.use("/provinces",provincesRouter);
 rootRouter.use("/districts",districtRouter)
+rootRouter.use("/wards",wardsRouter)
 module.exports = {
   rootRouter,
 };

@@ -59,6 +59,6 @@ exports.updateProvince= catchAsync(async (req,res)=> {
         const provinceUpdated = await province.save()
         res.status(200).send(provinceUpdated) 
     }else{
-        res.status(200).send("not found")
+        res.status(404).send("not found")
     }
 })
