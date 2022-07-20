@@ -8,12 +8,10 @@ const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const postmanToOpenApi = require("postman-to-openapi");
 const cookieParser = require("cookie-parser");
-
 const { AppBinaryObject, IdentifyImage } = require("./models");
 const catchAsync = require("./middlewares/async");
 const ApiError = require("./utils/ApiError");
 const fs = require("fs");
-
 // postman
 const postmanCollection =
   "./apis/BOOKINGSTUDIO_BACKEND.postman_collection.json";
@@ -36,7 +34,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    
     methods: ["GET", "POST"],
   },
 });
@@ -55,12 +53,9 @@ const swaggerOptions = {
   },
   apis: ["./apis/collection.yml"],
 };
-
 const swaggerDocs = swaggerJsDOc(swaggerOptions);
-
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api", rootRouter);
-
 app.get(
   "/image/:id",
   catchAsync(async (req, res) => {
@@ -71,7 +66,6 @@ app.get(
     res.send(Buffer.from(data.dataValues.Bytes));
   })
 );
-
 app.get(
   "/image-license/:id",
   catchAsync(async (req, res) => {
@@ -86,23 +80,17 @@ app.get(
     res.send(Buffer.from(data.dataValues.Bytes));
   })
 );
-
 app.use(catchError);
-
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
-  });
+  socket.join([1,2,3])
   socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
+    socket.to(data.ConversationId).emit("receive_message", data);
   });
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });
 });
-
 server.listen(process.env.PORT || 3001, async () => {
   try {
     await sequelize.authenticate();
