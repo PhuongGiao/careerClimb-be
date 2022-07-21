@@ -8,6 +8,7 @@ const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const postmanToOpenApi = require("postman-to-openapi");
 const cookieParser = require("cookie-parser");
+const stream = require("stream");
 
 const { AppBinaryObject, IdentifyImage, CssFile } = require("./models");
 const catchAsync = require("./middlewares/async");
@@ -77,15 +78,10 @@ app.get(
     if (!data) {
       throw new ApiError(404, "Image not found");
     }
-    res.set(
-      "Content-disposition",
-      "attachment; filename=" + data.dataValues.Name
-    );
-    res.set("Content-Type", "text/plain");
-    res.send(Buffer.from(data.dataValues.CssFile));
+    var bufferStream = new stream.PassThrough();
+    bufferStream.end(new Buffer(data.dataValues.CssFile)).pipe(res);
   })
 );
-
 app.use(catchError);
 app.listen(process.env.PORT || 3000, async () => {
   try {
