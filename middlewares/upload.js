@@ -3,7 +3,16 @@ const path = require("path");
 
 const fileFilter = (req, file, cb) => {
   //check extension trc khi upload
-  const allowed = [".jpg", ".png", ".gif", ".jpeg", ".p12", ".mp4"];
+  const allowed = [
+    ".jpg",
+    ".png",
+    ".gif",
+    ".jpeg",
+    ".p12",
+    ".mp4",
+    ".css",
+    "scss",
+  ];
   const fileExtension = path.extname(file.originalname);
   const regex = new RegExp(`(${allowed.join("|")})$`, "i");
   if (regex.test(fileExtension)) {

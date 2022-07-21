@@ -14,7 +14,6 @@ tags:
   - name: Export Data
   - name: Post(Dạo)
   - name: Rating And Report
-  - name: Identify Image (CMND & GPKD)
   - name: Notification
   - name: Comment
   - name: Like
@@ -22,6 +21,8 @@ tags:
   - name: Auth
   - name: Notification Key
   - name: Conversation
+  - name: Identify Image (CMND & GPKD)
+  - name: CssFile
 paths:
   /api/register-partner:
     get:
@@ -118,13 +119,20 @@ paths:
               type: object
               example:
                 keyString: Studio
+                IsDeleted: '0'
                 CreateDate:
-                  startDate: '2021-01-30T17:39:08.081Z'
-                  endDate: '2022-01-30T17:39:08.081Z'
+                  startDate: ''
+                  endDate: ''
                 updateDate:
-                  startDate: '2022-01-29T03:29:36.115Z'
-                  endDate: '2022-07-02T03:29:36.115Z'
+                  startDate: ''
+                  endDate: ''
       parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiTmFtZSI6ImFkbWluIiwiaWF0IjoxNjU3NTE0MzExLCJleHAiOjE2NTc2MDA0NzV9.pvcYPjhBY1-CT4FsJ85ricyDEUzkL18tJwPPgSE_ftI
         - name: limit
           in: query
           schema:
@@ -583,16 +591,6 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /image-license/46aa6299-342a-434a-add6-9f928ef7cf09:
-    get:
-      tags:
-        - Identify Image (CMND & GPKD)
-      summary: get identify image
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
   /api/notification/noti:
     get:
       tags:
@@ -877,8 +875,8 @@ paths:
             schema:
               type: object
               example:
-                withPartner: true
-                Chatter: 10
+                withPartner: false
+                Chatter: 14
       responses:
         '200':
           description: Successful response
@@ -948,6 +946,87 @@ paths:
           schema:
             type: integer
           example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /image-license/46aa6299-342a-434a-add6-9f928ef7cf09:
+    get:
+      tags:
+        - Identify Image (CMND & GPKD)
+      summary: get identify image
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/css-file:
+    get:
+      tags:
+        - CssFile
+      summary: Get All file css
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - CssFile
+      summary: Create Css File
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                CssFile:
+                  type: string
+                  format: binary
+                Description:
+                  type: string
+                  example: css trang chủ
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/css-file/27ab841a-7574-4fcb-ba44-3482480bbe22:
+    get:
+      tags:
+        - CssFile
+      summary: get css file by id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - CssFile
+      summary: Update css file
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                CssFile:
+                  type: string
+                  format: binary
+                Description:
+                  type: string
+                  example: css cho trang ca nhan
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - CssFile
+      summary: Delete Css file
       responses:
         '200':
           description: Successful response

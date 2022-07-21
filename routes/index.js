@@ -15,16 +15,17 @@ const { router: scheduleRoute } = require("./scheduleRoute");
 const { router: authRoute } = require("./authRoute");
 const { router: adminNotificationKey } = require("./adminNotificationKey");
 const { router: chatRoute } = require("./chatRoute");
-const {router: provincesRouter} = require("./provincesRoute")
-const {router:wardsRouter} = require("./wardRoute")
+const { router: provincesRouter } = require("./provincesRoute");
+const { router: wardsRouter } = require("./wardRoute");
+const { router: cssFileRoute } = require("./cssFileRoute");
+
 const { verifyToken } = require("../middlewares/verifyToken");
 
 const rootRouter = express.Router();
 
-
-rootRouter.use("/booking-user",bookingUserRouter);
+rootRouter.use("/booking-user", bookingUserRouter);
 rootRouter.use("/studio-post", studioPostRouter);
-rootRouter.use("/register-partner",registerPartnerRouter);
+rootRouter.use("/register-partner", registerPartnerRouter);
 rootRouter.use("/booking", bookingRouter);
 rootRouter.use("/filter", filterRouter);
 rootRouter.use("/room", room);
@@ -37,9 +38,11 @@ rootRouter.use("/schedule", scheduleRoute);
 rootRouter.use("/notification-key", adminNotificationKey);
 rootRouter.use("/auth", authRoute);
 rootRouter.use("/chat", chatRoute);
-rootRouter.use("/provinces",provincesRouter);
-rootRouter.use("/districts",districtRouter)
-rootRouter.use("/wards",wardsRouter)
+rootRouter.use("/provinces", provincesRouter);
+rootRouter.use("/districts", districtRouter);
+rootRouter.use("/wards", wardsRouter);
+rootRouter.use("/css-file", cssFileRoute);
+
 module.exports = {
   rootRouter,
 };
