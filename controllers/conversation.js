@@ -7,11 +7,30 @@ const ApiError = require("../utils/ApiError");
 const Pagination = require("../utils/pagination");
 
 const catchAsync = require("../middlewares/async");
+const { Op } = require("sequelize");
 
 exports.createConversation = catchAsync(async (req, res) => {
   const { withPartner, Chatter } = req.body;
-  if (!withPartner || !Chatter) {
+  if (
+    withPartner === null ||
+    withPartner === undefined ||
+    withPartner === "" ||
+    !Chatter
+  ) {
     throw new ApiError(500, "withPartner && Chatter is required");
+  }
+  const checking = await Conversation.findAll({
+    where: {
+      withPartner: {
+        [Op.eq]: withPartner,
+      },
+      Chatter: {
+        [Op.eq]: Chatter,
+      },
+    },
+  });
+  if (checking.length !== 0) {
+    throw new ApiError(500, "This conversation is already existed !!!");
   }
   const data = await Conversation.create({ withPartner, Chatter });
   res.status(200).send(data);
@@ -32,7 +51,25 @@ exports.getAllConversation = catchAsync(async (req, res) => {
       withPartner,
     },
   });
-  res.status(200).send(data);
+  let newData = [];
+  newData = await Promise.all(
+    data.data.map(async (val) => {
+      let user = {};
+      if (val.withPartner) {
+        user = await RegisterPartner.findByPk(val.Chatter);
+      } else {
+        user = await BookingUser.findByPk(val.Chatter);
+      }
+      return {
+        ...val.dataValues,
+        Chatter: user.dataValues,
+      };
+    })
+  );
+  res.status(200).json({
+    ...data,
+    data: newData,
+  });
 });
 
 exports.createMessage = catchAsync(async (req, res) => {
