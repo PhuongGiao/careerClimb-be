@@ -78,8 +78,14 @@ app.get(
     if (!data) {
       throw new ApiError(404, "Image not found");
     }
-    var bufferStream = new stream.PassThrough();
-    bufferStream.end(new Buffer(data.dataValues.CssFile)).pipe(res);
+    const bufferStream = new stream.PassThrough();
+    res.set(
+      "Content-disposition",
+      "attachment; filename=" + data.dataValues.Name
+    );
+    res.set("Content-Type", "text/plain");
+    res.send(Buffer.from(data.dataValues.CssFile));
+    bufferStream.end(Buffer.from(data.dataValues.CssFile)).pipe(res);
   })
 );
 app.use(catchError);
