@@ -79,12 +79,12 @@ app.get(
       throw new ApiError(404, "Image not found");
     }
     const bufferStream = new stream.PassThrough();
-    res.set(
-      "Content-disposition",
-      "attachment; filename=" + data.dataValues.Name
-    );
-    res.set("Content-Type", "text/plain");
-    res.send(Buffer.from(data.dataValues.CssFile));
+    // res.set(
+    //   "Content-disposition",
+    //   "attachment; filename=" + data.dataValues.Name
+    // );
+    // res.set("Content-Type", "text/plain");
+    // res.send(Buffer.from(data.dataValues.CssFile));
     bufferStream.end(Buffer.from(data.dataValues.CssFile)).pipe(res);
   })
 );
