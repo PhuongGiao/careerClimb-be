@@ -49,6 +49,8 @@ exports.createCssFile = catchAsync(async (req, res) => {
     data: {
       ...list.dataValues,
       CssFile: process.env.BASE_URL + "api/css/" + list.dataValues.Id,
+      DownloadCssFile:
+        process.env.BASE_URL + "api/download/css" + list.dataValues.Id,
     },
   });
 });
