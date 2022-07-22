@@ -4,7 +4,6 @@ const ApiError = require("../utils/ApiError");
 const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
-  console.log("dang nhap -dsa-ds-a-dsa-d-sa-dsa-s-da");
   try {
     const user = await AbpUser.findOne({
       where: {
@@ -14,7 +13,6 @@ exports.login = async (req, res) => {
     if (!user) {
       throw new ApiError(404, "NOT FOUND !!");
     }
-    console.log(user.dataValues.Password);
     const isPasswordCorrect = await identity.verify(
       req.body.password,
       user.dataValues.Password

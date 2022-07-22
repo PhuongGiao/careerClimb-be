@@ -108,7 +108,6 @@ exports.filterBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { OrderDate, PaymentType, BookingStatus } = req.body;
   let statusBooking = BookingStatus.toString() == "0" ? true : BookingStatus;
-  console.log(statusBooking);
   if (
     OrderDate?.startDate ||
     OrderDate?.endDate ||

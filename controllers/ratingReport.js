@@ -113,12 +113,10 @@ exports.getDetailById = catchAsync(async (req, res) => {
     ],
   });
   const trueData = [detail.dataValues];
-  console.log(trueData);
   res.status(200).json(ImageListDestructure(trueData)[0]);
 });
 
 exports.getRatingByPostId = catchAsync(async (req, res) => {
-  console.log(Boolean(req.query.des));
   if (req.query.rate) {
     let rate = await StudioPost.findOne({
       where: { Id: req.params.id },

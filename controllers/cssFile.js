@@ -31,6 +31,8 @@ exports.getCssFileById = catchAsync(async (req, res) => {
     data: {
       ...list.dataValues,
       CssFile: process.env.BASE_URL + "api/css/" + list.dataValues.Id,
+      DownloadCssFile:
+        process.env.BASE_URL + "api/download/css" + list.dataValues.Id,
     },
   });
 });
@@ -42,7 +44,6 @@ exports.createCssFile = catchAsync(async (req, res) => {
     Name: req.file.originalname,
     CssFile: req.file.buffer,
   });
-  console.log(list);
   res.status(200).json({
     success: true,
     data: {

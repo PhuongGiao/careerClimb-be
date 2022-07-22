@@ -88,6 +88,21 @@ app.get(
     bufferStream.end(Buffer.from(data.dataValues.CssFile)).pipe(res);
   })
 );
+app.get(
+  "/api/dowload/css/:id",
+  catchAsync(async (req, res) => {
+    const data = await CssFile.findByPk(req.params.id);
+    if (!data) {
+      throw new ApiError(404, "Image not found");
+    }
+    res.set(
+      "Content-disposition",
+      "attachment; filename=" + data.dataValues.Name
+    );
+    res.set("Content-Type", "text/plain");
+    res.send(Buffer.from(data.dataValues.CssFile));
+  })
+);
 app.use(catchError);
 app.listen(process.env.PORT || 3000, async () => {
   try {

@@ -6,7 +6,6 @@ const ApiError = require("../utils/ApiError");
 
 exports.createLove = catchAsync(async (req, res) => {
   const { PostId, UserId, PostType } = req.body;
-  console.log(req.body);
   const exits = await Love.findOne({
     where: {
       PostId,
