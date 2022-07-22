@@ -15,7 +15,7 @@ exports.getAllCssFile = catchAsync(async (req, res) => {
           ...val.dataValues,
           CssFile: process.env.BASE_URL + "api/css/" + val.dataValues.Id,
           DownloadCssFile:
-            process.env.BASE_URL + "api/download/css" + list.dataValues.Id,
+            process.env.BASE_URL + "api/download/css" + val.dataValues.Id,
         };
       }),
     ],
