@@ -12,7 +12,6 @@ exports.getAllStudioPost = catchAsync(async (req, res) => {
 exports.filterStudioPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { keyString, CreateDate, updateDate } = req.body;
-  console.log(req.body);
 
   if (
     (!CreateDate?.endDate || !CreateDate?.startDate) &&

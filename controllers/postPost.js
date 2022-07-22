@@ -25,7 +25,6 @@ exports.postPost = catchAsync(async (req, res) => {
     .filter((option, idx) => rawOptions.indexOf(option) === idx) //make unique
     .sort()
     .join(",");
-  console.log(newOptions);
 
   if (!Tags) {
     throw new ApiError(500, "Please check the tag again");

@@ -55,6 +55,13 @@ exports.getAllConversation = catchAsync(async (req, res) => {
   newData = await Promise.all(
     data.data.map(async (val) => {
       let user = {};
+      const newestMessage = await Message.findOne({
+        where: {
+          ConversationId: val.id,
+        },
+        order: [["createdAt", "DESC"]],
+      });
+      console.log(newestMessage);
       if (val.withPartner) {
         user = await RegisterPartner.findByPk(val.Chatter);
       } else {
@@ -63,6 +70,7 @@ exports.getAllConversation = catchAsync(async (req, res) => {
       return {
         ...val.dataValues,
         Chatter: user.dataValues,
+        newestMessage,
       };
     })
   );
@@ -146,6 +154,5 @@ exports.getMessageByConversationId = catchAsync(async (req, res) => {
       })
     ),
   };
-  console.log(newData);
   res.status(200).json(newData);
 });
