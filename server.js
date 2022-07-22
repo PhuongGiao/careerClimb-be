@@ -81,15 +81,28 @@ app.get(
   })
 );
 app.use(catchError);
+const users = {}
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
+  socket.emit("isOnline",  users);
+  socket.on('login', function(data){
+    console.log('a user ' + data.userId + ' connected');
+    socket.to(data.userId).emit("isConnected",  data);
+    users[`user${data.userId}`] = data.userId;
+  })
   socket.join([1,2,3])
   socket.on("send_message", (data) => {
-    socket.to(data.ConversationId).emit("receive_message", data);
+    const {ConversationId} = data
+    console.log();
+    socket.to(ConversationId).emit("receive_message", data);
   });
   socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
+    console.log("User Disconnected", socket.data);
   });
+  /* socket.on('disconnected', (data)=>{
+    console.log('user ' + data.userId + ' disconnected');
+    // remove saved socket from users object
+    delete users[`user${data.userId}`];
+  }); */
 });
 server.listen(process.env.PORT || 3001, async () => {
   try {
