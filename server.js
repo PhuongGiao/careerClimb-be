@@ -85,7 +85,7 @@ io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
   socket.join([1,2,3])
   socket.on("send_message", (data) => {
-    socket.to(data.ConversationId).emit("receive_message", data);
+    socket.to(2).emit("receive_message", data);
   });
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
