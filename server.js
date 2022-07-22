@@ -89,7 +89,7 @@ app.get(
   })
 );
 app.get(
-  "/api/dowload/css/:id",
+  "/api/download/css/:id",
   catchAsync(async (req, res) => {
     const data = await CssFile.findByPk(req.params.id);
     if (!data) {
