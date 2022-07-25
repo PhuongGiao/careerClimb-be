@@ -50,6 +50,7 @@ exports.getAllConversation = catchAsync(async (req, res) => {
     where: {
       withPartner,
     },
+    order: [["updatedAt", "DESC"]],
   });
   let newData = [];
   newData = await Promise.all(
@@ -61,7 +62,6 @@ exports.getAllConversation = catchAsync(async (req, res) => {
         },
         order: [["createdAt", "DESC"]],
       });
-      console.log(newestMessage);
       if (val.withPartner) {
         user = await RegisterPartner.findByPk(val.Chatter);
       } else {
@@ -106,6 +106,19 @@ exports.createMessage = catchAsync(async (req, res) => {
     PartnerId,
     CustomerId,
   });
+  const messagesCount = await Message.count({
+    where: {
+      ConversationId,
+    },
+  });
+  await Conversation.update(
+    { NoOfMessage: messagesCount },
+    {
+      where: {
+        id: ConversationId,
+      },
+    }
+  );
   res.status(200).send(data);
 });
 
