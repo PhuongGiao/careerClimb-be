@@ -34,7 +34,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    
+
     methods: ["GET", "POST"],
   },
 });
@@ -81,15 +81,29 @@ app.get(
   })
 );
 app.use(catchError);
-io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-  socket.join([1,2,3])
-  socket.on("send_message", (data) => {
-    socket.to(2).emit("receive_message", data);
+////////////////////////////
+const users = {};
+io.on('connection', (socket) => {
+   socket.join([2, 8, 9])
+  console.log('Socket', socket.id);
+  socket.on('login', (user) => {
+    users[socket.id] = user.userId;
+    //socket.broadcast.emit('online', Object.values(users)); // Exclude sender
+    io.emit('online', Object.values(users)); // Include sender
+  })
+  socket.on("send_message", (message) => {
+    const { ConversationId } = message
+    io.to(ConversationId).emit("receive_message", message);
   });
-  socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
-  });
+  socket.on('disconnect', () => {
+    delete users[socket.id];
+    socket.broadcast.emit('offline', Object.values(users)); 
+  })
+  
+  socket.on("typing",(data)=> {
+    socket.broadcast.to(data.ConversationId).emit('isTyping',data)
+    
+  })
 });
 server.listen(process.env.PORT || 3001, async () => {
   try {
@@ -101,5 +115,3 @@ server.listen(process.env.PORT || 3001, async () => {
   console.log(`Example app listening on port ${process.env.PORT || 3001}`);
 });
 ////////////////////
-
-
