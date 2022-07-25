@@ -187,7 +187,7 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
             [Op.like]: `%${keyString}%`,
           },
         },
-        Status: statusNoti ? { [Op.in]: [Status] } : { [Op.notIn]: "" },
+        Status: statusNoti ? { [Op.in]: [status] } : { [Op.notIn]: "" },
 
         CreationTime: {
           [Op.or]: [
