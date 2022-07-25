@@ -23,6 +23,8 @@ tags:
   - name: Conversation
   - name: Identify Image (CMND & GPKD)
   - name: CssFile
+  - name: SMTP
+  - name: Webhook
 paths:
   /api/register-partner:
     get:
@@ -39,7 +41,7 @@ paths:
           in: query
           schema:
             type: integer
-          example: '100'
+          example: '10'
       responses:
         '200':
           description: Successful response
@@ -875,8 +877,8 @@ paths:
             schema:
               type: object
               example:
-                withPartner: false
-                Chatter: 14
+                withPartner: true
+                Chatter: 5
       responses:
         '200':
           description: Successful response
@@ -1027,6 +1029,90 @@ paths:
       tags:
         - CssFile
       summary: Delete Css file
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/smtp:
+    get:
+      tags:
+        - SMTP
+      summary: get all SMTP
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - SMTP
+      summary: create SMTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                Host: string
+                Service: string
+                Mail: string
+                Password: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/smtp/1:
+    patch:
+      tags:
+        - SMTP
+      summary: update smtp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                Host: string
+                Service: string
+                Mail: string
+                Password: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - SMTP
+      summary: get SMTP BY ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/webhook:
+    get:
+      tags:
+        - Webhook
+      summary: getAll
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: method
+          in: query
+          schema:
+            type: string
+          example: patch
       responses:
         '200':
           description: Successful response

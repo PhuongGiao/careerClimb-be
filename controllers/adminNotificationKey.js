@@ -1,5 +1,7 @@
 const { AdminNotificationKey } = require("../models");
 const catchAsync = require("../middlewares/async");
+const moment = require("moment");
+const { createWebHook } = require("../utils/WebHook");
 
 exports.updateAdminNotificationKey = catchAsync(async (req, res) => {
   const { GoogleApiFCM, AuthKey, P12Password, P12BundleId } = req.body;
@@ -12,6 +14,12 @@ exports.updateAdminNotificationKey = catchAsync(async (req, res) => {
       P12BundleId,
     },
     { where: { id: 1 } }
+  );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
   );
   res.status(200).json({
     success: true,
