@@ -3,6 +3,8 @@ const catchAsync = require("../middlewares/async");
 const { StudioRating, StudioPost, BookingUser } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { ImageListDestructure } = require("../utils/ListWithImageDestructure");
+const moment = require("moment");
+const { createWebHook } = require("../utils/WebHook");
 
 exports.getALL = catchAsync(async (req, res) => {
   const { rank, rating, page, limit, keyString } = req.query;
@@ -85,6 +87,12 @@ exports.getALL = catchAsync(async (req, res) => {
   }
 
   const newList = list.slice(skip, limit);
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
 
   res.status(200).json({
     success: true,
@@ -113,6 +121,12 @@ exports.getDetailById = catchAsync(async (req, res) => {
     ],
   });
   const trueData = [detail.dataValues];
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(ImageListDestructure(trueData)[0]);
 });
 
@@ -136,6 +150,12 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
     const trueData = rate?.ratings.map((val) => val.dataValues);
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res
       .status(200)
       .json({ success: true, data: ImageListDestructure(trueData) });
@@ -158,6 +178,12 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
     const trueData = rate?.ratings.map((val) => val.dataValues);
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res
       .status(200)
       .json({ success: true, data: ImageListDestructure(trueData) });
@@ -183,6 +209,12 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
     });
     if (rate?.ratings == null) throw new ApiError(404, "NOT FOUND!!");
     const trueData = list.map((val) => val.dataValues);
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res
       .status(200)
       .json({ success: true, data: ImageListDestructure(trueData) });
@@ -199,6 +231,12 @@ exports.getRatingByPostId = catchAsync(async (req, res) => {
       },
     });
     const trueData = rate.ratings.map((val) => val.dataValues);
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res
       .status(200)
       .json({ success: true, data: ImageListDestructure(trueData) });

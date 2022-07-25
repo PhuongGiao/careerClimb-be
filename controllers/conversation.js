@@ -2,12 +2,14 @@ const { Conversation } = require("../models");
 const { Message } = require("../models");
 const { BookingUser } = require("../models");
 const { RegisterPartner } = require("../models");
+const { createWebHook } = require("../utils/WebHook");
 
 const ApiError = require("../utils/ApiError");
 const Pagination = require("../utils/pagination");
 
 const catchAsync = require("../middlewares/async");
 const { Op } = require("sequelize");
+const moment = require("moment");
 
 exports.createConversation = catchAsync(async (req, res) => {
   const { withPartner, Chatter } = req.body;
@@ -33,6 +35,12 @@ exports.createConversation = catchAsync(async (req, res) => {
     throw new ApiError(500, "This conversation is already existed !!!");
   }
   const data = await Conversation.create({ withPartner, Chatter });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send(data);
 });
 
@@ -73,6 +81,12 @@ exports.getAllConversation = catchAsync(async (req, res) => {
         newestMessage,
       };
     })
+  );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
   );
   res.status(200).json({
     ...data,
@@ -118,6 +132,12 @@ exports.createMessage = catchAsync(async (req, res) => {
         id: ConversationId,
       },
     }
+  );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
   );
   res.status(200).send(data);
 });
@@ -167,5 +187,11 @@ exports.getMessageByConversationId = catchAsync(async (req, res) => {
       })
     ),
   };
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(newData);
 });

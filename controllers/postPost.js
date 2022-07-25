@@ -5,8 +5,9 @@ const { Comment } = require("../models");
 const catchAsync = require("../middlewares/async");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
-const Pagination = require("../utils/pagination");
 const { ImageListDestructure } = require("../utils/ListWithImageDestructure");
+const { createWebHook } = require("../utils/WebHook");
+const moment = require("moment");
 const constant = [
   "studio",
   "makeup",
@@ -50,6 +51,12 @@ exports.postPost = catchAsync(async (req, res) => {
     Description,
     ...Image,
   });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(data);
 });
 
@@ -102,6 +109,12 @@ exports.getAllPost = catchAsync(async (req, res) => {
       type: "SELECT",
     }
   );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json({
     success: true,
     pagination: {
@@ -129,6 +142,12 @@ exports.getPostById = catchAsync(async (req, res) => {
   if (!newList[0]) {
     throw new ApiError(404, "Post not found");
   }
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(newList[0]);
 });
 
@@ -146,6 +165,12 @@ exports.deletePost = catchAsync(async (req, res) => {
     })
   );
   await Post.destroy({ where: { id } });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json({
     success: true,
     message: "Delete success",

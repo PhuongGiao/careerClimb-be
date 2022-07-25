@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/register-partner?page=1&limit=100",
+							"raw": "http://localhost:3003/api/register-partner?page=1&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -32,7 +32,7 @@
 								},
 								{
 									"key": "limit",
-									"value": "100"
+									"value": "10"
 								}
 							]
 						}
@@ -698,7 +698,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": []
+									"src": "/Users/voduy/Desktop/Ảnh chụp Màn hình 2022-07-25 lúc 10.05.26.png"
 								},
 								{
 									"key": "Tags",
@@ -1356,7 +1356,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"withPartner\":false,\n    \"Chatter\":14\n}",
+							"raw": "{\n    \"withPartner\":true,\n    \"Chatter\":5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1649,6 +1649,150 @@
 								"api",
 								"css-file",
 								"27ab841a-7574-4fcb-ba44-3482480bbe22"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SMTP",
+			"item": [
+				{
+					"name": "get all SMTP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/smtp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create SMTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Host\": \"string\",\n    \"Service\": \"string\",\n    \"Mail\": \"string\",\n    \"Password\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/smtp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update smtp",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Host\": \"string\",\n    \"Service\": \"string\",\n    \"Mail\": \"string\",\n    \"Password\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/smtp/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get SMTP BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/smtp/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Webhook",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/webhook?page=1&limit=10&method=patch",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"webhook"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "method",
+									"value": "patch"
+								}
 							]
 						}
 					},

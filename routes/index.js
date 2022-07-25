@@ -19,6 +19,7 @@ const { router: provincesRouter } = require("./provincesRoute");
 const { router: wardsRouter } = require("./wardRoute");
 const { router: cssFileRoute } = require("./cssFileRoute");
 const { router: SMTPRoute } = require("./SMTPRoute");
+const { router: webhookRoute } = require("./webhookRoute");
 
 const { verifyToken } = require("../middlewares/verifyToken");
 
@@ -44,6 +45,7 @@ rootRouter.use("/districts", districtRouter);
 rootRouter.use("/wards", wardsRouter);
 rootRouter.use("/css-file", cssFileRoute);
 rootRouter.use("/smtp", SMTPRoute);
+rootRouter.use("/webhook", webhookRoute);
 
 module.exports = {
   rootRouter,
