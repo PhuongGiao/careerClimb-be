@@ -195,3 +195,40 @@ exports.getMessageByConversationId = catchAsync(async (req, res) => {
   );
   res.status(200).json(newData);
 });
+
+exports.getConversationById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const data = await Conversation.findOne({
+    where: {
+      id,
+    },
+  });
+  let user = {};
+  const newestMessage = await Message.findOne({
+    where: {
+      ConversationId: data.dataValues.id,
+    },
+    order: [["createdAt", "DESC"]],
+  });
+  if (data.dataValues.withPartner) {
+    user = await RegisterPartner.findByPk(data.dataValues.Chatter);
+  } else {
+    user = await BookingUser.findByPk(data.dataValues.Chatter);
+  }
+  const newData = {
+    ...data.dataValues,
+    Chatter: user.dataValues,
+    newestMessage: newestMessage.dataValues,
+  };
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
+  res.status(200).json({
+    success: true,
+    data: newData,
+  });
+});

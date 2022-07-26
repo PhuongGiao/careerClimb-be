@@ -953,6 +953,16 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /api/chat/conversation/9:
+    get:
+      tags:
+        - Conversation
+      summary: by ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /image-license/46aa6299-342a-434a-add6-9f928ef7cf09:
     get:
       tags:
