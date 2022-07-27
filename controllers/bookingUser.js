@@ -198,7 +198,7 @@ exports.getBookingUserById = catchAsync(async (req, res) => {
 exports.filterBookingUser = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { CreateDate, updateDate, keyString, status } = req.body;
-  let statusNoti = status.toString() == "0" ? true : status;
+  let statusNoti = status?.toString() == "0" ? true : status;
   if (
     (!CreateDate?.endDate || !CreateDate?.startDate) &&
     (updateDate?.endDate || updateDate?.startDate)
