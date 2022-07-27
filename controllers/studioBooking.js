@@ -4,6 +4,7 @@ const Pagination = require("../utils/pagination");
 const moment = require("moment");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
+const { createWebHook } = require("../utils/WebHook");
 
 exports.getAllBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
@@ -18,6 +19,12 @@ exports.getAllBooking = catchAsync(async (req, res) => {
       },
     ],
   });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send(listBooking);
 });
 
@@ -34,6 +41,12 @@ exports.getBookingById = catchAsync(async (req, res) => {
       },
     ],
   });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send(booking);
 });
 
@@ -98,6 +111,12 @@ exports.updateBookingById = catchAsync(async (req, res) => {
       },
     }
   );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json({
     success: true,
     message: "Update success",
@@ -108,7 +127,6 @@ exports.filterBooking = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { OrderDate, PaymentType, BookingStatus } = req.body;
   let statusBooking = BookingStatus.toString() == "0" ? true : BookingStatus;
-  console.log(statusBooking);
   if (
     OrderDate?.startDate ||
     OrderDate?.endDate ||
@@ -147,6 +165,12 @@ exports.filterBooking = catchAsync(async (req, res) => {
         },
       ],
     });
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     return res.status(200).send(listBooking);
   }
 });

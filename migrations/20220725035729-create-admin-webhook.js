@@ -1,21 +1,24 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Conversations", {
+    await queryInterface.createTable("AdminWebhooks", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      withPartner: {
-        type: Sequelize.BOOLEAN,
+      Method: {
+        type: Sequelize.TEXT("long"),
       },
-      Chatter: {
-        type: Sequelize.BIGINT,
+      Url: {
+        type: Sequelize.TEXT("long"),
       },
-      NoOfMessage: {
-        type: Sequelize.INTEGER,
+      Timestamp: {
+        type: Sequelize.DATE,
+      },
+      Body: {
+        type: Sequelize.TEXT("long"),
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Conversations");
+    await queryInterface.dropTable("AdminWebhooks");
   },
 };

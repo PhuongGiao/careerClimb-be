@@ -10,6 +10,7 @@ const Pagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 const moment = require("moment");
 const { sendAndroid, sendIOS } = require("../utils/pushMessage");
+const { createWebHook } = require("../utils/WebHook");
 
 exports.getAllNotification = catchAsync(async (req, res) => {
   const { page, limit, option } = req.query;
@@ -25,6 +26,12 @@ exports.getAllNotification = catchAsync(async (req, res) => {
   } else {
     data = await Pagination(AdminNotification, page, limit);
   }
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(data);
 });
 
@@ -128,7 +135,12 @@ exports.createNotification = catchAsync(async (req, res) => {
       }, time);
     }
   }
-
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send(notificationCreation);
 });
 
@@ -144,6 +156,12 @@ exports.cancelNotification = catchAsync(async (req, res) => {
         },
       },
     }
+  );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
   );
   res.status(200).json({
     success: true,
@@ -200,6 +218,12 @@ exports.filterNotification = catchAsync(async (req, res) => {
         },
       },
     });
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).json({ ...data });
   } else {
     const data = await Pagination(AdminNotification, page, limit, {
@@ -209,6 +233,12 @@ exports.filterNotification = catchAsync(async (req, res) => {
         },
       },
     });
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).json({ ...data });
   }
 });
@@ -235,5 +265,11 @@ exports.getAllUser = catchAsync(async (req, res) => {
   } else {
     throw new ApiError(500, "Invalid option");
   }
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(data);
 });

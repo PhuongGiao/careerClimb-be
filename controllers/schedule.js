@@ -3,6 +3,8 @@ const catchAsync = require("../middlewares/async");
 const ApiError = require("../utils/ApiError");
 const { Op } = require("sequelize");
 const { StudioRoom } = require("../models");
+const moment = require("moment");
+const { createWebHook } = require("../utils/WebHook");
 
 function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
@@ -67,11 +69,23 @@ exports.getRoomSchedule = catchAsync(async (req, res) => {
         RoomId: +roomId,
       },
     });
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     return res.status(200).json({
       success: true,
       data: schedule,
     });
   } else if (schedule.length) {
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     return res.status(200).json({
       success: true,
       data: schedule,

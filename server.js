@@ -8,7 +8,9 @@ const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const postmanToOpenApi = require("postman-to-openapi");
 const cookieParser = require("cookie-parser");
-const { AppBinaryObject, IdentifyImage } = require("./models");
+const stream = require("stream");
+const { Server } = require("socket.io");
+const { AppBinaryObject, IdentifyImage, CssFile } = require("./models");
 const catchAsync = require("./middlewares/async");
 const ApiError = require("./utils/ApiError");
 const fs = require("fs");
@@ -16,20 +18,13 @@ const fs = require("fs");
 const postmanCollection =
   "./apis/BOOKINGSTUDIO_BACKEND.postman_collection.json";
 const outputFile = "./apis/collection.yml";
-postmanToOpenApi(postmanCollection, outputFile, { defaultTag: "General" })
-  .then((result) => {
-    console.log(`OpenAPI specs: ${result}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+postmanToOpenApi(postmanCollection, outputFile, { defaultTag: "General" });
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 //////////////////
-const { Server } = require("socket.io");
 const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -78,6 +73,38 @@ app.get(
       return res.send(Buffer.from(defaut));
     }
     res.send(Buffer.from(data.dataValues.Bytes));
+  })
+);
+app.get(
+  "/api/css/:id",
+  catchAsync(async (req, res) => {
+    const data = await CssFile.findByPk(req.params.id);
+    if (!data) {
+      throw new ApiError(404, "Image not found");
+    }
+    const bufferStream = new stream.PassThrough();
+    // res.set(
+    //   "Content-disposition",
+    //   "attachment; filename=" + data.dataValues.Name
+    // );
+    // res.set("Content-Type", "text/plain");
+    // res.send(Buffer.from(data.dataValues.CssFile));
+    bufferStream.end(Buffer.from(data.dataValues.CssFile)).pipe(res);
+  })
+);
+app.get(
+  "/api/download/css/:id",
+  catchAsync(async (req, res) => {
+    const data = await CssFile.findByPk(req.params.id);
+    if (!data) {
+      throw new ApiError(404, "Image not found");
+    }
+    res.set(
+      "Content-disposition",
+      "attachment; filename=" + data.dataValues.Name
+    );
+    res.set("Content-Type", "text/plain");
+    res.send(Buffer.from(data.dataValues.CssFile));
   })
 );
 app.use(catchError);

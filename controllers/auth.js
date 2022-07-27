@@ -2,9 +2,10 @@ const identity = require("aspnetcore-identity-password-hasher");
 const { AbpUser } = require("../models");
 const ApiError = require("../utils/ApiError");
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
+const { createWebHook } = require("../utils/WebHook");
 
 exports.login = async (req, res) => {
-  console.log("dang nhap -dsa-ds-a-dsa-d-sa-dsa-s-da");
   try {
     const user = await AbpUser.findOne({
       where: {
@@ -14,7 +15,6 @@ exports.login = async (req, res) => {
     if (!user) {
       throw new ApiError(404, "NOT FOUND !!");
     }
-    console.log(user.dataValues.Password);
     const isPasswordCorrect = await identity.verify(
       req.body.password,
       user.dataValues.Password
@@ -38,6 +38,12 @@ exports.login = async (req, res) => {
       ConcurrencyStamp,
       ...otherDetails
     } = user.dataValues;
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).send({ ...otherDetails, token });
   } catch (error) {
     throw new ApiError(400, error);

@@ -1,21 +1,20 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Conversations", {
+    await queryInterface.createTable("CssFiles", {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-        type: Sequelize.INTEGER,
       },
-      withPartner: {
-        type: Sequelize.BOOLEAN,
+      Name: {
+        type: Sequelize.STRING,
       },
-      Chatter: {
-        type: Sequelize.BIGINT,
+      Description: {
+        type: Sequelize.STRING,
       },
-      NoOfMessage: {
-        type: Sequelize.INTEGER,
+      CssFile: {
+        type: Sequelize.BLOB("long"),
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +27,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Conversations");
+    await queryInterface.dropTable("CssFiles");
   },
 };
