@@ -2,18 +2,45 @@ const { Conversation } = require("../models");
 const { Message } = require("../models");
 const { BookingUser } = require("../models");
 const { RegisterPartner } = require("../models");
+const { createWebHook } = require("../utils/WebHook");
 
 const ApiError = require("../utils/ApiError");
 const Pagination = require("../utils/pagination");
 
 const catchAsync = require("../middlewares/async");
+const { Op } = require("sequelize");
+const moment = require("moment");
 
 exports.createConversation = catchAsync(async (req, res) => {
   const { withPartner, Chatter } = req.body;
-  if (!withPartner || !Chatter) {
+  if (
+    withPartner === null ||
+    withPartner === undefined ||
+    withPartner === "" ||
+    !Chatter
+  ) {
     throw new ApiError(500, "withPartner && Chatter is required");
   }
+  const checking = await Conversation.findAll({
+    where: {
+      withPartner: {
+        [Op.eq]: withPartner,
+      },
+      Chatter: {
+        [Op.eq]: Chatter,
+      },
+    },
+  });
+  if (checking.length !== 0) {
+    throw new ApiError(500, "This conversation is already existed !!!");
+  }
   const data = await Conversation.create({ withPartner, Chatter });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send(data);
 });
 
@@ -31,8 +58,40 @@ exports.getAllConversation = catchAsync(async (req, res) => {
     where: {
       withPartner,
     },
+    order: [["updatedAt", "DESC"]],
   });
-  res.status(200).send(data);
+  let newData = [];
+  newData = await Promise.all(
+    data.data.map(async (val) => {
+      let user = {};
+      const newestMessage = await Message.findOne({
+        where: {
+          ConversationId: val.id,
+        },
+        order: [["createdAt", "DESC"]],
+      });
+      if (val.withPartner) {
+        user = await RegisterPartner.findByPk(val.Chatter);
+      } else {
+        user = await BookingUser.findByPk(val.Chatter);
+      }
+      return {
+        ...val.dataValues,
+        Chatter: user.dataValues,
+        newestMessage,
+      };
+    })
+  );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
+  res.status(200).json({
+    ...data,
+    data: newData,
+  });
 });
 
 exports.createMessage = catchAsync(async (req, res) => {
@@ -61,6 +120,25 @@ exports.createMessage = catchAsync(async (req, res) => {
     PartnerId,
     CustomerId,
   });
+  const messagesCount = await Message.count({
+    where: {
+      ConversationId,
+    },
+  });
+  await Conversation.update(
+    { NoOfMessage: messagesCount },
+    {
+      where: {
+        id: ConversationId,
+      },
+    }
+  );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send(data);
 });
 
@@ -109,6 +187,48 @@ exports.getMessageByConversationId = catchAsync(async (req, res) => {
       })
     ),
   };
-  console.log(newData);
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(newData);
+});
+
+exports.getConversationById = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const data = await Conversation.findOne({
+    where: {
+      id,
+    },
+  });
+  let user = {};
+  const newestMessage = await Message.findOne({
+    where: {
+      ConversationId: data.dataValues.id,
+    },
+    order: [["createdAt", "DESC"]],
+  });
+  if (data.dataValues.withPartner) {
+    user = await RegisterPartner.findByPk(data.dataValues.Chatter);
+  } else {
+    user = await BookingUser.findByPk(data.dataValues.Chatter);
+  }
+  const newData = {
+    ...data.dataValues,
+    Chatter: user.dataValues,
+    newestMessage: newestMessage.dataValues,
+  };
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
+  res.status(200).json({
+    success: true,
+    data: newData,
+  });
 });

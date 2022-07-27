@@ -3,16 +3,22 @@ const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
 const { Op } = require("sequelize");
 const moment = require("moment");
+const { createWebHook } = require("../utils/WebHook");
 
 exports.getAllStudioPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const data = await Pagination(StudioPost, page, limit, {});
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json({ ...data });
 });
 exports.filterStudioPost = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
   const { keyString, CreateDate, updateDate } = req.body;
-  console.log(req.body);
 
   if (
     (!CreateDate?.endDate || !CreateDate?.startDate) &&
@@ -89,9 +95,21 @@ exports.filterStudioPost = catchAsync(async (req, res) => {
         },
       },
     });
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).json({ ...data });
   } else {
     const data = await Pagination(StudioPost, page, limit, {});
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).json({ ...data });
   }
 });
@@ -99,6 +117,12 @@ exports.filterStudioPost = catchAsync(async (req, res) => {
 exports.getDetailStudioPost = catchAsync(async (req, res) => {
   const { id } = req.params;
   const detail = await StudioPost.findByPk(id, {});
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send(detail);
 });
 
@@ -114,8 +138,20 @@ exports.updateStudioPost = async (req, res) => {
         },
       }
     );
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).send(`ID :${id} updated success!`);
   } catch (error) {
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(500).send(error);
   }
 };
@@ -127,5 +163,11 @@ exports.deleteStation = catchAsync(async (req, res) => {
       id,
     },
   });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).send("Delete Success!");
 });

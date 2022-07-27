@@ -4,6 +4,8 @@ const moment = require("moment");
 const catchAsync = require("../middlewares/async");
 const Pagination = require("../utils/pagination");
 const { Op } = require("sequelize");
+const { createWebHook } = require("../utils/WebHook");
+
 exports.createBookingUser = catchAsync(async (req, res) => {
   const {
     TenantId,
@@ -75,6 +77,12 @@ exports.createBookingUser = catchAsync(async (req, res) => {
     AppleGivenName,
     AppleUserIdentifier,
   });
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(201).send(newStation);
 });
 
@@ -102,6 +110,12 @@ exports.getAllBookingUser = catchAsync(async (req, res) => {
       })
     ),
   };
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json({
     ...data,
   });
@@ -138,6 +152,12 @@ exports.updateBookingUser = catchAsync(async (req, res) => {
       },
     }
   );
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json({
     success: true,
     message: "Update success",
@@ -166,14 +186,19 @@ exports.getBookingUserById = catchAsync(async (req, res) => {
     FacebookEmail: user.FacebookEmail,
     GoogleName: user.GoogleName,
   };
+  createWebHook(
+    req.method,
+    req.originalUrl,
+    moment(Date.now()),
+    JSON.stringify(req.body)
+  );
   res.status(200).json(data);
 });
 
 exports.filterBookingUser = catchAsync(async (req, res) => {
   const { page, limit } = req.query;
-  const { CreateDate, updateDate, keyString, status } = req.body;
-  console.log(req.body);
-  let statusNoti = status.toString() == "0" ? true : status;
+  const { CreateDate, updateDate, keyString, IsDeleted } = req.body;
+  let statusNoti = IsDeleted?.toString() == "0" ? true : IsDeleted;
   if (
     (!CreateDate?.endDate || !CreateDate?.startDate) &&
     (updateDate?.endDate || updateDate?.startDate)
@@ -188,7 +213,7 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
             [Op.like]: `%${keyString}%`,
           },
         },
-        Status: statusNoti ? { [Op.in]: [Status] } : { [Op.notIn]: "" },
+        IsDeleted: statusNoti ? { [Op.in]: [IsDeleted] } : { [Op.notIn]: "" },
 
         CreationTime: {
           [Op.or]: [
@@ -244,7 +269,8 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
     CreateDate?.startDate ||
     CreateDate?.endDate ||
     updateDate?.startDate ||
-    updateDate?.endDate|| statusNoti
+    updateDate?.endDate ||
+    statusNoti
   ) {
     const bookingUser = await Pagination(BookingUser, page, limit, {
       where: {
@@ -256,7 +282,7 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
             [Op.like]: `%${keyString}%`,
           },
         },
-        Status: statusNoti ? { [Op.in]: [status] } : { [Op.notIn]: "" },
+        IsDeleted: statusNoti ? { [Op.in]: [IsDeleted] } : { [Op.notIn]: "" },
         CreationTime: {
           [Op.or]: [
             {
@@ -304,6 +330,12 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
         })
       ),
     };
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).json({
       ...data,
     });
@@ -330,12 +362,14 @@ exports.filterBookingUser = catchAsync(async (req, res) => {
         })
       ),
     };
+    createWebHook(
+      req.method,
+      req.originalUrl,
+      moment(Date.now()),
+      JSON.stringify(req.body)
+    );
     res.status(200).json({
       ...data,
     });
   }
-  // else {
-  //   const data = await Pagination(StudioPost, page, limit, {});
-  //   res.status(200).json({ ...data });
-  // }
 });

@@ -1,7 +1,6 @@
 const catchError = (err, req, res, next) => {
   // console.log(JSON.stringify(err, null, 2));
 
-  //loi lien  quan den validation mongoose
   if (err.name === "ValidationError") {
     const errors = err.errors;
     const keys = Object.keys(errors);

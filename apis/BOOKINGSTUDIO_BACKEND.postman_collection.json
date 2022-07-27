@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3003/api/register-partner?page=1&limit=100",
+							"raw": "http://localhost:3003/api/register-partner?page=1&limit=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -32,7 +32,7 @@
 								},
 								{
 									"key": "limit",
-									"value": "100"
+									"value": "10"
 								}
 							]
 						}
@@ -162,10 +162,16 @@
 					"name": "Filter Partner",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "access_token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiTmFtZSI6ImFkbWluIiwiaWF0IjoxNjU3NTE0MzExLCJleHAiOjE2NTc2MDA0NzV9.pvcYPjhBY1-CT4FsJ85ricyDEUzkL18tJwPPgSE_ftI",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"keyString\": \"Studio\",\n    \"CreateDate\": {\n        \"startDate\": \"2021-01-30T17:39:08.081Z\",\n        \"endDate\": \"2022-01-30T17:39:08.081Z\"\n    },\n    \"updateDate\": {\n        \"startDate\": \"2022-01-29T03:29:36.115Z\",\n        \"endDate\": \"2022-07-02T03:29:36.115Z\"\n    }\n}",
+							"raw": "{\n    \"keyString\": \"Studio\",\n    \"IsDeleted\":\"0\",\n    \"CreateDate\": {\n        \"startDate\": \"\",\n        \"endDate\": \"\"\n    },\n    \"updateDate\": {\n         \"startDate\": \"\",\n        \"endDate\": \"\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -692,7 +698,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": []
+									"src": "/Users/voduy/Desktop/Ảnh chụp Màn hình 2022-07-25 lúc 10.05.26.png"
 								},
 								{
 									"key": "Tags",
@@ -911,31 +917,6 @@
 									"value": "true",
 									"disabled": true
 								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Identify Image (CMND & GPKD)",
-			"item": [
-				{
-					"name": "get identify image",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3003/image-license/46aa6299-342a-434a-add6-9f928ef7cf09",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3003",
-							"path": [
-								"image-license",
-								"46aa6299-342a-434a-add6-9f928ef7cf09"
 							]
 						}
 					},
@@ -1375,7 +1356,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"withPartner\":true,\n    \"Chatter\":10\n}",
+							"raw": "{\n    \"withPartner\":true,\n    \"Chatter\":5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1492,6 +1473,347 @@
 								{
 									"key": "ConversationId",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/chat/conversation/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"chat",
+								"conversation",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Identify Image (CMND & GPKD)",
+			"item": [
+				{
+					"name": "get identify image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/image-license/46aa6299-342a-434a-add6-9f928ef7cf09",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"image-license",
+								"46aa6299-342a-434a-add6-9f928ef7cf09"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CssFile",
+			"item": [
+				{
+					"name": "Get All file css",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/css-file",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"css-file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Css File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "CssFile",
+									"type": "file",
+									"src": "/Users/voduy/Documents/code/react/electro-shop/src/index.css"
+								},
+								{
+									"key": "Description",
+									"value": "css trang chủ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/css-file",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"css-file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get css file by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/css-file/27ab841a-7574-4fcb-ba44-3482480bbe22",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"css-file",
+								"27ab841a-7574-4fcb-ba44-3482480bbe22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update css file",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "CssFile",
+									"type": "file",
+									"src": "/Users/voduy/Documents/code/react/electro-shop/src/index.css"
+								},
+								{
+									"key": "Description",
+									"value": "css cho trang ca nhan",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/css-file/27ab841a-7574-4fcb-ba44-3482480bbe22",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"css-file",
+								"27ab841a-7574-4fcb-ba44-3482480bbe22"
+							],
+							"query": [
+								{
+									"key": "CssFile",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "Description",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Css file",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/css-file/27ab841a-7574-4fcb-ba44-3482480bbe22",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"css-file",
+								"27ab841a-7574-4fcb-ba44-3482480bbe22"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SMTP",
+			"item": [
+				{
+					"name": "get all SMTP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/smtp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create SMTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Host\": \"string\",\n    \"Service\": \"string\",\n    \"Mail\": \"string\",\n    \"Password\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/smtp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update smtp",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Host\": \"string\",\n    \"Service\": \"string\",\n    \"Mail\": \"string\",\n    \"Password\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3003/api/smtp/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get SMTP BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/smtp/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"smtp",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Webhook",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3003/api/webhook?page=1&limit=10&method=patch",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"api",
+								"webhook"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "method",
+									"value": "patch"
 								}
 							]
 						}

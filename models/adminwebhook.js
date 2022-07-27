@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Conversation extends Model {
+  class AdminWebhook extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,16 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Conversation.init(
+  AdminWebhook.init(
     {
-      withPartner: DataTypes.BOOLEAN,
-      Chatter: DataTypes.BIGINT,
-      NoOfMessage: DataTypes.INTEGER,
+      Method: DataTypes.TEXT("long"),
+      Url: DataTypes.TEXT("long"),
+      Timestamp: DataTypes.DATE,
+      Body: DataTypes.TEXT("long"),
     },
     {
       sequelize,
-      modelName: "Conversation",
+      modelName: "AdminWebhook",
     }
   );
-  return Conversation;
+  return AdminWebhook;
 };
