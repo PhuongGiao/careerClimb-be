@@ -99,10 +99,8 @@ io.on('connection', (socket) => {
     delete users[socket.id];
     socket.broadcast.emit('offline', Object.values(users)); 
   })
-  
   socket.on("typing",(data)=> {
     socket.broadcast.to(data.ConversationId).emit('isTyping',data)
-    
   })
 });
 server.listen(process.env.PORT || 3001, async () => {
