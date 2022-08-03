@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_357" data-name="Rectangle 357" width="32" height="32" transform="translate(1165 247)" fill="#1fcba2" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_51" data-name="Mask Group 51" transform="translate(-1165 -247)" clip-path="url(#clip-path)">
+    <g id="excel" transform="translate(1165 247)">
+      <path id="Path_423" data-name="Path 423" d="M16,0A16,16,0,1,1,0,16,16,16,0,0,1,16,0Z" fill="#e3faf4"/>
+      <g id="Group_907" data-name="Group 907">
+        <path id="Path_424" data-name="Path 424" d="M6.181,23.336,17.893,25.39V6.61L6.181,8.665Z" fill="#006941"/>
+        <rect id="Rectangle_348" data-name="Rectangle 348" width="7.356" height="14.671" transform="translate(18.463 8.664)" fill="#006941"/>
+      </g>
+      <g id="Group_908" data-name="Group 908">
+        <rect id="Rectangle_349" data-name="Rectangle 349" width="1.849" height="2.014" transform="translate(18.463 10.154)" fill="#fff"/>
+        <rect id="Rectangle_350" data-name="Rectangle 350" width="1.849" height="2.014" transform="translate(18.463 13.38)" fill="#fff"/>
+        <rect id="Rectangle_351" data-name="Rectangle 351" width="1.849" height="2.014" transform="translate(18.463 16.606)" fill="#fff"/>
+        <rect id="Rectangle_352" data-name="Rectangle 352" width="1.849" height="2.014" transform="translate(18.463 19.833)" fill="#fff"/>
+        <rect id="Rectangle_353" data-name="Rectangle 353" width="3.226" height="2.014" transform="translate(21.257 10.154)" fill="#fff"/>
+        <rect id="Rectangle_354" data-name="Rectangle 354" width="3.226" height="2.014" transform="translate(21.257 13.38)" fill="#fff"/>
+        <rect id="Rectangle_355" data-name="Rectangle 355" width="3.226" height="2.014" transform="translate(21.257 16.606)" fill="#fff"/>
+        <rect id="Rectangle_356" data-name="Rectangle 356" width="3.226" height="2.014" transform="translate(21.257 19.833)" fill="#fff"/>
+        <path id="Path_425" data-name="Path 425" d="M14.137,13H12.8L11.79,14.791,10.779,13H9.443l1.679,2.981L9.278,19.249h1.337l1.175-2.086,1.175,2.086H14.3l-1.843-3.272Z" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>
