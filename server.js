@@ -26,10 +26,10 @@ app.use(express.json());
 app.use(cookieParser());
 //////////////////
 const http = require("http");
+const path = require("path");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-
     methods: ["GET", "POST"],
   },
 });
@@ -49,10 +49,14 @@ const swaggerOptions = {
   apis: ["./apis/collection.yml"],
 };
 const swaggerDocs = swaggerJsDOc(swaggerOptions);
+app.use(express.static(path.join(__dirname, "build")));
+app.get(/^\/(?!.*api)/, (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api", rootRouter);
 app.get(
-  "/image/:id",
+  "/api/image/:id",
   catchAsync(async (req, res) => {
     const data = await AppBinaryObject.findByPk(req.params.id);
     if (!data) {
@@ -62,7 +66,7 @@ app.get(
   })
 );
 app.get(
-  "/image-license/:id",
+  "/api/image-license/:id",
   catchAsync(async (req, res) => {
     const data = await IdentifyImage.findByPk(req.params.id);
     if (!data) {
@@ -110,25 +114,25 @@ app.get(
 app.use(catchError);
 ////////////////////////////
 const users = {};
-io.on('connection', (socket) => {
-   socket.join([2, 8, 9])
-  console.log('Socket', socket.id);
-  socket.on('login', (user) => {
+io.on("connection", (socket) => {
+  socket.join([2, 8, 9]);
+  console.log("Socket", socket.id);
+  socket.on("login", (user) => {
     users[socket.id] = user.userId;
     //socket.broadcast.emit('online', Object.values(users)); // Exclude sender
-    io.emit('online', Object.values(users)); // Include sender
-  })
+    io.emit("online", Object.values(users)); // Include sender
+  });
   socket.on("send_message", (message) => {
-    const { ConversationId } = message
+    const { ConversationId } = message;
     io.to(ConversationId).emit("receive_message", message);
   });
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     delete users[socket.id];
-    socket.broadcast.emit('offline', Object.values(users)); 
-  })
-  socket.on("typing",(data)=> {
-    socket.broadcast.to(data.ConversationId).emit('isTyping',data)
-  })
+    socket.broadcast.emit("offline", Object.values(users));
+  });
+  socket.on("typing", (data) => {
+    socket.broadcast.to(data.ConversationId).emit("isTyping", data);
+  });
 });
 server.listen(process.env.PORT || 3001, async () => {
   try {
