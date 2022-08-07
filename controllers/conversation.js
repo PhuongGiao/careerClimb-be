@@ -219,7 +219,7 @@ exports.getConversationById = catchAsync(async (req, res) => {
   const newData = {
     ...data.dataValues,
     Chatter: user.dataValues,
-    newestMessage: newestMessage.dataValues,
+    newestMessage: newestMessage ? newestMessage.dataValues : undefined,
   };
   createWebHook(
     req.method,

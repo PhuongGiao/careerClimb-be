@@ -41,6 +41,7 @@ exports.filterOption = catchAsync(async (req, res) => {
           },
         },
       });
+      if (!data.length) return res.json({ message: "download fail" });
       return downloadExcel(data, res);
     case "2":
       //Tai khoan khach hang
@@ -68,6 +69,7 @@ exports.filterOption = catchAsync(async (req, res) => {
           },
         },
       });
+      if (!data.length) return res.json({ message: "download fail" });
       return downloadExcel(data, res);
     default:
       break;

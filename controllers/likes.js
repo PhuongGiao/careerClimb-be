@@ -7,7 +7,7 @@ const ApiError = require("../utils/ApiError");
 const moment = require("moment");
 
 exports.createLove = catchAsync(async (req, res) => {
-  const { PostId, UserId, PostType } = req.body;
+  const { PostId, UserId, PostType = 1 } = req.body;
   const exits = await Love.findOne({
     where: {
       PostId,
