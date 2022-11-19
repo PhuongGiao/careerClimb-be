@@ -26,20 +26,8 @@ exports.getDetailDistrict = catchAsync(async (req, res) => {
     },
   });
   if (district) {
-    createWebHook(
-      req.method,
-      req.originalUrl,
-      moment(Date.now()),
-      JSON.stringify(req.body)
-    );
     res.status(200).send(district);
   } else {
-    createWebHook(
-      req.method,
-      req.originalUrl,
-      moment(Date.now()),
-      JSON.stringify(req.body)
-    );
     res.status(404).send("not found");
   }
 });
@@ -68,20 +56,8 @@ exports.deleteDistrict = catchAsync(async (req, res) => {
         id,
       },
     });
-    createWebHook(
-      req.method,
-      req.originalUrl,
-      moment(Date.now()),
-      JSON.stringify(req.body)
-    );
     res.status(200).send(districtDelete);
   } else {
-    createWebHook(
-      req.method,
-      req.originalUrl,
-      moment(Date.now()),
-      JSON.stringify(req.body)
-    );
     res.status(404).send("not found");
   }
 });
@@ -99,20 +75,8 @@ exports.updateDistrict = catchAsync(async (req, res) => {
     districtUpdate.Prefix = district.Prefix;
     districtUpdate.TentantId = district.TentantId;
     const districtUpdated = await districtUpdate.save();
-    createWebHook(
-      req.method,
-      req.originalUrl,
-      moment(Date.now()),
-      JSON.stringify(req.body)
-    );
     res.status(200).send(districtUpdated);
   } else {
-    createWebHook(
-      req.method,
-      req.originalUrl,
-      moment(Date.now()),
-      JSON.stringify(req.body)
-    );
     res.status(404).sned("not found");
   }
 });

@@ -1,29 +1,19 @@
 require("dotenv").config();
 const express = require("express");
 const { sequelize } = require("./models");
-const swaggerJsDOc = require("swagger-jsdoc");
-const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
 const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
-const postmanToOpenApi = require("postman-to-openapi");
-const cookieParser = require("cookie-parser");
 const stream = require("stream");
 const { Server } = require("socket.io");
-const { AppBinaryObject, IdentifyImage, CssFile } = require("./models");
+const { PatientPostBinaryObject } = require("./models");
 const catchAsync = require("./middlewares/async");
 const ApiError = require("./utils/ApiError");
 const fs = require("fs");
-// postman
-const postmanCollection =
-  "./apis/BOOKINGSTUDIO_BACKEND.postman_collection.json";
-const outputFile = "./apis/collection.yml";
-postmanToOpenApi(postmanCollection, outputFile, { defaultTag: "General" });
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
 //////////////////
 const http = require("http");
 const path = require("path");
@@ -34,35 +24,20 @@ const io = new Server(server, {
   },
 });
 //////////////////////////////////
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      title: "Library API",
-      version: "1.0.0",
-    },
-    servers: [
-      {
-        url: "http://localhost:3003",
-      },
-    ],
-  },
-  apis: ["./apis/collection.yml"],
-};
-const swaggerDocs = swaggerJsDOc(swaggerOptions);
 app.use(express.static(path.join(__dirname, "build")));
 app.get(/^\/(?!.*api)/, (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use("/api", rootRouter);
 app.get(
-  "/api/image/:id",
+  "/api/image/patient-post/:id",
   catchAsync(async (req, res) => {
-    const data = await AppBinaryObject.findByPk(req.params.id);
+    const data = await PatientPostBinaryObject.findByPk(req.params.id);
     if (!data) {
       throw new ApiError(404, "Image not found");
     }
-    res.send(Buffer.from(data.dataValues.Bytes));
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(Buffer.from(data.dataValues.bytes)).pipe(res);
   })
 );
 app.get(
@@ -76,7 +51,8 @@ app.get(
       const defaut = fs.readFileSync("./default/default.png");
       return res.send(Buffer.from(defaut));
     }
-    res.send(Buffer.from(data.dataValues.Bytes));
+    const bufferStream = new stream.PassThrough();
+    bufferStream.end(Buffer.from(data.dataValues.Bytes)).pipe(res);
   })
 );
 app.get(
@@ -87,12 +63,6 @@ app.get(
       throw new ApiError(404, "Image not found");
     }
     const bufferStream = new stream.PassThrough();
-    // res.set(
-    //   "Content-disposition",
-    //   "attachment; filename=" + data.dataValues.Name
-    // );
-    // res.set("Content-Type", "text/plain");
-    // res.send(Buffer.from(data.dataValues.CssFile));
     bufferStream.end(Buffer.from(data.dataValues.CssFile)).pipe(res);
   })
 );
