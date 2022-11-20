@@ -41,14 +41,14 @@ app.get(
   })
 );
 app.get(
-  "/api/image-license/:id",
+  "/api/image-doctor/:id",
   catchAsync(async (req, res) => {
     const data = await IdentifyImage.findByPk(req.params.id);
     if (!data) {
       throw new ApiError(404, "Image not found");
     }
-    if (data.dataValues.Bytes === null) {
-      const defaut = fs.readFileSync("./default/default.png");
+    if (data.dataValues.bytes === null) {
+      const defaut = fs.readFileSync("./assets/ava.jpeg");
       return res.send(Buffer.from(defaut));
     }
     const bufferStream = new stream.PassThrough();
