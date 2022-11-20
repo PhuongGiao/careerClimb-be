@@ -1,4 +1,4 @@
-const { Patient } = require("../models");
+const { Patient, Doctor } = require("../models");
 const catchAsync = require("../middlewares/async");
 const ApiError = require("../utils/ApiError");
 const md5 = require("md5");
@@ -23,7 +23,6 @@ exports.register = catchAsync(async (req, res) => {
     height,
     weight,
   } = req.body;
-  //kiem tra
   const check = await Patient.findAll({
     where: {
       username: username,
@@ -62,6 +61,7 @@ exports.login = catchAsync(async (req, res) => {
       id: user.dataValues.id,
       username: user.dataValues.Email,
       name: user.dataValues.name,
+      isDoctor: false,
     },
     process.env.JWT_KEY,
     {
@@ -98,7 +98,12 @@ exports.updatePatient = catchAsync(async (req, res) => {
 exports.me = catchAsync(async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const data = jwt.verify(token, process.env.JWT_KEY);
-  const user = await Patient.findByPk(data.id);
+  let user;
+  if (!data.isDoctor) {
+    user = await Patient.findByPk(data.id);
+  } else {
+    user = await Doctor.findByPk(data.id);
+  }
   res.json({
     success: true,
     data: user,
