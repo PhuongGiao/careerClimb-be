@@ -6,7 +6,7 @@ const catchError = require("./middlewares/error");
 const { rootRouter } = require("./routes");
 const stream = require("stream");
 const { Server } = require("socket.io");
-const { PatientPostBinaryObject } = require("./models");
+const { PatientPostBinaryObject, DoctorBinaryObject } = require("./models");
 const catchAsync = require("./middlewares/async");
 const ApiError = require("./utils/ApiError");
 const fs = require("fs");
@@ -43,7 +43,7 @@ app.get(
 app.get(
   "/api/image-doctor/:id",
   catchAsync(async (req, res) => {
-    const data = await IdentifyImage.findByPk(req.params.id);
+    const data = await DoctorBinaryObject.findByPk(req.params.id);
     if (!data) {
       throw new ApiError(404, "Image not found");
     }
