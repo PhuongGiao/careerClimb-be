@@ -41,6 +41,18 @@ module.exports = {
       treated: {
         type: Sequelize.INTEGER,
       },
+      school: {
+        type: Sequelize.STRING,
+      },
+      work: {
+        type: Sequelize.STRING,
+      },
+      email: {
+        type: Sequelize.STRING,
+      },
+      address: {
+        type: Sequelize.STRING,
+      },
       specialist: {
         type: Sequelize.INTEGER,
         references: {

@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       rating: DataTypes.FLOAT,
       treated: DataTypes.INTEGER,
       specialist: DataTypes.INTEGER,
+      school: DataTypes.STRING,
+      work: DataTypes.STRING,
+      email: DataTypes.STRING,
+      address: DataTypes.STRING,
     },
     {
       sequelize,
