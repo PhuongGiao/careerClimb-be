@@ -1,4 +1,9 @@
-const { PatientPost, PatientPostBinaryObject, Patient } = require("../models");
+const {
+  PatientPost,
+  PatientPostBinaryObject,
+  Patient,
+  Comment,
+} = require("../models");
 const catchAsync = require("../middlewares/async");
 
 exports.getAllPatientPost = catchAsync(async (req, res) => {
@@ -9,6 +14,10 @@ exports.getAllPatientPost = catchAsync(async (req, res) => {
         model: PatientPostBinaryObject,
         attributes: ["id"],
         as: "images",
+      },
+      {
+        model: Comment,
+        as: "comments",
       },
       {
         model: Patient,

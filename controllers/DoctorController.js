@@ -3,11 +3,18 @@ const catchAsync = require("../middlewares/async");
 const ApiError = require("../utils/ApiError");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 exports.getallDoctor = catchAsync(async (req, res) => {
+  const { nameLike } = req.query;
   const userList = await Doctor.findAll({
     attributes: { exclude: ["password", "createdAt", "updatedAt"] },
     include: {
       model: Specialist,
+    },
+    where: {
+      name: {
+        [Op.like]: nameLike ? `%${nameLike}%` : `%%`,
+      },
     },
   });
   res.status(200).json({
