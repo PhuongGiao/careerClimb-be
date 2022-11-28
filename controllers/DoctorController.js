@@ -58,7 +58,7 @@ exports.register = catchAsync(async (req, res) => {
     yoe,
     specialist,
     shortIntro,
-    ratinf: 0,
+    rating: 0,
     treated: 0,
   });
   const avatar = await DoctorBinaryObject.create(
@@ -129,6 +129,7 @@ exports.updateDoctor = catchAsync(async (req, res) => {
     }
   );
   if (req.file) {
+    console.log("first");
     await DoctorBinaryObject.update(
       {
         bytes: req.file.buffer,

@@ -52,7 +52,7 @@ app.get(
       return res.send(Buffer.from(defaut));
     }
     const bufferStream = new stream.PassThrough();
-    bufferStream.end(Buffer.from(data.dataValues.Bytes)).pipe(res);
+    bufferStream.end(Buffer.from(data.dataValues.bytes)).pipe(res);
   })
 );
 app.get(
