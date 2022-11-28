@@ -4,11 +4,11 @@ const moment = require("moment");
 
 exports.createComment = catchAsync(async (req, res) => {
   const { comment, postId } = req.body;
-  const { name, isDoctor, userId } = req.user;
+  const { name, isDoctor, id } = req.user;
   const data = await Comment.create({
     name,
     isDoctor,
-    userId,
+    userId: id,
     comment,
     postId,
   });

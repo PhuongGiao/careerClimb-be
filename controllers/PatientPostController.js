@@ -7,7 +7,6 @@ const {
 const catchAsync = require("../middlewares/async");
 
 exports.getAllPatientPost = catchAsync(async (req, res) => {
-  //   const { tags } = req.query;
   const rawList = await PatientPost.findAll({
     include: [
       {
@@ -18,6 +17,7 @@ exports.getAllPatientPost = catchAsync(async (req, res) => {
       {
         model: Comment,
         as: "comments",
+        order: [[PatientPost.comments, "createdAt", "DESC"]],
       },
       {
         model: Patient,
@@ -25,7 +25,10 @@ exports.getAllPatientPost = catchAsync(async (req, res) => {
         as: "user",
       },
     ],
-    order: [["createdAt", "DESC"]],
+    order: [
+      ["createdAt", "DESC"],
+      [{ model: Comment, as: "comments" }, "createdAt", "DESC"],
+    ],
   });
   const list = rawList.map((val) => ({
     ...val.toJSON(),
