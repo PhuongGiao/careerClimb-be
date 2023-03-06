@@ -11,7 +11,7 @@ exports.jwtAuth = (req, res, next) => {
     throw new ApiError(401, "Unauthoriezed");
   }
   try {
-    const user = jwt.verify(token, process.env.JWT_KEY);
+    const user = jwt.verify(token, process.env.SECRET);
     req.user = user;
     next();
   } catch (error) {
