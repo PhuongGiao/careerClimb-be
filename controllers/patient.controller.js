@@ -6,7 +6,7 @@ exports.createPaientDetail = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const { weight, height, healthStatus, medicalHistory } = req.body;
 
-  const check = await PatientDetail.findOne({ where: userId });
+  const check = await PatientDetail.findOne({ where: { userId } });
   if (check) {
     await PatientDetail.update(
       {

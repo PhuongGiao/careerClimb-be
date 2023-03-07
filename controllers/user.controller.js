@@ -1,6 +1,6 @@
 const catchAsync = require("../middlewares/async");
 const jwt = require("jsonwebtoken");
-const { User, PatientDetail } = require("../models");
+const { User, PatientDetail, DoctorDetail } = require("../models");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
 
@@ -17,6 +17,10 @@ exports.userWithGoogle = catchAsync(async (req, res) => {
       {
         model: PatientDetail,
         as: "details",
+      },
+      {
+        model: DoctorDetail,
+        as: "details_doctor",
       },
     ],
   });
@@ -75,6 +79,10 @@ exports.userWithFacebook = catchAsync(async (req, res) => {
         model: PatientDetail,
         as: "details",
       },
+      {
+        model: DoctorDetail,
+        as: "details_doctor",
+      },
     ],
   });
   if (!isRegistered) {
@@ -120,6 +128,10 @@ exports.me = catchAsync(async (req, res) => {
       {
         model: PatientDetail,
         as: "details",
+      },
+      {
+        model: DoctorDetail,
+        as: "details_doctor",
       },
     ],
   });
