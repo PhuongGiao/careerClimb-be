@@ -7,10 +7,6 @@ exports.createDoctorDetail = catchAsync(async (req, res) => {
   const { experiences, graduated, introduction, skill } = req.body;
 
   const check = await DoctorDetail.findOne({ where: { userId } });
-  console.log(
-    "🚀 ~ file: doctor.controller.js:10 ~ exports.createDoctorDetail=catchAsync ~ check:",
-    check
-  );
   if (check) {
     await DoctorDetail.update(
       {
