@@ -1,7 +1,8 @@
 const catchAsync = require("../middlewares/async");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models");
+const { User, PatientDetail } = require("../models");
 const { Op } = require("sequelize");
+const ApiError = require("../utils/ApiError");
 
 exports.userWithGoogle = catchAsync(async (req, res) => {
   const { email, firstName, lastName, fullName, photoUrl } =
@@ -12,7 +13,14 @@ exports.userWithGoogle = catchAsync(async (req, res) => {
       googleEmail: email,
       isDelete: false,
     },
+    include: [
+      {
+        model: PatientDetail,
+        as: "details",
+      },
+    ],
   });
+
   if (!isRegistered) {
     user = await User.create({
       email,
@@ -62,6 +70,12 @@ exports.userWithFacebook = catchAsync(async (req, res) => {
       facebookId: federatedId.split("http://facebook.com/")[1],
       isDelete: false,
     },
+    include: [
+      {
+        model: PatientDetail,
+        as: "details",
+      },
+    ],
   });
   if (!isRegistered) {
     user = await User.create({
@@ -101,7 +115,14 @@ exports.userWithFacebook = catchAsync(async (req, res) => {
 exports.me = catchAsync(async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const data = jwt.verify(token, process.env.SECRET);
-  const user = await User.findByPk(data.id);
+  const user = await User.findByPk(data.id, {
+    include: [
+      {
+        model: PatientDetail,
+        as: "details",
+      },
+    ],
+  });
   if (user === null) {
     throw new ApiError(404, "Failed");
   }
