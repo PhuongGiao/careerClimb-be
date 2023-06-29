@@ -1,6 +1,6 @@
 const catchAsync = require("../middlewares/async");
 const jwt = require("jsonwebtoken");
-const { User, PatientDetail, DoctorDetail } = require("../models");
+const { User, Employer } = require("../models");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
 
@@ -15,13 +15,13 @@ exports.userWithGoogle = catchAsync(async (req, res) => {
     },
     include: [
       {
-        model: PatientDetail,
-        as: "details",
+        model: Employer,
+        as: "employerDetail",
       },
-      {
-        model: DoctorDetail,
-        as: "details_doctor",
-      },
+      // {
+      //   model: DoctorDetail,
+      //   as: "details_doctor",
+      // },
     ],
   });
 
@@ -38,9 +38,15 @@ exports.userWithGoogle = catchAsync(async (req, res) => {
       isActivate: false,
       image: photoUrl,
       isDelete: false,
-      isPatient: true,
+      isCandidate: true,
     });
   } else {
+    await User.update(
+      {
+        image: photoUrl,
+      },
+      { where: { id: isRegistered.dataValues.id } }
+    );
     user = isRegistered;
   }
   const token = jwt.sign(
@@ -74,16 +80,16 @@ exports.userWithFacebook = catchAsync(async (req, res) => {
       facebookId: federatedId.split("http://facebook.com/")[1],
       isDelete: false,
     },
-    include: [
-      {
-        model: PatientDetail,
-        as: "details",
-      },
-      {
-        model: DoctorDetail,
-        as: "details_doctor",
-      },
-    ],
+    // include: [
+    //   {
+    //     model: PatientDetail,
+    //     as: "details",
+    //   },
+    //   {
+    //     model: DoctorDetail,
+    //     as: "details_doctor",
+    //   },
+    // ],
   });
   if (!isRegistered) {
     user = await User.create({
@@ -100,7 +106,7 @@ exports.userWithFacebook = catchAsync(async (req, res) => {
       isActivate: false,
       image: photoUrl,
       isDelete: false,
-      isPersonal: true,
+      isCandidate: true,
     });
   } else {
     user = isRegistered;
@@ -124,23 +130,21 @@ exports.me = catchAsync(async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const data = jwt.verify(token, process.env.SECRET);
   const user = await User.findByPk(data.id, {
-    include: [
-      {
-        model: PatientDetail,
-        as: "details",
-      },
-      {
-        model: DoctorDetail,
-        as: "details_doctor",
-      },
-    ],
+    include: [{ model: Employer, as: "employerDetail" }],
+    // include: [
+    //   {
+    //     model: PatientDetail,
+    //     as: "details",
+    //   },
+    //   {
+    //     model: DoctorDetail,
+    //     as: "details_doctor",
+    //   },
+    // ],
   });
-  if (user === null) {
-    throw new ApiError(404, "Failed");
-  }
   res.json({
     success: true,
-    user: user,
+    data: user,
   });
 });
 
@@ -175,5 +179,37 @@ exports.updateUser = catchAsync(async (req, res) => {
   });
   res.status(200).json({
     success: true,
+  });
+});
+
+// findOne => {}
+// findAll => []
+// update
+// create
+// delete
+
+exports.updateAllUser = catchAsync(async (req, res) => {
+  const { input = "" } = req.body;
+
+  const users = await User.findAll({
+    where: {
+      [Op.or]: [
+        {
+          phone: {
+            [Op.like]: `%${input}%`,
+          },
+        },
+        {
+          email: {
+            [Op.like]: `%${input}%`,
+          },
+        },
+      ],
+    },
+  });
+
+  res.status(200).json({
+    success: true,
+    data: users,
   });
 });

@@ -7,14 +7,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ PatientDetail, DoctorDetail }) {
-      this.hasOne(PatientDetail, {
+    static associate({ Employer }) {
+      this.hasOne(Employer, {
         foreignKey: "userId",
-        as: "details",
-      });
-      this.hasOne(DoctorDetail, {
-        foreignKey: "userId",
-        as: "details_doctor",
+        as: "employerDetail",
       });
     }
   }
@@ -41,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       isActivate: DataTypes.BOOLEAN,
       image: DataTypes.STRING,
       isDelete: DataTypes.BOOLEAN,
-      isPatient: DataTypes.BOOLEAN,
+      isCandidate: DataTypes.BOOLEAN,
     },
     {
       sequelize,

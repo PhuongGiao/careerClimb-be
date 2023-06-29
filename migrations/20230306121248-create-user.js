@@ -1,90 +1,90 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable("Users", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       firstName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       lastName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       fullName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       age: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       phone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       sex: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       facebookPicture: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       facebookEmail: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       facebookFirstname: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       facebookLastname: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       facebookToken: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       facebookId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       googlePicture: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       googleEmail: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       googleName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       isActivateEmail: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       isActivate: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       isDelete: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
-      isPatient: {
-        type: Sequelize.BOOLEAN
+      isCandidate: {
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
-  }
+    await queryInterface.dropTable("Users");
+  },
 };

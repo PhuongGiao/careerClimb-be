@@ -19,13 +19,11 @@ const http = require("http");
 const path = require("path");
 const server = http.createServer(app);
 
-//////////////////////////////////
-
-app.use(express.static(path.join(__dirname, "build")));
-app.get(/^\/(?!.*api)/, (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
 app.use("/api", rootRouter);
+
+app.use("/hello", (req, res) => {
+  res.send("ok");
+});
 // app.get(
 //   "/api/image-doctor/:id",
 //   catchAsync(async (req, res) => {

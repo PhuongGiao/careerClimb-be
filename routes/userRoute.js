@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/fb", userWithFacebook);
 router.post("/gg", userWithGoogle);
 router.get("/me", me);
-router.patch("/", jwtAuth, updateUser);
+router.patch("/:id", jwtAuth, updateUser);
 
 module.exports = { router };
