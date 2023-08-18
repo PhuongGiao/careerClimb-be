@@ -1,7 +1,8 @@
 const catchAsync = require("../middlewares/async");
-const { Application, CV, Job } = require("../models");
+const { Application, CV, Job, Employer } = require("../models");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
+const MailSevice = require("../utils/MailService");
 
 exports.getApplicationByJob = catchAsync(async (req, res) => {
   const { jobId } = req.query;
@@ -96,6 +97,55 @@ exports.updateRefuse = catchAsync(async (req, res) => {
     {
       where: {
         id: id,
+      },
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+  });
+});
+
+exports.sendMailConfirm = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const application = await Application.findOne({ where: { id }, raw: true });
+
+  const cv = await CV.findOne({ where: { id: application.cvId }, raw: true });
+
+  const job = await Job.findOne({
+    where: { id: application.jobId },
+    raw: true,
+  });
+  const employer = await Employer.findOne({
+    where: { id: job.employer },
+    raw: true,
+  });
+
+  const dataEmail = [
+    {
+      key: "[Họ và tên ứng viên]",
+      value: cv.name,
+    },
+    {
+      key: "[tên vị trí công việc]",
+      value: job.name,
+    },
+    {
+      key: "[tên công ty/ tổ chức]",
+      value: employer.name,
+    },
+    {
+      key: "[thông tin liên hệ]",
+      value: `${application.intructorName} - ${application.intructorEmail} - ${application.intructorPhone}`,
+    },
+  ];
+  await MailSevice.sendHTMLmail(1, cv.email, dataEmail);
+  await Application.update(
+    { status: 5 },
+    {
+      where: {
+        id,
       },
     }
   );

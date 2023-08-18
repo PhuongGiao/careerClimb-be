@@ -91,7 +91,6 @@ exports.getJobByEmployerPage = catchAsync(async (req, res) => {
       { model: User, include: { model: Employer, as: "employerDetail" } },
     ],
   });
-  console.log(data);
   res.status(200).json({
     success: true,
     data,
@@ -190,7 +189,6 @@ exports.updateJob = catchAsync(async (req, res) => {
 exports.getCvByJob = catchAsync(async (req, res) => {
   // const { id } = req.params;
   let userId = req.user.id;
-  console.log(userId);
   const data = await Job.findAll({
     where: {
       employer: userId,

@@ -1,8 +1,8 @@
 const catchAsync = require("../middlewares/async");
 const jwt = require("jsonwebtoken");
 const { User, Employer } = require("../models");
-const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
+const { Op } = require("sequelize");
 
 exports.userWithGoogle = catchAsync(async (req, res) => {
   const { email, firstName, lastName, fullName, photoUrl } =
@@ -212,4 +212,25 @@ exports.updateAllUser = catchAsync(async (req, res) => {
     success: true,
     data: users,
   });
+});
+
+exports.getAll = catchAsync(async (req, res) => {
+  const data = await User.findAll({
+    include: [{ model: Employer, as: "employerDetail" }],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+
+exports.getDetail = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const data = await User.findByPk(id, {
+    include: [{ model: Employer, as: "employerDetail" }],
+  });
+  if (!data) {
+    throw new ApiError(404, "Employer not found!!!");
+  }
+  res.status(200).json(data);
 });

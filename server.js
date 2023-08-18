@@ -17,7 +17,10 @@ app.use(express.json());
 //////////////////
 const http = require("http");
 const path = require("path");
+const MailSevice = require("./utils/MailService");
 const server = http.createServer(app);
+
+MailSevice.init();
 
 app.use("/api", rootRouter);
 
