@@ -1,13 +1,25 @@
 const catchAsync = require("../middlewares/async");
 const jwt = require("jsonwebtoken");
-const { User, Employer } = require("../models");
+const {
+  User,
+  Employer,
+  Level,
+  Category,
+  Salary,
+  Experience,
+  Location,
+  SavedJob,
+  Job,
+  Application,
+  CV,
+} = require("../models");
 const ApiError = require("../utils/ApiError");
 const { Op } = require("sequelize");
 
 exports.userWithGoogle = catchAsync(async (req, res) => {
   const { email, firstName, lastName, fullName, photoUrl } =
     req.body._tokenResponse;
-  let user;
+  let user, saved, myCvs;
   const isRegistered = await User.findOne({
     where: {
       googleEmail: email,
@@ -48,6 +60,47 @@ exports.userWithGoogle = catchAsync(async (req, res) => {
       { where: { id: isRegistered.dataValues.id } }
     );
     user = isRegistered;
+    saved = await SavedJob.findAll({
+      where: { userId: user.dataValues.id },
+      include: [
+        {
+          model: Job,
+          include: [
+            { model: Level },
+            { model: Category },
+            { model: Salary },
+            { model: Experience },
+            { model: Location },
+            {
+              model: User,
+              include: [{ model: Employer, as: "employerDetail" }],
+            },
+          ],
+        },
+      ],
+    });
+    if (!user.dataValues.isCandidate) {
+      myCvs = [];
+    } else {
+      myCvs = await CV.findAll({
+        where: { userId: user.dataValues.id },
+        include: [
+          {
+            model: Application,
+            include: [
+              {
+                model: Job,
+                include: {
+                  model: User,
+                  include: { model: Employer, as: "employerDetail" },
+                },
+              },
+              { model: CV },
+            ],
+          },
+        ],
+      });
+    }
   }
   const token = jwt.sign(
     {
@@ -61,6 +114,8 @@ exports.userWithGoogle = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     data: user,
+    saved,
+    myCvs,
     token,
   });
 });
@@ -129,6 +184,7 @@ exports.userWithFacebook = catchAsync(async (req, res) => {
 exports.me = catchAsync(async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const data = jwt.verify(token, process.env.SECRET);
+  let myCvs;
   const user = await User.findByPk(data.id, {
     include: [{ model: Employer, as: "employerDetail" }],
     // include: [
@@ -142,9 +198,36 @@ exports.me = catchAsync(async (req, res) => {
     //   },
     // ],
   });
+  const saved = await SavedJob.findAll({
+    where: { userId: user.dataValues.id },
+  });
+  if (!user.dataValues.isCandidate) {
+    myCvs = [];
+  } else {
+    myCvs = await CV.findAll({
+      where: { userId: user.dataValues.id },
+      include: [
+        {
+          model: Application,
+          include: [
+            {
+              model: Job,
+              include: {
+                model: User,
+                include: { model: Employer, as: "employerDetail" },
+              },
+            },
+            { model: CV },
+          ],
+        },
+      ],
+    });
+  }
   res.json({
     success: true,
     data: user,
+    saved,
+    myCvs,
   });
 });
 

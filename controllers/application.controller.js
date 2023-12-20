@@ -1,5 +1,5 @@
 const catchAsync = require("../middlewares/async");
-const { Application, CV, Job, Employer } = require("../models");
+const { Application, CV, Job, Employer, User } = require("../models");
 const { Op } = require("sequelize");
 const ApiError = require("../utils/ApiError");
 const MailSevice = require("../utils/MailService");
@@ -152,5 +152,33 @@ exports.sendMailConfirm = catchAsync(async (req, res) => {
 
   res.status(200).json({
     success: true,
+  });
+});
+
+exports.getMyCVs = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const userCv = await CV.findAll({ where: { userId }, raw: true });
+
+  const array = userCv.map((val) => val.id);
+  const applications = await Application.findAll({
+    where: {
+      cvId: array,
+    },
+    include: [
+      {
+        model: Job,
+        include: [
+          { model: User, include: { model: Employer, as: "employerDetail" } },
+        ],
+      },
+      {
+        model: CV,
+      },
+    ],
+    // raw: true,
+  });
+  res.status(200).json({
+    success: true,
+    applications,
   });
 });

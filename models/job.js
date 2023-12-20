@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       Employer,
       Application,
       User,
+      SavedJob,
     }) {
       this.hasMany(JobLocation, {
         foreignKey: "jobId",
@@ -42,6 +43,9 @@ module.exports = (sequelize, DataTypes) => {
         through: JobLocation,
       });
       this.hasMany(Application, {
+        foreignKey: "jobId",
+      });
+      this.hasMany(SavedJob, {
         foreignKey: "jobId",
       });
     }

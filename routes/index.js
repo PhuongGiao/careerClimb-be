@@ -10,6 +10,8 @@ const { router: salaryRoute } = require("./salaryRoute");
 const { router: employerRoute } = require("./employerRoute");
 const { router: cvRoute } = require("./cvRoute");
 const { router: applicationRoute } = require("./applicationRoute");
+const { router: savedJobRoute } = require("./savedJobRoute");
+const { router: mbtiRoute } = require("./mbtiRoute");
 
 const rootRouter = express.Router();
 
@@ -24,6 +26,8 @@ rootRouter.use("/salary", salaryRoute);
 rootRouter.use("/employer", employerRoute);
 rootRouter.use("/cv", cvRoute);
 rootRouter.use("/application", applicationRoute);
+rootRouter.use("/saved-job", savedJobRoute);
+rootRouter.use("/mbti", mbtiRoute);
 
 module.exports = {
   rootRouter,
