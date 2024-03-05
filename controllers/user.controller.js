@@ -297,6 +297,22 @@ exports.updateAllUser = catchAsync(async (req, res) => {
   });
 });
 
+exports.verifyAccount = catchAsync(async (req, res) => {
+  const { isActivate } = req.body;
+  const { id } = req.params;
+  await User.update(
+    { isActivate: true },
+    {
+      where: {
+        id: id,
+      },
+    }
+  );
+  res.status(200).json({
+    success: true,
+  });
+});
+
 exports.getAll = catchAsync(async (req, res) => {
   const data = await User.findAll({
     include: [{ model: Employer, as: "employerDetail" }],

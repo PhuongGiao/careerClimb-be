@@ -117,6 +117,7 @@ exports.sendMailConfirm = catchAsync(async (req, res) => {
     where: { id: application.jobId },
     raw: true,
   });
+
   const employer = await Employer.findOne({
     where: { id: job.employer },
     raw: true,
@@ -125,21 +126,22 @@ exports.sendMailConfirm = catchAsync(async (req, res) => {
   const dataEmail = [
     {
       key: "[Họ và tên ứng viên]",
-      value: cv.name,
+      value: cv?.name,
     },
     {
       key: "[tên vị trí công việc]",
-      value: job.name,
+      value: job?.name,
     },
     {
       key: "[tên công ty/ tổ chức]",
-      value: employer.name,
+      value: employer?.name,
     },
     {
       key: "[thông tin liên hệ]",
       value: `${application.intructorName} - ${application.intructorEmail} - ${application.intructorPhone}`,
     },
   ];
+
   await MailSevice.sendHTMLmail(1, cv.email, dataEmail);
   await Application.update(
     { status: 5 },

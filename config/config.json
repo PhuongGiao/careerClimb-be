@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "sl4jlk37yrtp76w2px8w",
-    "password": "pscale_pw_MtfSYKlpAWISPjwVOWEXpOudfVmoEKmuOyjiBjxO3ge",
+    "username": "16qf8ctjwuq4myr6ll26",
+    "password": "pscale_pw_cTLImZjdHKMh5rzw5EsnFKdTC1PpWSxpHWBGXt0WlQu",
     "database": "careerclimb",
     "host": "aws.connect.psdb.cloud",
     "dialect": "mysql",
@@ -13,8 +13,8 @@
     }
   },
   "test": {
-    "username": "sl4jlk37yrtp76w2px8w",
-    "password": "pscale_pw_MtfSYKlpAWISPjwVOWEXpOudfVmoEKmuOyjiBjxO3ge",
+    "username": "16qf8ctjwuq4myr6ll26",
+    "password": "pscale_pw_cTLImZjdHKMh5rzw5EsnFKdTC1PpWSxpHWBGXt0WlQu",
     "database": "careerclimb",
     "host": "aws.connect.psdb.cloud",
     "dialect": "mysql",
@@ -26,8 +26,8 @@
     }
   },
   "production": {
-    "username": "sl4jlk37yrtp76w2px8w",
-    "password": "pscale_pw_MtfSYKlpAWISPjwVOWEXpOudfVmoEKmuOyjiBjxO3ge",
+    "username": "16qf8ctjwuq4myr6ll26",
+    "password": "pscale_pw_cTLImZjdHKMh5rzw5EsnFKdTC1PpWSxpHWBGXt0WlQu",
     "database": "careerclimb",
     "host": "aws.connect.psdb.cloud",
     "dialect": "mysql",

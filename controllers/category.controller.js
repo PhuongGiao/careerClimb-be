@@ -16,9 +16,9 @@ exports.getAll = catchAsync(async (req, res) => {
   const { q } = req.query;
   const data = await Category.findAll({
     where: {
-      name: {
-        [Op.like]: q !== "" ? `%${q}%` : "%%",
-      },
+      // name: {
+      //   [Op.like]: q !== "" ? `%${q}%` : "%%",
+      // },
     },
     include: [
       {

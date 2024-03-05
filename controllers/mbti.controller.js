@@ -26,7 +26,7 @@ exports.createMBTI = catchAsync(async (req, res) => {
   ];
 
   const { data } = await axios.post(
-    "https://b8b9-34-125-237-132.ngrok-free.app/",
+    "https://8fbe-35-188-238-192.ngrok-free.app/",
     {
       ...req.body,
     }
